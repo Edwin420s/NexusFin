@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NexusFin — Responsible Credit &amp; Informed Choice</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="header-container">
+      <div class="brand-wrapper">
+        <div class="brand-logo">N</div>
+        <div class="brand-info">
+          <h1>Nexus<span>Fin</span></h1>
+          <p>Responsible Credit &amp; Informed Choice • ASEAN Financial Health Challenge</p>
+        </div>
+      </div>
+
+      <div class="header-controls">
+        <div class="control-item">
+          <label for="presetSelect">Demo Persona:</label>
+          <select id="presetSelect" class="select-sm">
+            <option value="">Loading personas...</option>
+          </select>
+        </div>
+
+        <div class="control-item">
+          <label for="currencySelect">Currency:</label>
+          <select id="currencySelect" class="select-sm">
+            <option value="PHP">PHP (₱) — Philippines</option>
+            <option value="KES">KES (KSh) — Kenya</option>
+            <option value="SGD">SGD (S$) — Singapore</option>
+            <option value="IDR">IDR (Rp) — Indonesia</option>
+            <option value="MYR">MYR (RM) — Malaysia</option>
+            <option value="THB">THB (฿) — Thailand</option>
+            <option value="VND">VND (₫) — Vietnam</option>
+            <option value="USD">USD ($) — International</option>
+          </select>
+        </div>
+
+        <div class="mode-toggle-group">
+          <button class="mode-btn active" data-mode="consumer">Consumer Workspace</button>
+          <button class="mode-btn" data-mode="partner">Lender / Partner Portal</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-container">
+      <div class="hero-text">
+        <span class="badge-pill">Problem Statement 3 • Responsible Credit Decision Support</span>
+        <h2>Understand the credit before it becomes a burden.</h2>
+        <p>
+          NexusFin bridges the gap between credit access and credit affordability. By pairing deterministic cash-flow mathematics, alternative data signals, multi-scenario stress testing, and plain-language explainability, NexusFin empowers borrowers and lenders to prevent over-indebtedness before signing.
+        </p>
+      </div>
+      <div class="hero-callout">
+        <h3>💡 Decision Support, Not a Black Box</h3>
+        <p>
+          We never produce an opaque 3-digit score or an automated rejection. NexusFin demonstrates how a proposed repayment behaves under normal conditions and realistic financial shocks (income dips, inflation spikes), keeping the borrower in control of their choice.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Workspace Tabs Navigation -->
+  <nav class="workspace-tabs">
+    <div class="tabs-container">
+      <button class="tab-nav-btn active" data-tab="assessment">
+        <span class="tab-num">01</span> Affordability &amp; Stress Testing
+      </button>
+      <button class="tab-nav-btn" data-tab="compare">
+        <span class="tab-num">02</span> Compare Credit Offers (Key Facts)
+      </button>
+      <button class="tab-nav-btn" data-tab="data">
+        <span class="tab-num">03</span> Alternative Data &amp; Cash Flow
+      </button>
+      <button class="tab-nav-btn" data-tab="privacy">
+        <span class="tab-num">04</span> Privacy, Consent &amp; Audit Trail
+      </button>
+      <button class="tab-nav-btn" data-tab="partner">
+        <span class="tab-num">05</span> Institutional Underwriter Portal
+      </button>
+    </div>
+  </nav>
+
+  <!-- Main Workspace Content -->
+  <main class="workspace-content">
+
+    <!-- TAB 1: Affordability & Stress Testing -->
+    <div id="assessment" class="tab-pane active">
+      <div class="grid-two-col">
+
+        <!-- Column 1: Financial Health Profile -->
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <span class="eyebrow-tag">STEP 1 • HOUSEHOLD CASH FLOW</span>
+              <h3>Your Financial Position</h3>
+              <p>Declare your typical monthly cash flow and existing financial commitments.</p>
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="monthlyIncome">Gross Monthly Income <span class="req">*</span></label>
+              <div class="input-with-symbol">
+                <span class="symbol-addon currency-symbol-label">₱</span>
+                <input type="number" id="monthlyIncome" value="38000" min="0" step="100">
+              </div>
+              <span class="form-hint">Average monthly earnings</span>
+            </div>
+
+            <div class="form-group">
+              <label for="employmentType">Employment Type</label>
+              <select id="employmentType">
+                <option value="gig_worker">Platform / Gig Worker (Grab, Foodpanda)</option>
+                <option value="freelance_msme">Freelancer / Digital MSME</option>
+                <option value="informal_trader">Informal Trader / Sari-Sari / Warung</option>
+                <option value="salaried">Salaried Employee</option>
+                <option value="seasonal">Seasonal Worker</option>
+              </select>
+            </div>
+
+            <div class="form-group col-span-2">
+              <label for="incomeVariability">
+                Monthly Income Volatility: <span id="variabilityValLabel" style="color:var(--accent);font-weight:700;">20%</span>
+              </label>
+              <input type="range" id="incomeVariability" min="0" max="60" value="20" style="width:100%;">
+              <span class="form-hint">How much your monthly earnings fluctuate between peak and low seasons</span>
+            </div>
+
+            <div class="form-group">
+              <label for="essentialExpenses">Essential Living Expenses <span class="req">*</span></label>
+              <div class="input-with-symbol">
+                <span class="symbol-addon currency-symbol-label">₱</span>
+                <input type="number" id="essentialExpenses" value="21000" min="0" step="100">
+              </div>
+              <span class="form-hint">Rent, food, utilities, health, school fees</span>
+            </div>
+
+            <div class="form-group">
+              <label for="existingDebt">Existing Debt Payments <span class="req">*</span></label>
+              <div class="input-with-symbol">
+                <span class="symbol-addon currency-symbol-label">₱</span>
+                <input type="number" id="existingDebt" value="4500" min="0" step="50">
+              </div>
+              <span class="form-hint">Current bank, BNPL, or installment debits</span>
+            </div>
+
+            <div class="form-group">
+              <label for="liquidSavings">Liquid Savings Reserve</label>
+              <div class="input-with-symbol">
+                <span class="symbol-addon currency-symbol-label">₱</span>
+                <input type="number" id="liquidSavings" value="18000" min="0" step="100">
+              </div>
+              <span class="form-hint">Immediately accessible cash or e-wallet buffer</span>
+            </div>
+
+            <div class="form-group">
+              <label for="goalSavings">Monthly Savings Goal</label>
+              <div class="input-with-symbol">
+                <span class="symbol-addon currency-symbol-label">₱</span>
+                <input type="number" id="goalSavings" value="3000" min="0" step="50">
+              </div>
+              <span class="form-hint">Voluntary target (not deducted as mandatory debt)</span>
+            </div>
+
+            <div class="form-group col-span-2">
+              <label for="householdDependents">Number of Financial Dependents</label>
+              <input type="number" id="householdDependents" value="2" min="0" max="15">
+            </div>
+          </div>
+        </div>
+
+        <!-- Column 2: Proposed Credit Offer -->
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <span class="eyebrow-tag">STEP 2 • CREDIT PRODUCT TERMS</span>
+              <h3>Proposed Credit Commitment</h3>
+              <p>Enter the financing offer or loan option you are evaluating.</p>
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="offerName">Loan Display Name</label>
+              <input type="text" id="offerName" value="Digital Working Capital Loan">
+            </div>
+
+            <div class="form-group">
+              <label for="providerName">Lender / Financial Institution</label>
+              <input type="text" id="providerName" value="Community Microfinance Bank">
+            </div>
+
+            <div class="form-group">
+              <label for="loanPrincipal">Requested Principal <span class="req">*</span></label>
+              <div class="input-with-symbol">
+                <span class="symbol-addon currency-symbol-label">₱</span>
+                <input type="number" id="loanPrincipal" value="35000" min="500" step="500">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="interestRate">Annual Interest Rate (%) <span class="req">*</span></label>
+              <input type="number" id="interestRate" value="20.0" min="0" max="150" step="0.5">
+            </div>
+
+            <div class="form-group">
+              <label for="loanTerm">Loan Term (Months) <span class="req">*</span></label>
+              <input type="number" id="loanTerm" value="10" min="1" max="120">
+            </div>
+
+            <div class="form-group">
+              <label for="repaymentType">Repayment Model</label>
+              <select id="repaymentType">
+                <option value="amortizing">Amortizing (Reducing Balance)</option>
+                <option value="flat">Flat Rate (Fixed Total Interest)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="upfrontFee">Upfront Processing Fee</label>
+              <div class="input-with-symbol">
+                <span class="symbol-addon currency-symbol-label">₱</span>
+                <input type="number" id="upfrontFee" value="800" min="0" step="50">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="monthlyFee">Monthly Admin / Service Fee</label>
+              <div class="input-with-symbol">
+                <span class="symbol-addon currency-symbol-label">₱</span>
+                <input type="number" id="monthlyFee" value="100" min="0" step="10">
+              </div>
+            </div>
+
+            <div class="form-group col-span-2">
+              <label for="loanPurpose">Financing Purpose</label>
+              <select id="loanPurpose">
+                <option value="Working Capital / MSME">Working Capital / MSME Inventory</option>
+                <option value="Asset Acquisition">Asset Acquisition / Equipment</option>
+                <option value="Emergency / Medical">Emergency / Medical Shock</option>
+                <option value="Education / Tuition">Education / Tuition</option>
+                <option value="Debt Consolidation">Debt Consolidation</option>
+                <option value="General Consumer Need">General Consumer Need</option>
+              </select>
+            </div>
+          </div>
+
+          <button id="assessBtn" class="btn-primary">⚡ Assess Affordability &amp; Resilience</button>
+        </div>
+
+      </div>
+
+      <!-- Assessment Results Area (Dynamic) -->
+      <div id="assessmentResultsArea" class="assessment-results-area" style="display:none;">
+
+        <!-- Status Banner -->
+        <div id="statusBanner" class="status-banner fits">
+          <div id="statusBadgeIcon" class="status-icon-badge">✓</div>
+          <div class="status-text">
+            <h4 id="statusTitle">Looks Manageable Under Current Conditions</h4>
+            <p id="statusReason">The proposed repayment leaves an adequate monthly cash cushion.</p>
+          </div>
+        </div>
+
+        <!-- Metric Cards -->
+        <div class="metrics-row">
+          <div class="metric-card">
+            <span class="metric-label">Monthly Repayment</span>
+            <span id="valMonthlyPayment" class="metric-value">₱ 0.00</span>
+            <span class="metric-subtext">Principal + interest + fees</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Total Repayment</span>
+            <span id="valTotalRepayment" class="metric-value">₱ 0.00</span>
+            <span class="metric-subtext">Total cost over full term</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Post-Loan Buffer</span>
+            <span id="valPostBuffer" class="metric-value">₱ 0.00</span>
+            <span class="metric-subtext">Remaining disposable cash</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Debt-Service Burden</span>
+            <span id="valDebtBurden" class="metric-value">0.0%</span>
+            <span id="valSavingsRunway" class="metric-subtext">0 months reserve</span>
+          </div>
+        </div>
+
+        <!-- Resilience Index Box -->
+        <div class="resilience-index-box">
+          <div class="resilience-dial">
+            <span id="resilienceScoreNum" class="score-num">78</span>
+            <span class="score-label">RESILIENCE</span>
+          </div>
+          <div class="resilience-details">
+            <h4 id="resilienceTierName">High Resilience</h4>
+            <p id="resilienceSummaryText">Strong cash flow cushion and emergency reserves.</p>
+            <div class="pillar-bars">
+              <div class="pillar-item">
+                <span>Buffer Adequacy</span>
+                <b id="scoreBufferPts">22/30</b>
+              </div>
+              <div class="pillar-item">
+                <span>Debt Safety</span>
+                <b id="scoreDebtPts">20/25</b>
+              </div>
+              <div class="pillar-item">
+                <span>Reserve Runway</span>
+                <b id="scoreReservePts">19/25</b>
+              </div>
+              <div class="pillar-item">
+                <span>Shock Stability</span>
+                <b id="scoreStabilityPts">14/20</b>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Multi-Scenario Stress Test Matrix -->
+        <div class="panel" style="margin-bottom:1.5rem;">
+          <div class="panel-header">
+            <div>
+              <span class="eyebrow-tag">STEP 3 • RESILIENCE UNDER FINANCIAL SHOCKS</span>
+              <h3>What Happens If Circumstances Change?</h3>
+              <p>Simulating 6 macroeconomic and household shock scenarios to verify if the loan remains manageable.</p>
+            </div>
+          </div>
+          <div class="stress-table-wrapper">
+            <table class="nexus-table">
+              <thead>
+                <tr>
+                  <th>Scenario</th>
+                  <th>Simulated Income</th>
+                  <th>Essential Expenses</th>
+                  <th>Loan Repayment</th>
+                  <th>Remaining Buffer</th>
+                  <th>Debt Burden</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="stressTableBody">
+                <!-- Injected via JavaScript -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Explainable Insights Grid -->
+        <div class="grid-two-col">
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <span class="eyebrow-tag">EXPLAINED REASONING</span>
+                <h3>Why Did NexusFin Reach This Result?</h3>
+              </div>
+            </div>
+            <ul id="explanationList" class="bullet-list"></ul>
+            <h4 style="margin:1.25rem 0 0.5rem;font-size:15px;color:var(--ink-900);">Financial Trade-Offs</h4>
+            <ul id="tradeOffsList" class="bullet-list"></ul>
+          </div>
+
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <span class="eyebrow-tag">INFORMED CHOICE</span>
+                <h3>Actionable Recommendations</h3>
+              </div>
+            </div>
+            <ul id="recommendationsList" class="bullet-list"></ul>
+            <div class="disclosure-box">
+              <strong>Methodology &amp; Regulatory Disclosures:</strong>
+              <ul id="methodologyList" style="margin:6px 0 0;padding-left:16px;"></ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- TAB 2: Compare Credit Offers -->
+    <div id="compare" class="tab-pane">
+      <div class="panel">
+        <div class="panel-header">
+          <div>
+            <span class="eyebrow-tag">STANDARDIZED KEY FACTS STATEMENT</span>
+            <h3>Compare Multiple Credit Offers</h3>
+            <p>Evaluate up to 5 competing loan products against your identical household cash-flow baseline.</p>
+          </div>
+          <div>
+            <button id="addOfferBtn" class="btn-secondary">+ Add Another Offer</button>
+          </div>
+        </div>
+
+        <div id="compareOffersConfigArea">
+          <!-- Dynamically injected offer rows -->
+        </div>
+
+        <button id="runCompareBtn" class="btn-primary" style="margin-top:1rem;">📊 Generate Key Facts Comparison</button>
+
+        <!-- Comparison Results Area -->
+        <div id="comparisonResultsArea" style="display:none;margin-top:2rem;">
+          <div class="stress-table-wrapper">
+            <table class="nexus-table">
+              <thead>
+                <tr>
+                  <th>Credit Offer &amp; Structure</th>
+                  <th>Principal</th>
+                  <th>Term</th>
+                  <th>Monthly Repayment</th>
+                  <th>Total Repayment</th>
+                  <th>Total Financing Cost</th>
+                  <th>Post-Loan Buffer</th>
+                  <th>Debt Burden</th>
+                  <th>Resilience Index</th>
+                </tr>
+              </thead>
+              <tbody id="comparisonTableBody">
+                <!-- Dynamically injected -->
+              </tbody>
+            </table>
+          </div>
+
+          <div id="comparisonNotes" class="disclosure-box" style="margin-top:1.25rem;background:var(--accent-soft);border-color:var(--accent-light);">
+            <!-- Dynamically injected comparison insights -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: Alternative Data & Cash Flow -->
+    <div id="data" class="tab-pane">
+      <div class="grid-two-col">
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <span class="eyebrow-tag">CONSENTED OPEN FINANCE</span>
+              <h3>Ingest Alternative Transaction Signals</h3>
+              <p>Upload a transaction CSV or load curated ASEAN sample datasets to test cash-flow analysis.</p>
+            </div>
+          </div>
+
+          <div class="upload-dropzone" onclick="document.getElementById('txFileInput').click();">
+            <span style="font-size:32px;">📄</span>
+            <p><strong>Click to upload transaction export (.csv)</strong><br>Columns: <code>date, description, amount</code></p>
+            <input type="file" id="txFileInput" accept=".csv" style="display:none;">
+          </div>
+
+          <div style="margin-top:1.25rem;">
+            <label style="font-size:12px;font-weight:700;color:var(--ink-700);">Or Load Curated ASEAN Datasets (1-Click):</label>
+            <div class="sample-dataset-pills">
+              <button class="sample-pill-btn" onclick="App.loadSampleDataset('manila');">🇵🇭 Carlos — Manila Gig Rider</button>
+              <button class="sample-pill-btn" onclick="App.loadSampleDataset('kenya');">🇰🇪 Aisha — Nairobi MSME Freelancer</button>
+              <button class="sample-pill-btn" onclick="App.loadSampleDataset('jakarta');">🇮🇩 Dewi — Jakarta Warung Trader</button>
+            </div>
+          </div>
+
+          <!-- Transaction Analysis Result -->
+          <div id="txAnalysisResultArea" style="display:none;margin-top:1.5rem;">
+            <div class="panel-header" style="margin-bottom:1rem;">
+              <h4>Transaction Ingestion Summary</h4>
+              <span id="txCountBadge" class="badge-pill">0 Transactions</span>
+            </div>
+
+            <div class="grid-two-col" style="gap:12px;margin-bottom:1rem;">
+              <div class="metric-card">
+                <span class="metric-label">Verified Inflows</span>
+                <span id="txInflows" class="metric-value" style="color:var(--good-text);">₱ 0.00</span>
+              </div>
+              <div class="metric-card">
+                <span class="metric-label">Verified Outflows</span>
+                <span id="txOutflows" class="metric-value">₱ 0.00</span>
+              </div>
+              <div class="metric-card">
+                <span class="metric-label">Net Cash Flow</span>
+                <span id="txNetCashflow" class="metric-value">₱ 0.00</span>
+              </div>
+              <div class="metric-card">
+                <span class="metric-label">Income Volatility</span>
+                <span id="txVariabilityEst" class="metric-value">0.0%</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Detected Category Breakdown:</label>
+              <div id="txCategoryTags" class="category-tags"></div>
+            </div>
+
+            <ul id="txInsightsList" class="bullet-list" style="margin-top:1rem;"></ul>
+
+            <button id="applyDetectedBtn" class="btn-primary" style="margin-top:1rem;background:var(--accent);">
+              ✓ Import Detected Cash Flows Into Assessment Profile
+            </button>
+
+            <div style="margin-top:1.5rem;">
+              <label style="font-size:12px;font-weight:700;color:var(--ink-700);">Transaction Sample Preview (First 10):</label>
+              <div class="stress-table-wrapper" style="max-height:220px;overflow-y:auto;margin-top:6px;">
+                <table class="nexus-table">
+                  <thead>
+                    <tr>
+                      <th>Date</th>
+                      <th>Description</th>
+                      <th>Classification</th>
+                      <th>Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody id="txPreviewTableBody"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <span class="eyebrow-tag">RESPONSIBLE INNOVATION</span>
+              <h3>Why Alternative Data &amp; Why Now?</h3>
+            </div>
+          </div>
+          <p style="font-size:14px;color:var(--ink-700);line-height:1.6;">
+            Traditional credit bureau scoring relies on formal bank debt histories and structured payroll pay slips. Across ASEAN, tens of millions of micro-entrepreneurs, gig workers, and informal traders are unrepresented or thin-file, locking them out of fair financing or driving them toward predatory digital lenders.
+          </p>
+          <h4 style="font-size:15px;margin:1.25rem 0 0.5rem;">Ethical Guardrails Built Into NexusFin:</h4>
+          <ul class="bullet-list">
+            <li><strong>Zero Invasive Scraping:</strong> No access to personal phone contact lists, photos, or browsing histories.</li>
+            <li><strong>Data Minimization:</strong> Only financial transactions, recurring debits, and verified cash flows with explicit consent are analyzed.</li>
+            <li><strong>Cross-Validation:</strong> Automatically cross-references declared debt payments against actual recurring transaction debits.</li>
+            <li><strong>Full Explainability:</strong> Alternative data informs income volatility and buffer metrics; it is never converted into an unexplained credit black-box score.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: Privacy, Consent & Audit Trail -->
+    <div id="privacy" class="tab-pane">
+      <div class="grid-two-col">
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <span class="eyebrow-tag">DATA GOVERNANCE</span>
+              <h3>Consent Management &amp; Privacy Controls</h3>
+              <p>Borrowers retain granular control over which financial data sources are shared and for what purpose.</p>
+            </div>
+          </div>
+
+          <div id="consentsContainer">
+            <!-- Dynamically injected consent cards -->
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <span class="eyebrow-tag">REGULATORY COMPLIANCE</span>
+              <h3>Immutable Governance Audit Trail</h3>
+              <p>Real-time audit log recording data ingestion, consent changes, assessments, and underwriter reviews.</p>
+            </div>
+          </div>
+
+          <div id="auditTrailStream" class="audit-log-stream">
+            <!-- Injected log entries -->
+          </div>
+
+          <div class="disclosure-box" style="margin-top:1rem;">
+            <strong>ASEAN Data Protection Standard:</strong>
+            Aligned with the ASEAN Model Contractual Clauses for Cross Border Data Flows and BSP Circular No. 1133 on Consumer Protection and Open Finance.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 5: Lender / Partner Portal -->
+    <div id="partner" class="tab-pane">
+      <div class="panel" style="margin-bottom:1.5rem;">
+        <div class="panel-header">
+          <div>
+            <span class="eyebrow-tag">INSTITUTIONAL UNDERWRITING PORTAL</span>
+            <h3>Partner / Lender Governance &amp; Pilot Review</h3>
+            <p>For Financial Institutions, Microfinance Organizations, and Champions piloting responsible credit solutions.</p>
+          </div>
+          <div>
+            <span class="badge-pill" style="background:#e0f2fe;color:#0369a1;">API Integration Mode</span>
+          </div>
+        </div>
+
+        <p style="font-size:14px;color:var(--ink-700);">
+          This view allows authorized credit officers and underwriter teams to review consented applicant profiles, verify income volatility, inspect deterministic stress tests, and confirm that loans meet regulatory affordability guidelines.
+        </p>
+
+        <div id="partnerAssessmentsList" style="margin-top:1.5rem;">
+          <!-- Dynamically injected from API -->
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div>
+        <strong>NexusFin</strong> — Decision Support for Responsible Credit &amp; Informed Choice<br>
+        <span>ASEAN Financial Health Challenge • Problem Statement 3 • Solo Applicant: Edwin Mwiti</span>
+      </div>
+      <div class="footer-badges">
+        <span class="footer-badge-pill">GFTN</span>
+        <span class="footer-badge-pill">Bangko Sentral ng Pilipinas (BSP)</span>
+        <span class="footer-badge-pill">Open Finance Standard</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/js/api.js"></script>
+  <script src="/js/state.js"></script>
+  <script src="/js/ui.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>
