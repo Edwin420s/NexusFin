@@ -18,3 +18,4 @@ A granular, verifiable record of product development, actuarial modeling, data g
 - `2026-10-04 20:20` **refactor(engine):** compute baseline available cash flow strictly excluding voluntary savings
 - `2026-10-04 21:13` **refactor(engine):** compute post-loan monthly buffer before planned savings
 - `2026-10-04 22:05` **feat(engine):** track discretionary remainder after planned savings separately
+- `2026-10-04 22:58` **refactor(engine):** compute combined debt-service burden (DTI) percentage
