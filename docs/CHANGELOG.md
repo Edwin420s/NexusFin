@@ -8,3 +8,4 @@ A granular, verifiable record of product development, actuarial modeling, data g
 - `2026-10-04 11:37` **refactor(schemas):** redesign ResilienceScore schema for multidimensional evidence
 - `2026-10-04 12:29` **feat(schemas):** add backward compatibility fields to ResilienceScore model
 - `2026-10-04 13:21` **feat(schemas):** define KeyFactsOfferComparison schema for standardized offer terms
+- `2026-10-04 14:14` **feat(schemas):** define AssessmentRequest and AssessmentResponse schemas
