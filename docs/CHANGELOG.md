@@ -15,3 +15,4 @@ A granular, verifiable record of product development, actuarial modeling, data g
 - `2026-10-04 17:43` **refactor(engine):** isolate amortizing loan repayment reducing-balance formula
 - `2026-10-04 18:36` **refactor(engine):** isolate flat-rate interest and fee calculation logic
 - `2026-10-04 19:28` **feat(engine):** calculate exact total cost of credit including origination and monthly charges
+- `2026-10-04 20:20` **refactor(engine):** compute baseline available cash flow strictly excluding voluntary savings
