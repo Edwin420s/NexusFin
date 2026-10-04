@@ -67,6 +67,7 @@ class ScenarioResult(BaseModel):
     debt_service_burden_pct: float
     is_positive: bool
     status: Literal["healthy", "tight", "deficit"]
+    status_label: str = "Manageable"
 
 
 class AffordabilityMetrics(BaseModel):
@@ -75,19 +76,29 @@ class AffordabilityMetrics(BaseModel):
     total_repayment: float
     total_cost_of_credit: float
     post_credit_buffer: float
+    after_savings_buffer: float = 0.0
+    goal_savings: float = 0.0
     debt_service_burden_pct: float
     liquid_savings_months: float | None
     effective_monthly_commitment: float
 
 
 class ResilienceScore(BaseModel):
-    total_score: int = Field(..., ge=0, le=100, description="Overall Resilience Index score (0-100)")
-    tier: Literal["High Resilience", "Moderate Resilience", "Financially Vulnerable", "Severely Stressed"]
-    buffer_adequacy_pts: int
-    debt_burden_pts: int
-    emergency_reserve_pts: int
-    income_stability_pts: int
+    # Multidimensional evidence-based indicators (No arbitrary black-box score)
+    baseline_status: str = "Manageable"
+    resilience_status: str = "Needs Review"
+    conclusion: str = "Manageable today — vulnerable under income shock"
     summary: str
+    monthly_buffer: float = 0.0
+    debt_service_burden_pct: float = 0.0
+    liquid_savings_months: float | None = None
+    shock_deficit_25: float | None = None
+    combined_deficit: float | None = None
+    survived_scenarios_count: int = 0
+    total_scenarios_count: int = 6
+    total_score: int = Field(default=0, ge=0, le=100, description="Legacy compatibility field")
+    tier: str = "Evidence-Based Resilience"
+
 
 
 class AssessmentResponse(BaseModel):
