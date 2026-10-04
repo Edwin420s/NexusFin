@@ -22,3 +22,4 @@ A granular, verifiable record of product development, actuarial modeling, data g
 - `2026-10-04 23:50` **feat(engine):** compute liquid emergency savings runway in living cost months
 - `2026-10-05 00:42` **refactor(engine):** calibrate affordability status bands for healthy and deficit profiles
 - `2026-10-05 01:35` **feat(engine):** add dynamic reason generation for high debt-service concentration
+- `2026-10-05 02:27` **feat(engine):** add dynamic reason generation for immediate cash flow deficits
