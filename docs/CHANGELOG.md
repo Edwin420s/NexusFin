@@ -13,3 +13,4 @@ A granular, verifiable record of product development, actuarial modeling, data g
 - `2026-10-04 15:59` **feat(schemas):** define TransactionSummary and TransactionAnalysisResponse schemas
 - `2026-10-04 16:51` **test(schemas):** validate serialization and deserialization of core financial schemas
 - `2026-10-04 17:43` **refactor(engine):** isolate amortizing loan repayment reducing-balance formula
+- `2026-10-04 18:36` **refactor(engine):** isolate flat-rate interest and fee calculation logic
