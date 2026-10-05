@@ -24,3 +24,4 @@ A granular, verifiable record of product development, actuarial modeling, data g
 - `2026-10-05 01:35` **feat(engine):** add dynamic reason generation for high debt-service concentration
 - `2026-10-05 02:27` **feat(engine):** add dynamic reason generation for immediate cash flow deficits
 - `2026-10-05 03:19` **feat(engine):** support currency symbol formatting in affordability reason codes
+- `2026-10-05 04:12` **feat(stress):** define 6 standardized macroeconomic and household shock scenarios
