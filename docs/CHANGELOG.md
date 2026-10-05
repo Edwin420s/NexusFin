@@ -37,3 +37,4 @@ A granular, verifiable record of product development, actuarial modeling, data g
 - `2026-10-05 12:56` **test(stress):** verify 6 stress scenarios are generated with exact mathematical properties
 - `2026-10-05 13:48` **test(stress):** verify deficit detection under 25% income shock and combined shock
 - `2026-10-05 14:40` **docs(stress):** document shock scenario methodology and actuarial assumptions
+- `2026-10-05 15:33` **refactor(resilience):** eliminate arbitrary 0-100 black-box scoring methodology
