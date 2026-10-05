@@ -39,3 +39,4 @@ A granular, verifiable record of product development, actuarial modeling, data g
 - `2026-10-05 14:40` **docs(stress):** document shock scenario methodology and actuarial assumptions
 - `2026-10-05 15:33` **refactor(resilience):** eliminate arbitrary 0-100 black-box scoring methodology
 - `2026-10-05 16:25` **feat(resilience):** implement multidimensional evidence indicators for current position
+- `2026-10-05 17:17` **feat(resilience):** track baseline monthly buffer and disposable margin
