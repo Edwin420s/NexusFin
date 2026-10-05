@@ -25,3 +25,4 @@ A granular, verifiable record of product development, actuarial modeling, data g
 - `2026-10-05 02:27` **feat(engine):** add dynamic reason generation for immediate cash flow deficits
 - `2026-10-05 03:19` **feat(engine):** support currency symbol formatting in affordability reason codes
 - `2026-10-05 04:12` **feat(stress):** define 6 standardized macroeconomic and household shock scenarios
+- `2026-10-05 05:04` **feat(stress):** implement Base Case scenario preserving 100% baseline cash flow
