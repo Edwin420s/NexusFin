@@ -29,3 +29,4 @@ A granular, verifiable record of product development, actuarial modeling, data g
 - `2026-10-05 05:57` **feat(stress):** implement Income −10% shock simulating seasonal income dips
 - `2026-10-05 06:49` **feat(stress):** implement Income −25% flagship shock for gig worker platform downtime
 - `2026-10-05 07:41` **feat(stress):** implement Income −40% severe disruption scenario
+- `2026-10-05 08:34` **feat(stress):** implement Expenses +20% surge simulating living cost inflation
