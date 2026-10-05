@@ -32,3 +32,4 @@ A granular, verifiable record of product development, actuarial modeling, data g
 - `2026-10-05 08:34` **feat(stress):** implement Expenses +20% surge simulating living cost inflation
 - `2026-10-05 09:26` **feat(stress):** implement Combined Shock pairing 25% income drop and 20% cost surge
 - `2026-10-05 10:18` **refactor(stress):** compute exact remaining disposable buffers across all 6 scenarios
+- `2026-10-05 11:11` **refactor(stress):** classify scenario status labels into Manageable, Review, and Deficit
