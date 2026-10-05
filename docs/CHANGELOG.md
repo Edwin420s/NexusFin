@@ -40,3 +40,4 @@ A granular, verifiable record of product development, actuarial modeling, data g
 - `2026-10-05 15:33` **refactor(resilience):** eliminate arbitrary 0-100 black-box scoring methodology
 - `2026-10-05 16:25` **feat(resilience):** implement multidimensional evidence indicators for current position
 - `2026-10-05 17:17` **feat(resilience):** track baseline monthly buffer and disposable margin
+- `2026-10-05 18:10` **feat(resilience):** track debt-service concentration against standard 35% safe ceiling
