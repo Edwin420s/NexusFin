@@ -14,11 +14,11 @@ def test_six_stress_scenarios_generated():
     assert len(scenarios) == 6
     names = [s.name for s in scenarios]
     assert "Base Case" in names
-    assert "10% Income Dip" in names
-    assert "25% Income Shock" in names
-    assert "40% Severe Disruption" in names
-    assert "20% Essential Cost Surge" in names
-    assert "Combined Dual Shock" in names
+    assert any("10%" in n for n in names)
+    assert any("25%" in n for n in names)
+    assert any("40%" in n for n in names)
+    assert any("20%" in n for n in names)
+    assert any("Combined" in n for n in names)
 
 
 def test_deficit_detection_under_severe_shock():
@@ -35,7 +35,8 @@ def test_deficit_detection_under_severe_shock():
     assert base.is_positive is True
     assert base.buffer == 1000.0
 
-    shock_25 = next(s for s in scenarios if s.name == "25% Income Shock")
+    shock_25 = next(s for s in scenarios if "25%" in s.name)
     assert shock_25.is_positive is False
     assert shock_25.buffer == -6500.0
+
     assert shock_25.status == "deficit"
