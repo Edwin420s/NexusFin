@@ -65,3 +65,4 @@ A granular, verifiable record of product development, actuarial modeling, data g
 - `2026-10-06 13:22` **feat(data):** implement transaction CSV parser supporting comma and quoted formats
 - `2026-10-06 14:14` **feat(data):** build rule-based classification heuristics for financial descriptions
 - `2026-10-06 15:07` **feat(data):** categorize gig income, platform disbursements, and client payments
+- `2026-10-06 15:59` **feat(data):** categorize food, utilities, rent, and essential living expenditures
