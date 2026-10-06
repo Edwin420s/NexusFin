@@ -60,3 +60,4 @@ A granular, verifiable record of product development, actuarial modeling, data g
 - `2026-10-06 09:00` **feat(comparison):** generate plain-language trade-off narratives comparing offers
 - `2026-10-06 09:53` **feat(comparison):** articulate explicit cost-vs-monthly-pressure trade-offs
 - `2026-10-06 10:45` **test(comparison):** add unit test for multi-offer ranking and highlight tags
+- `2026-10-06 11:37` **test(comparison):** add unit test for trade-off narrative generation
