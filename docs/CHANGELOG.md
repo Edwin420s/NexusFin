@@ -74,3 +74,4 @@ A granular, verifiable record of product development, actuarial modeling, data g
 - `2026-10-06 21:13` **feat(data):** generate automated data quality insights and cash-flow regularity bullets
 - `2026-10-06 22:06` **test(data):** test description classification rules across diverse transaction strings
 - `2026-10-06 22:58` **test(data):** test CSV processing against sample ASEAN gig worker transaction export
+- `2026-10-06 23:51` **feat(governance):** define AuditLogEntry model with retention and actor metadata
