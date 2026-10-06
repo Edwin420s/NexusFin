@@ -54,3 +54,4 @@ A granular, verifiable record of product development, actuarial modeling, data g
 - `2026-10-06 03:46` **feat(comparison):** identify offer with lowest monthly repayment
 - `2026-10-06 04:38` **feat(comparison):** identify offer with lowest total cost of credit
 - `2026-10-06 05:31` **feat(comparison):** identify offer with highest shock resilience
+- `2026-10-06 06:23` **feat(comparison):** generate standardized Key Facts Statement metrics for each offer
