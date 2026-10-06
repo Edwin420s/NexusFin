@@ -56,3 +56,4 @@ A granular, verifiable record of product development, actuarial modeling, data g
 - `2026-10-06 05:31` **feat(comparison):** identify offer with highest shock resilience
 - `2026-10-06 06:23` **feat(comparison):** generate standardized Key Facts Statement metrics for each offer
 - `2026-10-06 07:15` **feat(comparison):** evaluate post-loan buffers across competing loan structures
+- `2026-10-06 08:08` **feat(comparison):** compare amortizing reducing balance against flat rate models
