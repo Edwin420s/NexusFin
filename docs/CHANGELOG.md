@@ -68,3 +68,4 @@ A granular, verifiable record of product development, actuarial modeling, data g
 - `2026-10-06 15:59` **feat(data):** categorize food, utilities, rent, and essential living expenditures
 - `2026-10-06 16:52` **feat(data):** categorize recurring loan repayments and financing instalments
 - `2026-10-06 17:44` **feat(data):** reconstruct verified monthly inflows and essential living outflows
+- `2026-10-06 18:36` **feat(data):** compute net operating cash flow from verified transactions
