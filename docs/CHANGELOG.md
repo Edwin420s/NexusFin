@@ -71,3 +71,4 @@ A granular, verifiable record of product development, actuarial modeling, data g
 - `2026-10-06 18:36` **feat(data):** compute net operating cash flow from verified transactions
 - `2026-10-06 19:29` **feat(data):** calculate estimated income variability coefficient from inflow intervals
 - `2026-10-06 20:21` **feat(data):** detect undeclared recurring debt payments from statement debits
+- `2026-10-06 21:13` **feat(data):** generate automated data quality insights and cash-flow regularity bullets
