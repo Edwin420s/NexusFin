@@ -21,8 +21,8 @@ def compare_credit_offers(profile: Profile, offers: list[CreditOffer]) -> dict:
 
     for offer in offers:
         metrics = compute_affordability_metrics(profile, offer)
-        status, label, reason = classify_affordability(metrics, income, profile.income.variability_pct)
         scenarios = run_stress_scenarios(profile, metrics.monthly_repayment)
+        status, label, reason = classify_affordability(metrics, income, profile.income.variability_pct, scenarios=scenarios)
         resilience = compute_resilience_index(profile, metrics, scenarios)
 
         # Count scenarios where cash flow remains positive
@@ -69,10 +69,33 @@ def compare_credit_offers(profile: Profile, offers: list[CreditOffer]) -> dict:
     # Generate comparative Key Facts guidance
     summary_notes = []
     if len(comparison_rows) >= 2:
-        diff_total = abs(comparison_rows[0]["total_cost_of_credit"] - comparison_rows[1]["total_cost_of_credit"])
+        # Compare row 0 vs row 1
+        r0 = comparison_rows[0]
+        r1 = comparison_rows[1]
+        diff_total = abs(r0["total_cost_of_credit"] - r1["total_cost_of_credit"])
+        diff_monthly = abs(r0["monthly_repayment"] - r1["monthly_repayment"])
+
+        if r0["monthly_repayment"] > r1["monthly_repayment"] and r0["total_cost_of_credit"] < r1["total_cost_of_credit"]:
+            summary_notes.append(
+                f"'{r1['offer_name']}' reduces monthly pressure by {profile.currency} {diff_monthly:,.2f}/mo "
+                f"but costs {profile.currency} {diff_total:,.2f} more overall in total financing charges. That is informed choice."
+            )
+        elif r1["monthly_repayment"] > r0["monthly_repayment"] and r1["total_cost_of_credit"] < r0["total_cost_of_credit"]:
+            summary_notes.append(
+                f"'{r0['offer_name']}' reduces monthly pressure by {profile.currency} {diff_monthly:,.2f}/mo "
+                f"but costs {profile.currency} {diff_total:,.2f} more overall in total financing charges. That is informed choice."
+            )
+        else:
+            summary_notes.append(
+                f"Comparing '{r0['offer_name']}' vs '{r1['offer_name']}': "
+                f"Selecting the lower-cost option saves {profile.currency} {diff_total:,.2f} in cumulative borrowing fees."
+            )
+
+        # Highlight shock resilience trade-off
+        best_resil_row = max(comparison_rows, key=lambda r: (r["post_credit_buffer"], r["shock_survivability"]))
         summary_notes.append(
-            f"Comparing '{comparison_rows[0]['offer_name']}' vs '{comparison_rows[1]['offer_name']}': "
-            f"Choosing the more affordable financing option could save you {profile.currency} {diff_total:,.2f} in total borrowing fees."
+            f"Resilience Insight: '{best_resil_row['offer_name']}' maintains the highest post-loan buffer ({profile.currency} {best_resil_row['post_credit_buffer']:,.2f}/mo), "
+            f"providing the strongest cushion against simulated income disruptions."
         )
 
     return {
@@ -81,3 +104,4 @@ def compare_credit_offers(profile: Profile, offers: list[CreditOffer]) -> dict:
         "results": comparison_rows,
         "comparative_notes": summary_notes,
     }
+
