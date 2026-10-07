@@ -101,3 +101,4 @@ A granular, verifiable record of product development, actuarial modeling, data g
 - `2026-10-07 20:48` **feat(deck):** generate official 10-slide competition pitch deck PDF
 - `2026-10-07 21:40` **feat(deck):** expose /api/pitch-deck/download endpoint for PDF artifact delivery
 - `2026-10-07 22:32` **feat(deck):** expose /api/pitch-deck/view endpoint for inline browser PDF viewing
+- `2026-10-07 23:25` **feat(deck):** expose /api/pitch-deck/original/download endpoint for reference deck
