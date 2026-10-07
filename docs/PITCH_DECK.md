@@ -1,5 +1,5 @@
 # NexusFin — 10-Slide Pitch Deck
-**ASEAN Financial Health Challenge — Problem Statement 3: Responsible Credit and Informed Choice**
+**ASEAN Financial Health Challenge 2026 — Problem Statement 3: Responsible Credit and Informed Choice**
 *Applicant / Builder:* Edwin Mwiti (Solo Builder) • *Team:* NexusFin
 
 ---
@@ -8,16 +8,16 @@
 * **Title:** NexusFin
 * **Subtitle:** Responsible Credit Decision Support & Informed Choice Platform
 * **Tagline:** Helping borrowers and lenders understand what credit is truly affordable before signing.
-* **Challenge:** ASEAN Financial Health Challenge (GFTN & Bangko Sentral ng Pilipinas)
+* **Challenge:** ASEAN Financial Health Challenge 2026 (GFTN & Bangko Sentral ng Pilipinas)
 * **Track:** Problem Statement 3 — Responsible Credit & Informed Choice
-* **Format:** Technical Product
+* **Format:** Technical Product + Modular API Architecture
 
 ---
 
 ## Slide 2: The Problem — Credit Access Is Not Credit Affordability
 * **The Core Gap:** Expanding digital credit access without transparent affordability creates debt traps.
 * **The Borrower Reality:**
-  * 48% of Filipino adults say raising emergency funds is very difficult; only 3 in 10 say savings would last a month of lost income (BSP CFIS 2025).
+  * 48% of Filipino adults say raising emergency funds is very difficult; only 3 in 10 say savings would last a month of lost income (BSP CFIS 2026).
   * Platform gig workers and informal MSMEs have volatile, multi-stream cash flows that traditional fixed-monthly formulas misjudge.
   * Opaque pricing, flat-rate marketing, and hidden fees disguise the true cost of credit.
   * Borrowers focus on headline instalments without testing whether repayments survive a real-life income shock.
@@ -26,13 +26,13 @@
 ---
 
 ## Slide 3: The Solution — NexusFin
-* **What NexusFin Is:** An explainable, AI-assisted decision-support platform that transforms raw cash flows and loan terms into an actionable financial resilience assessment.
+* **What NexusFin Is:** An explainable decision-support platform that transforms raw cash flows and loan terms into an actionable financial resilience assessment.
 * **What NexusFin Is NOT:**
   * ❌ NOT an opaque 3-digit AI credit score.
   * ❌ NOT an automated robotic loan approval/rejection engine.
   * ❌ NOT a predatory scraping tool.
 * **Four Core Pillars:**
-  1. **Deterministic Affordability:** Rigorous cash-flow accounting where planned savings is never misclassified as debt.
+  1. **Deterministic Affordability:** Rigorous cash-flow accounting where planned savings is never misclassified as mandatory debt.
   2. **Multi-Scenario Stress Testing:** Simulating 10%, 25%, 40% income drops and cost inflation spikes.
   3. **Standardized Informed Choice:** Side-by-side comparison matrix with Key Facts Statements.
   4. **Consented Alternative Data:** Ingesting bank, mobile money, and merchant cash flows ethically.
@@ -55,31 +55,31 @@
 * **Pattern Recognition:**
   * Identifies irregular gig/client earnings and calculates income volatility coefficients.
   * Automatically cross-checks declared liabilities against discovered recurring debits.
-* **Deterministic Core + AI Translation:**
-  * Safety-critical math is 100% deterministic code.
-  * Generative AI / NLP is used strictly to translate complex actuarial metrics into plain, localized language.
+* **Deterministic Core + Explainability Translation:**
+  * Safety-critical math is 100% deterministic code (zero AI black-box in calculations).
+  * NLP is used strictly to translate complex actuarial metrics into plain, localized language.
 
 ---
 
 ## Slide 6: Demonstrating Impact — Real-World Scenario
 * **Persona:** Carlos — Manila Food & Express Delivery Rider (₱38,000/mo, 25% volatility).
-* **Proposed Loan:** ₱35,000 digital microloan over 10 months at 24% APR (₱4,260/mo payment).
-* **Base Case:** ₱8,240 post-loan buffer (Debt Burden = 23.1% → Looks Manageable).
+* **Proposed Loan:** ₱35,000 digital microloan over 10 months at 24% APR (₱4,046.43/mo payment with fees).
+* **Base Case:** ₱8,454 post-loan buffer (Debt Burden = 22.5% → Manageable baseline).
 * **Stress Test (25% Gig Income Drop):**
   * Stressed Income: ₱28,500.
   * Essential Living: ₱21,000.
   * Existing Debt: ₱4,500.
-  * New Loan Repayment: ₱4,260.
-  * **Remaining Buffer: -₱1,260/month (DEFICIT).**
-* **The NexusFin Difference:** Carlos sees the deficit before borrowing, receives plain advice to negotiate a 14-month term or lower principal, avoiding default before it happens.
+  * New Loan Repayment: ₱4,046.43.
+  * **Remaining Buffer: −₱1,046/month (DEFICIT).**
+* **The NexusFin Difference:** NexusFin identifies: *Manageable today, vulnerable under income shock*. Carlos sees the deficit before borrowing and receives objective guidance to consider a longer tenure or lower principal, avoiding delinquency before signing.
 
 ---
 
 ## Slide 7: Technical Architecture
 * **Frontend:** Responsive, accessible Single Page Application (HTML5, modern CSS design system, vanilla JS).
-* **Backend:** Python / FastAPI high-performance asynchronous REST microservices.
+* **Backend:** Python / FastAPI high-performance asynchronous modular REST API architecture.
 * **Validation & Schemas:** Pydantic v2 strict typing.
-* **Storage & Governance:** In-memory session cache + JSON audit logging and consent registry.
+* **Storage & Governance:** Ephemeral in-memory session cache + JSON audit logging and consent registry.
 * **Open Finance Ready:** Standardized REST endpoints (`/api/assess`, `/api/compare`, `/api/transactions`, `/api/consent`, `/api/partner`).
 * **Deployment:** Containerized Docker & docker-compose architecture.
 
@@ -103,7 +103,7 @@
   * Integrated into employee benefit programs and gig platforms (e.g., Grab, Foodpanda) as a financial health perk.
 * **Free Consumer Utility:**
   * Core consumer workspace remains 100% free and independent to ensure trust and unbiased decision support.
-* **Unit Economics:** Cloud microservice architecture scales at near-zero marginal cost per assessment.
+* **Unit Economics:** Modular API architecture scales at near-zero marginal cost per assessment.
 
 ---
 
