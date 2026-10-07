@@ -96,3 +96,4 @@ A granular, verifiable record of product development, actuarial modeling, data g
 - `2026-10-07 16:26` **feat(api):** add institutional disclaimers affirming human decision autonomy
 - `2026-10-07 17:18` **test(api):** verify API router mounting and CORS middleware configuration
 - `2026-10-07 18:10` **feat(deck):** implement 10-slide competition pitch deck content generator
+- `2026-10-07 19:03` **feat(deck):** expose /api/pitch-deck/slides JSON endpoint for interactive UI viewer
