@@ -88,3 +88,4 @@ A granular, verifiable record of product development, actuarial modeling, data g
 - `2026-10-07 09:27` **feat(api):** expose /api/presets endpoint with realistic ASEAN demo personas
 - `2026-10-07 10:19` **feat(api):** configure Carlos M. Manila gig rider persona profile and proposed loan
 - `2026-10-07 11:11` **feat(api):** configure Aisha K. Nairobi MSME freelancer persona profile
+- `2026-10-07 12:04` **feat(api):** configure Dewi S. Jakarta warung small trader persona profile
