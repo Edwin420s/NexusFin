@@ -80,3 +80,4 @@ A granular, verifiable record of product development, actuarial modeling, data g
 - `2026-10-07 02:28` **feat(governance):** add purpose limitation, legal basis, and retention period to consents
 - `2026-10-07 03:20` **feat(governance):** implement consent toggle endpoint with instant revocation support
 - `2026-10-07 04:12` **feat(governance):** record governance audit log on consent grants and revocations
+- `2026-10-07 05:05` **feat(governance):** record governance audit log on underwriter access and assessments
