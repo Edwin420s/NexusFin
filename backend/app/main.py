@@ -13,7 +13,7 @@ from backend.app.config import (
     CHALLENGE,
     FRONTEND_DIR,
 )
-from backend.app.routers import assess, compare, transactions, consent, partner
+from backend.app.routers import assess, compare, transactions, consent, partner, pitch_deck
 
 app = FastAPI(
     title=f"{APP_NAME} API",
@@ -38,6 +38,7 @@ app.include_router(compare.router)
 app.include_router(transactions.router)
 app.include_router(consent.router)
 app.include_router(partner.router)
+app.include_router(pitch_deck.router)
 
 
 @app.get("/api/health")

@@ -21,6 +21,7 @@ def get_partner_assessments():
     return {
         "status": "authorized",
         "partner_organization": "ASEAN Microfinance & Inclusive Credit Alliance",
+        "disclaimer": "NexusFin provides decision support. Final credit decisions remain with the financial institution.",
         "records_count": len(RECENT_ASSESSMENTS),
         "assessments": RECENT_ASSESSMENTS,
     }

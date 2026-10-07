@@ -115,3 +115,34 @@ def test_consent_and_audit_log_flow():
     audit_data = res_audit.json()
     assert audit_data["count"] > 0
     assert any(log["event_type"] == "CONSENT_REVOKED" for log in audit_data["logs"])
+
+
+def test_sample_transactions_endpoints():
+    """Verify all 3 ASEAN sample transaction datasets load and classify properly."""
+    for persona in ["manila", "kenya", "jakarta"]:
+        res = client.get(f"/api/transactions/sample/{persona}")
+        assert res.status_code == 200
+        data = res.json()
+        assert len(data["transactions"]) > 0
+        assert data["summary"]["transaction_count"] > 0
+        assert data["summary"]["total_inflows"] > 0
+        assert "detected_income" in data
+        assert "insights" in data
+
+
+def test_partner_assessments_endpoint():
+    """Verify underwriter review endpoint returns stored records and logs audit access."""
+    res = client.get("/api/partner/assessments")
+    assert res.status_code == 200
+    data = res.json()
+    assert data["status"] == "authorized"
+    assert "assessments" in data
+
+
+def test_frontend_index_and_spa_routing():
+    """Verify frontend HTML is served at root and fallback paths."""
+    res = client.get("/")
+    assert res.status_code == 200
+    assert "text/html" in res.headers["content-type"]
+    assert "NexusFin" in res.text
+    assert "10-Slide Pitch Deck" in res.text

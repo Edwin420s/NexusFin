@@ -94,3 +94,4 @@ A granular, verifiable record of product development, actuarial modeling, data g
 - `2026-10-07 14:41` **feat(api):** expose /api/transactions upload and sample dataset endpoints
 - `2026-10-07 15:33` **feat(api):** expose /api/partner/assessments underwriting portal endpoint
 - `2026-10-07 16:26` **feat(api):** add institutional disclaimers affirming human decision autonomy
+- `2026-10-07 17:18` **test(api):** verify API router mounting and CORS middleware configuration

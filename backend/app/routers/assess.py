@@ -118,22 +118,22 @@ def assess_credit(req: AssessmentRequest):
     offer_totals = calculate_offer_totals(offer)
     metrics = compute_affordability_metrics(profile, offer)
 
-    # 2. Classify status
-    status, status_label, status_reason = classify_affordability(
-        metrics, profile.income.monthly, profile.income.variability_pct
-    )
-
-    # 3. Run multi-scenario stress test
+    # 2. Run multi-scenario stress test
     scenarios = run_stress_scenarios(profile, metrics.monthly_repayment)
+
+    currency_meta = CURRENCY_CONFIG.get(profile.currency, {"symbol": profile.currency})
+    currency_symbol = currency_meta.get("symbol", profile.currency)
+
+    # 3. Classify status (incorporating stress test resilience)
+    status, status_label, status_reason = classify_affordability(
+        metrics, profile.income.monthly, profile.income.variability_pct, scenarios=scenarios, currency_symbol=currency_symbol
+    )
 
     # 4. Compute Financial Resilience Index
     resilience = compute_resilience_index(profile, metrics, scenarios)
 
     # 5. Generate transparent explainability and recommendations
     expl_data = generate_explanation(profile, offer, metrics, resilience, scenarios, status)
-
-    currency_meta = CURRENCY_CONFIG.get(profile.currency, {"symbol": profile.currency})
-    currency_symbol = currency_meta.get("symbol", profile.currency)
 
     # Merge offer fields with computed totals
     enriched_offer = {
