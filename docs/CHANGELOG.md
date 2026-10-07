@@ -99,3 +99,4 @@ A granular, verifiable record of product development, actuarial modeling, data g
 - `2026-10-07 19:03` **feat(deck):** expose /api/pitch-deck/slides JSON endpoint for interactive UI viewer
 - `2026-10-07 19:55` **feat(deck):** build ReportLab PDF generator with custom styling and typography
 - `2026-10-07 20:48` **feat(deck):** generate official 10-slide competition pitch deck PDF
+- `2026-10-07 21:40` **feat(deck):** expose /api/pitch-deck/download endpoint for PDF artifact delivery
