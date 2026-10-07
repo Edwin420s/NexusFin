@@ -30,7 +30,7 @@ def set_consent(req: ConsentUpdateRequest):
 
 @router.get("/audit-log")
 def get_audit_trail():
-    """Returns the immutable governance audit trail for regulatory inspection."""
+    """Returns the governance audit trail for regulatory inspection."""
     return {
         "count": len(AUDIT_LOGS),
         "logs": [entry.model_dump() for entry in AUDIT_LOGS],
