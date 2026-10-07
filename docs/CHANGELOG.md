@@ -105,3 +105,4 @@ A granular, verifiable record of product development, actuarial modeling, data g
 - `2026-10-08 00:17` **test(deck):** add integration tests verifying pitch deck slides and PDF endpoints
 - `2026-10-08 01:09` **docs(deck):** synchronize PITCH_DECK.md markdown script with ReportLab slides
 - `2026-10-08 02:02` **docs(deck):** update BSP CFIS citations to 2026 across pitch deck documentation
+- `2026-10-08 02:54` **feat(frontend):** implement single-page application structure in index.html
