@@ -78,3 +78,4 @@ A granular, verifiable record of product development, actuarial modeling, data g
 - `2026-10-07 00:43` **feat(governance):** implement in-memory audit log store with FIFO retention bounds
 - `2026-10-07 01:35` **feat(governance):** define default consented data sources registry
 - `2026-10-07 02:28` **feat(governance):** add purpose limitation, legal basis, and retention period to consents
+- `2026-10-07 03:20` **feat(governance):** implement consent toggle endpoint with instant revocation support
