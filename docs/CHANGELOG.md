@@ -102,3 +102,4 @@ A granular, verifiable record of product development, actuarial modeling, data g
 - `2026-10-07 21:40` **feat(deck):** expose /api/pitch-deck/download endpoint for PDF artifact delivery
 - `2026-10-07 22:32` **feat(deck):** expose /api/pitch-deck/view endpoint for inline browser PDF viewing
 - `2026-10-07 23:25` **feat(deck):** expose /api/pitch-deck/original/download endpoint for reference deck
+- `2026-10-08 00:17` **test(deck):** add integration tests verifying pitch deck slides and PDF endpoints
