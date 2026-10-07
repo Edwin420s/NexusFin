@@ -92,3 +92,4 @@ A granular, verifiable record of product development, actuarial modeling, data g
 - `2026-10-07 12:56` **feat(api):** expose /api/assess endpoint evaluating affordability and resilience
 - `2026-10-07 13:49` **feat(api):** expose /api/compare endpoint evaluating competing credit offers
 - `2026-10-07 14:41` **feat(api):** expose /api/transactions upload and sample dataset endpoints
+- `2026-10-07 15:33` **feat(api):** expose /api/partner/assessments underwriting portal endpoint
