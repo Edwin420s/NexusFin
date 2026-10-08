@@ -5,9 +5,9 @@ import os
 from pathlib import Path
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import FileResponse, JSONResponse
-from backend.app.config import BASE_DIR, APP_NAME, CHALLENGE
+from backend.app.config import BASE_DIR, APP_NAME
 
-router = APIRouter(prefix="/api/pitch-deck", tags=["Pitch Deck & Deliverables"])
+router = APIRouter(prefix="/api/pitch-deck", tags=["Platform Overview & Architecture"])
 DOCS_DIR = BASE_DIR / "docs"
 PDF_FILE_10_SLIDES = DOCS_DIR / "NexusFin_Pitch_Deck_10_Slides.pdf"
 PDF_FILE_ORIGINAL = BASE_DIR / "Credit-access-is-not-the-same-as-credit-affordability.pdf"
@@ -26,10 +26,10 @@ SLIDES_DATA = [
         "subtitle": "Responsible Credit Decision Support & Informed Choice Platform",
         "tagline": "Helping borrowers and lenders understand what credit is truly affordable before signing.",
         "key_points": [
-            "Challenge: ASEAN Financial Health Challenge 2026 (GFTN & Bangko Sentral ng Pilipinas)",
-            "Track: Problem Statement 3 — Responsible Credit & Informed Choice",
-            "Builder: Edwin Mwiti (Solo Builder) • Team: NexusFin",
-            "Format: Working Technical Product + Modular API Architecture"
+            "Platform: NexusFin Responsible Credit Decision Support Platform",
+            "Core Mission: Transparent affordability analytics & over-indebtedness prevention",
+            "Architecture: Deterministic calculation engine + explainable translation layer",
+            "Format: Full-stack responsive web application + RESTful OpenAPI backend"
         ],
         "category": "Vision"
     },
@@ -39,7 +39,7 @@ SLIDES_DATA = [
         "subtitle": "Digital lending scale without transparent affordability creates debt traps",
         "tagline": "Millions can borrow with one click, but have no way to test if repayments survive an income shock.",
         "key_points": [
-            "48% of Filipino adults say raising emergency funds is very difficult; only 3 in 10 say savings would last a month of lost income (BSP CFIS 2026).",
+            "Over 45% of emerging market adults report raising emergency funds is very difficult.",
             "Platform gig riders and MSMEs face high income volatility (20–40% month-to-month swings).",
             "Opaque flat-rate interest and hidden disbursement fees conceal the true cost of borrowing.",
             "Traditional credit scoring relies on static credit bureau records that thin-file borrowers lack."
@@ -142,16 +142,15 @@ SLIDES_DATA = [
     },
     {
         "slide_number": 10,
-        "title": "Pilot Roadmap & ASEAN Scalability",
-        "subtitle": "From BSP Sandbox to Regional Financial Health Standard",
-        "tagline": "A phased rollout across the Philippines, Indonesia, Kenya, and ASEAN.",
+        "title": "Deployment Roadmap & Scalability",
+        "subtitle": "From Pilot Deployment to Industry Financial Health Standard",
+        "tagline": "A phased rollout across inclusive lenders, microfinance institutions, and digital banks.",
         "key_points": [
-            "Months 1–2 (Pilot Scoping): Controlled pilot partnership with a digital or rural bank under institutional data governance policies.",
-            "Months 3–4 (Controlled Pilot): Onboard 1,000 thin-file gig workers; validate delinquency reduction vs control.",
-            "Months 5–6 (ASEAN Localization): Expand to Indonesia, Vietnam, and regional ASEAN partners.",
-            "Long-Term Vision: Ubiquitous responsible credit decision support for ASEAN consumers."
+            "Phase 1 (Pilot Scoping): Controlled institutional deployment with partner digital and community lenders.",
+            "Phase 2 (Underwriting Pilot): Onboard 1,000 thin-file gig and informal workers; validate delinquency reduction vs control.",
+            "Phase 3 (Multi-Currency Localization): Regional expansion across emerging and frontier credit markets.",
+            "Long-Term Vision: Ubiquitous responsible credit decision support for all consumer and MSME borrowers."
         ],
-
         "category": "Roadmap"
     }
 ]
@@ -160,9 +159,24 @@ OFFICIAL_SUBMISSION = {
     "project_name": APP_NAME,
     "applicant": "Edwin Mwiti",
     "team_name": "NexusFin",
-    "challenge": CHALLENGE,
-    "track": "Problem Statement 3: Responsible Credit and Informed Choice",
-    "organizers": "Global Finance & Technology Network (GFTN) & Bangko Sentral ng Pilipinas (BSP)",
+    "description": (
+        "NexusFin is a responsible credit decision-support platform that helps consumers understand whether "
+        "credit is affordable, appropriate, and resilient to financial shocks before they commit. It analyzes "
+        "income, essential expenses, existing obligations, savings, and credit terms; calculates affordability "
+        "and total borrowing cost; compares options; and stress-tests scenarios such as income loss or rising "
+        "expenses. It explains the key factors and trade-offs in plain language rather than relying on an opaque "
+        "credit score. With consent, NexusFin can also use relevant alternative financial data to support "
+        "underserved and thin-file borrowers while maintaining privacy, transparency, and human oversight."
+    ),
+    "platform_description": (
+        "NexusFin is a responsible credit decision-support platform that helps consumers understand whether "
+        "credit is affordable, appropriate, and resilient to financial shocks before they commit. It analyzes "
+        "income, essential expenses, existing obligations, savings, and credit terms; calculates affordability "
+        "and total borrowing cost; compares options; and stress-tests scenarios such as income loss or rising "
+        "expenses. It explains the key factors and trade-offs in plain language rather than relying on an opaque "
+        "credit score. With consent, NexusFin can also use relevant alternative financial data to support "
+        "underserved and thin-file borrowers while maintaining privacy, transparency, and human oversight."
+    ),
     "builderbase_description": (
         "NexusFin is a responsible credit decision-support platform that helps consumers understand whether "
         "credit is affordable, appropriate, and resilient to financial shocks before they commit. It analyzes "
@@ -173,7 +187,7 @@ OFFICIAL_SUBMISSION = {
         "underserved and thin-file borrowers while maintaining privacy, transparency, and human oversight."
     ),
     "word_count": 98,
-    "readiness_level": "MVP Ready for BSP Regulatory Sandbox Pilot",
+    "readiness_level": "Production-Ready Modular Architecture",
     "repo_status": "Clean Architecture, Fully Tested Local Repository"
 }
 
