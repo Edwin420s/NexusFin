@@ -3,7 +3,7 @@
 
 ---
 
-## Slide 1: Title & Positioning
+## Dimension 1: Title & Positioning
 * **Title:** NexusFin
 * **Subtitle:** Responsible Credit Decision Support & Informed Choice Platform
 * **Tagline:** Helping borrowers and lenders understand what credit is truly affordable before signing.
@@ -13,7 +13,7 @@
 
 ---
 
-## Slide 2: The Problem — Credit Access Is Not Credit Affordability
+## Dimension 2: The Problem — Credit Access Is Not Credit Affordability
 * **The Core Gap:** Expanding digital credit access without transparent affordability creates debt traps.
 * **The Borrower Reality:**
   * Over 45% of emerging market adults report raising emergency funds is very difficult; few possess sufficient emergency savings.
@@ -24,7 +24,7 @@
 
 ---
 
-## Slide 3: The Solution — NexusFin
+## Dimension 3: The Solution — NexusFin
 * **What NexusFin Is:** An explainable decision-support platform that transforms raw cash flows and loan terms into an actionable financial resilience assessment.
 * **What NexusFin Is NOT:**
   * ❌ NOT an opaque 3-digit AI credit score.
@@ -38,7 +38,7 @@
 
 ---
 
-## Slide 4: How It Works — End-to-End User Journey
+## Dimension 4: How It Works — End-to-End User Journey
 * **Step 1: Financial Health Profile** — Consented transaction ingestion or self-declaration of income variability, essential living costs, existing debt, and liquid reserves.
 * **Step 2: Credit Offer Simulation** — Actuarial calculation of reducing-balance vs flat-rate loans, upfront fees, and monthly charges.
 * **Step 3: Cash Flow & Buffer Analysis** — Calculating post-loan disposable buffer and debt-service burden (DTI).
@@ -47,7 +47,7 @@
 
 ---
 
-## Slide 5: Responsible AI & Alternative Data Engine
+## Dimension 5: Responsible AI & Alternative Data Engine
 * **Ethical Guardrails:**
   * Zero contact-list scraping, zero social-media surveillance, zero discriminatory attributes.
   * Data minimization: only verified transaction inflows, outflows, and recurring debits.
@@ -60,7 +60,7 @@
 
 ---
 
-## Slide 6: Demonstrating Impact — Real-World Scenario
+## Dimension 6: Demonstrating Impact — Real-World Scenario
 * **Persona:** Carlos — Manila Food & Express Delivery Rider (₱38,000/mo, 25% volatility).
 * **Proposed Loan:** ₱35,000 digital microloan over 10 months at 24% APR (₱4,046.43/mo payment with fees).
 * **Base Case:** ₱8,454 post-loan buffer (Debt Burden = 22.5% → Manageable baseline).
@@ -74,7 +74,7 @@
 
 ---
 
-## Slide 7: Technical Architecture
+## Dimension 7: Technical Architecture
 * **Frontend:** Responsive, accessible Single Page Application (HTML5, modern CSS design system, vanilla JS).
 * **Backend:** Python / FastAPI high-performance asynchronous modular REST API architecture.
 * **Validation & Schemas:** Pydantic v2 strict typing.
@@ -84,7 +84,7 @@
 
 ---
 
-## Slide 8: Measurable Financial Health Outcomes
+## Dimension 8: Measurable Financial Health Outcomes
 * **Outcome 1 — Over-Indebtedness Prevention:** Direct reduction in borrowers taking loans with >40% debt burden or negative shock buffers.
 * **Outcome 2 — Informed Comprehension:** Increase in borrower understanding of total financing charges and term trade-offs.
 * **Outcome 3 — Expansion of Fair Credit:** Enabling microfinance institutions to underwrite thin-file gig workers through verified cash flows.
@@ -95,7 +95,7 @@
 
 ---
 
-## Slide 9: Business Model & Sustainability
+## Dimension 9: Business Model & Sustainability
 * **B2B SaaS / API Tier:**
   * Financial institutions (digital banks, rural banks, microfinance NGOs) pay per assessment API call to improve responsible underwriting and ESG compliance.
 * **Financial Wellness & Employer Channel:**
@@ -106,7 +106,7 @@
 
 ---
 
-## Slide 10: Deployment Roadmap & Scalability
+## Dimension 10: Deployment Roadmap & Scalability
 * **Phase 1 (Months 1–2): Institutional Pilot Scoping**
   * Controlled deployment with partner digital banks and community microfinance institutions.
 * **Phase 2 (Months 3–4): Controlled Borrower Cohort**
