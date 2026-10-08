@@ -29,11 +29,11 @@
         </div>
 
         <button type="button" class="btn-hero btn-ghost" style="padding:6px 12px;font-size:12px;border:1px solid var(--ink-200);text-decoration:none;" onclick="App.switchTab('methodology');">
-          <span class="btn-icon">📐</span> Methodology
+          Methodology
         </button>
 
         <a href="/docs" target="_blank" class="nav-api-link" title="OpenAPI Documentation">
-          <span style="font-size:12px;font-family:var(--font-mono);font-weight:600;">API Docs</span> ↗
+          <span style="font-size:12px;font-family:var(--font-mono);font-weight:600;">API Docs</span>
         </a>
       </div>
     </div>
@@ -50,21 +50,21 @@
         </p>
         <div class="hero-actions-bar">
           <button type="button" class="btn-hero btn-primary" onclick="App.switchTab('assessment'); document.getElementById('monthlyIncome').focus();">
-            <span class="btn-icon">⚡</span> Evaluate Loan Affordability
+            Evaluate Loan Affordability
           </button>
           <button type="button" class="btn-hero btn-secondary" onclick="App.switchTab('compare');">
-            <span class="btn-icon">⚖️</span> Compare Loan Offers
+            Compare Loan Offers
           </button>
           <button type="button" class="btn-hero btn-outline" id="heroPrintReportBtn">
-            <span class="btn-icon">🖨️</span> Print / Export Assessment
+            Print / Export Assessment
           </button>
           <button type="button" class="btn-hero btn-ghost" id="heroViewMethodologyBtn" onclick="App.switchTab('methodology');">
-            <span class="btn-icon">📐</span> Methodology &amp; Financial Standards
+            Methodology &amp; Financial Standards
           </button>
         </div>
       </div>
       <div class="hero-callout">
-        <h3>💡 Decision Support, Not an Opaque Score</h3>
+        <h3>Decision Support, Not an Opaque Score</h3>
         <p>
           NexusFin separates deterministic financial computation from explainable translation. We never produce an arbitrary 3-digit score or an automated robotic rejection. Instead, we show how repayments behave under current cash flow and simulated income shocks, empowering informed financial choice.
         </p>
@@ -114,10 +114,10 @@
             </div>
             <div class="panel-actions" style="display:flex;align-items:center;gap:8px;">
               <button type="button" id="clearProfileBtn" class="btn-sm btn-outline" title="Reset all fields to enter your own personal data">
-                🗑️ Clear Form
+                Clear Form
               </button>
               <select id="presetSelect" class="select-sm" title="Quickly load representative profiles to explore calculations">
-                <option value="" disabled selected>✨ Load Example Profile...</option>
+                <option value="" disabled selected>Load Example Profile...</option>
               </select>
             </div>
           </div>
@@ -288,7 +288,7 @@
             </div>
           </div>
 
-          <button id="assessBtn" class="btn-primary">⚡ Assess Affordability &amp; Resilience</button>
+          <button id="assessBtn" class="btn-primary">Assess Affordability &amp; Resilience</button>
         </div>
 
       </div>
@@ -501,7 +501,7 @@
           <!-- Dynamically injected offer rows -->
         </div>
 
-        <button id="runCompareBtn" class="btn-primary" style="margin-top:1rem;">📊 Generate Key Facts Comparison</button>
+        <button id="runCompareBtn" class="btn-primary" style="margin-top:1rem;">Generate Key Facts Comparison</button>
 
         <!-- Comparison Results Area -->
         <div id="comparisonResultsArea" style="display:none;margin-top:2rem;">
@@ -546,7 +546,9 @@
           </div>
 
           <div class="upload-dropzone" onclick="document.getElementById('txFileInput').click();">
-            <span style="font-size:32px;">📄</span>
+            <div style="display:flex;justify-content:center;margin-bottom:8px;">
+              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--ink-400)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            </div>
             <p><strong>Click to upload transaction export (.csv)</strong><br>Columns: <code>date, description, amount</code></p>
             <input type="file" id="txFileInput" accept=".csv" style="display:none;">
           </div>
@@ -555,13 +557,13 @@
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px;">
               <label style="font-size:12px;font-weight:700;color:var(--ink-700);">Or Test with Standard Real-World Statements (1-Click):</label>
               <button type="button" class="btn-sm btn-ghost" id="downloadCsvTemplateBtn" style="font-size:11px;padding:3px 8px;cursor:pointer;" title="Download sample CSV template format">
-                📥 Download CSV Template
+                Download CSV Template
               </button>
             </div>
             <div class="sample-dataset-pills">
-              <button class="sample-pill-btn" onclick="App.loadSampleDataset('manila');">🏦 Bank Account Statement (CSV)</button>
-              <button class="sample-pill-btn" onclick="App.loadSampleDataset('kenya');">📱 Mobile Money / M-Pesa Statement (CSV)</button>
-              <button class="sample-pill-btn" onclick="App.loadSampleDataset('jakarta');">🛒 Merchant Point-of-Sale Export (CSV)</button>
+              <button class="sample-pill-btn" onclick="App.loadSampleDataset('manila');">Bank Account Statement (CSV)</button>
+              <button class="sample-pill-btn" onclick="App.loadSampleDataset('kenya');">Mobile Money / M-Pesa Statement (CSV)</button>
+              <button class="sample-pill-btn" onclick="App.loadSampleDataset('jakarta');">Merchant Point-of-Sale Export (CSV)</button>
             </div>
           </div>
 
@@ -603,7 +605,7 @@
             <ul id="txInsightsList" class="bullet-list" style="margin-top:1rem;"></ul>
 
             <button id="applyDetectedBtn" class="btn-primary" style="margin-top:1rem;background:var(--accent);">
-              ✓ Import Detected Cash Flows Into Assessment Profile
+              Import Detected Cash Flows Into Assessment Profile
             </button>
 
             <div style="margin-top:1.5rem;">
@@ -755,13 +757,13 @@
           </div>
           <div class="methodology-actions">
             <a href="/api/pitch-deck/download" class="btn-hero btn-primary" download="NexusFin_Technical_Specification.pdf">
-              <span class="btn-icon">📥</span> Download Technical Whitepaper (PDF)
+              Download Technical Whitepaper (PDF)
             </a>
             <a href="/docs" target="_blank" class="btn-hero btn-secondary">
-              <span class="btn-icon">⚙️</span> Interactive OpenAPI / Swagger
+              Interactive OpenAPI / Swagger
             </a>
             <button type="button" class="btn-hero btn-outline" onclick="window.print();">
-              <span class="btn-icon">🖨️</span> Print Methodology Guide
+              Print Methodology Guide
             </button>
           </div>
         </div>
@@ -965,7 +967,7 @@
             </div>
             <div>
               <a href="/docs" target="_blank" class="btn-hero btn-secondary" style="font-size:12px;padding:6px 12px;">
-                Open Swagger UI ↗
+                Open Swagger UI
               </a>
             </div>
           </div>
@@ -1034,7 +1036,7 @@
             <a href="/api/presets" target="_blank" class="badge-pill" style="text-decoration:none;">GET /api/presets</a>
             <a href="/api/consent" target="_blank" class="badge-pill" style="text-decoration:none;">GET /api/consent</a>
             <a href="/api/partner/assessments" target="_blank" class="badge-pill" style="text-decoration:none;">GET /api/partner/assessments</a>
-            <a href="/redoc" target="_blank" class="badge-pill" style="text-decoration:none;">Interactive ReDoc ↗</a>
+            <a href="/redoc" target="_blank" class="badge-pill" style="text-decoration:none;">Interactive ReDoc</a>
           </div>
         </div>
 
