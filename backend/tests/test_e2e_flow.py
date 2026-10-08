@@ -1,4 +1,4 @@
-"""Comprehensive End-to-End Workflow and ASEAN Currency Verification Tests."""
+"""Comprehensive End-to-End Workflow and Multi-Currency Verification Tests."""
 import pytest
 from fastapi.testclient import TestClient
 from backend.app.main import app
@@ -9,7 +9,7 @@ client = TestClient(app)
 def test_full_consumer_to_partner_journey():
     """
     Simulates a complete borrower-to-underwriter lifecycle:
-    1. Retrieve ASEAN personas.
+    1. Retrieve borrower presets.
     2. Upload alternative data transactions.
     3. Run deterministic affordability assessment with multi-scenario stress test.
     4. Run standardized multi-offer comparison.
@@ -101,8 +101,8 @@ def test_full_consumer_to_partner_journey():
 
 
 
-def test_all_asean_currencies_supported():
-    """Verify system computes correctly across all 8 supported ASEAN currencies."""
+def test_all_supported_currencies():
+    """Verify system computes correctly across all 8 supported international and regional currencies."""
     currencies = ["PHP", "KES", "SGD", "IDR", "MYR", "THB", "VND", "USD"]
     for curr in currencies:
         payload = {
