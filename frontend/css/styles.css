@@ -1278,199 +1278,111 @@ footer.site-footer {
 }
 
 /* ==========================================================================
-   Pitch Deck Viewer & Slide Cards
+   Methodology & Financial Standards Reference
    ========================================================================== */
 
-.deck-container {
+.methodology-container {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
 
-.deck-toolbar {
+.methodology-header-card {
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 12px;
-  padding: 1rem 1.5rem;
-  background: var(--white);
-  border: 1px solid var(--ink-200);
-  border-radius: var(--radius-lg);
-}
-
-.slide-pills-bar {
-  display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  align-items: center;
-}
-
-.slide-pill-btn {
-  padding: 6px 12px;
-  border-radius: var(--radius-full);
-  border: 1px solid var(--ink-200);
-  background: var(--ink-50);
-  color: var(--ink-600);
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.15s ease;
-}
-
-.slide-pill-btn:hover {
-  background: var(--ink-100);
-  border-color: var(--ink-300);
-  color: var(--ink-800);
-}
-
-.slide-pill-btn.active {
-  background: var(--primary);
-  color: var(--white);
-  border-color: var(--primary);
-}
-
-.slide-viewer-card {
+  gap: 1.25rem;
+  padding: 1.75rem 2rem;
   background: var(--white);
   border: 1px solid var(--ink-200);
   border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-md);
-  padding: 2.5rem;
-  position: relative;
-  overflow: hidden;
-  transition: all 0.25s ease;
+  box-shadow: var(--shadow-sm);
 }
 
-.slide-viewer-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 6px;
-  background: linear-gradient(90deg, var(--accent) 0%, #10b981 50%, var(--primary) 100%);
+.methodology-header-content {
+  max-width: 680px;
 }
 
-.slide-card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 1.25rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--ink-100);
-}
-
-.slide-card-category {
-  display: inline-block;
-  padding: 4px 12px;
-  border-radius: var(--radius-full);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  background: var(--accent-soft);
-  color: var(--accent);
-}
-
-.slide-card-number {
-  font-family: var(--font-mono);
-  font-size: 13px;
-  color: var(--ink-400);
-  font-weight: 600;
-}
-
-.slide-card-title {
-  font-size: 26px;
+.methodology-header-content h2 {
+  font-size: 22px;
   font-weight: 800;
   color: var(--ink-900);
-  letter-spacing: -0.02em;
-  line-height: 1.2;
-  margin: 0 0 6px 0;
+  margin: 6px 0 8px 0;
+  letter-spacing: -0.01em;
 }
 
-.slide-card-subtitle {
-  font-size: 15px;
-  color: var(--accent);
-  font-weight: 600;
-  margin: 0 0 1rem 0;
-}
-
-.slide-card-tagline {
-  background: #f0fdf4;
-  border-left: 4px solid #10b981;
-  padding: 10px 14px;
-  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+.methodology-header-content p {
   font-size: 14px;
-  color: #166534;
-  font-style: italic;
-  margin-bottom: 1.5rem;
+  color: var(--ink-700);
+  line-height: 1.6;
+  margin: 0;
 }
 
-.slide-points-list {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 1.5rem 0;
+.methodology-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.methodology-card {
+  background: var(--ink-50);
+  border: 1px solid var(--ink-200);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 8px;
 }
 
-.slide-points-list li {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  font-size: 14px;
-  line-height: 1.55;
-  color: var(--ink-700);
-}
-
-.slide-bullet-icon {
-  flex-shrink: 0;
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: var(--ink-100);
-  color: var(--primary);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 11px;
-  font-weight: 700;
-  margin-top: 1px;
-}
-
-.slide-footer-nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 2rem;
-  padding-top: 1.25rem;
-  border-top: 1px solid var(--ink-100);
-}
-
-.btn-nav-slide {
-  padding: 8px 16px;
-  border-radius: var(--radius-md);
-  border: 1px solid var(--ink-200);
-  background: var(--white);
-  color: var(--ink-700);
+.methodology-card-title {
   font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  transition: all 0.15s ease;
-}
-
-.btn-nav-slide:hover:not(:disabled) {
-  background: var(--ink-100);
+  font-weight: 700;
   color: var(--ink-900);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
 }
 
-.btn-nav-slide:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
+.formula-box {
+  background: var(--white);
+  border: 1px solid var(--ink-200);
+  border-left: 4px solid var(--accent);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  color: var(--accent);
+  font-weight: 600;
+  overflow-x: auto;
+}
+
+.methodology-card-desc {
+  font-size: 12.5px;
+  color: var(--ink-700);
+  line-height: 1.55;
+  margin: 0;
+}
+
+.code-snippet-box {
+  background: #0f172a;
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  overflow-x: auto;
+}
+
+.code-snippet-box pre {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: #38bdf8;
+}
+
+.code-snippet-box code {
+  color: inherit;
+  background: none;
+  padding: 0;
 }
 
 /* ==========================================================================
