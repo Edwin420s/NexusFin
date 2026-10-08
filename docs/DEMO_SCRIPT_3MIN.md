@@ -20,11 +20,11 @@
 > "Let’s take Carlos, a Grab and Foodpanda delivery rider in Manila earning about ₱38,000 a month with 20% income variability. He’s considering a ₱35,000 microloan to repair his motorcycle.
 > With one click, NexusFin calculates the exact deterministic cash flow.
 > Notice our mathematical principle: planned goal savings is deliberately *not* penalized as a debt, but tracked as a resilience cushion.
-> In the base case, Carlos has a healthy post-loan buffer of over ₱8,000, and his debt burden is 23%. NexusFin marks it: *Looks Manageable*.
-> But here is where NexusFin is unique: **The Stress Testing Engine.**
-> Life isn't a straight line. What happens if Carlos faces a 25% drop in gig deliveries?
-> Under that scenario, his income drops to ₱28,500. His essential living expenses and existing debts don't stop. With the new loan, his cash flow slips into an immediate negative deficit of ₱1,260 every month.
-> Instead of an opaque 3-digit AI score, NexusFin explains the exact trade-offs in plain language, advising him to negotiate a 14-month term or reduce the loan principal to protect his household."
+> In the base case, Carlos has a positive post-loan buffer of ₱8,454, and his debt burden is 22.5%. But notice our status conclusion: *Manageable today, vulnerable under income shock*.
+> Why? Because life isn't a straight line. Look at **The Stress Testing Engine.**
+> What happens if Carlos faces a 25% drop in gig deliveries?
+> Under that scenario, his income drops to ₱28,500. His essential living expenses and existing debts don't stop. With the new loan, his cash flow slips into an immediate negative deficit of −₱1,046 every month.
+> Instead of an opaque 3-digit AI score, NexusFin provides evidence-based resilience indicators and explains the exact trade-offs in plain language, advising him to consider a longer term or lower loan principal to protect his household."
 
 ---
 
@@ -45,7 +45,7 @@
 > "For thin-file borrowers without formal credit histories, Tab 3 demonstrates our **Consented Alternative Data Engine**.
 > By uploading a transaction export from digital wallets or bank accounts, NexusFin categorizes cash flows, identifies irregular income volatility, and detects recurring debt payments without any invasive contact scraping or social media surveillance.
 > With one click, Carlos can import his verified cash flows directly into his profile.
-> And under Tab 4, NexusFin implements **Privacy by Design**: granular, revocable consent controls for every data source and an immutable, tamper-evident regulatory audit trail aligned with BSP and ASEAN Open Finance standards."
+> And under Tab 4, NexusFin implements **Privacy by Design**: granular, revocable consent controls for every data source and a transparent regulatory audit trail aligned with BSP and ASEAN Open Finance standards."
 
 ---
 

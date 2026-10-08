@@ -23,7 +23,7 @@ This document provides strategic, rigorous answers to questions that judges, reg
 > 1. **Zero Invasive Scraping:** We strictly refuse to access contacts, photos, or social media.
 > 2. **Financial Relevance Only:** We only process consented transaction cash flows (bank, mobile wallet, or merchant turnover) and utility payment consistency.
 > 3. **Explicit, Granular Consent:** Every data source has a declared legal purpose, retention period, and an instant revocation toggle.
-> 4. **Tamper-Evident Audit Logging:** Every data ingestion and consent state change is recorded in an immutable regulatory audit trail aligned with the BSP Open Finance Framework (Circular No. 1133) and ASEAN Model Contractual Clauses."
+> 4. **Governance Audit Logging:** Every data ingestion and consent state change is recorded in a transparent governance audit trail designed around core data governance principles: explicit consent, purpose limitation, and borrower-initiated revocation."
 
 ---
 
@@ -34,7 +34,7 @@ This document provides strategic, rigorous answers to questions that judges, reg
 > We recognized this as a fundamental mathematical flaw that harms financial health. **Voluntary savings is an asset and a financial cushion, not a contractual debt obligation.**
 > If an applicant saves ₱5,000 a month voluntarily, treating that as a non-negotiable expense penalizes prudent savers by making them appear artificially unaffordable.
 >
-> In NexusFin, we calculate baseline available cash flow strictly as `Income - Essential Living Expenses - Existing Debt Repayments`. Planned savings is tracked separately in our **Financial Resilience Index**, where liquid reserves contribute up to 25 points to emergency survivability. This provides an accurate picture of cash capacity while incentivizing buffer retention."
+> In NexusFin, we calculate baseline available cash flow strictly as `Income - Essential Living Expenses - Existing Debt Repayments`. Planned savings is tracked separately in our **Multidimensional Resilience Assessment**, where liquid reserves are evaluated as an emergency runway cushion rather than an arbitrary point score. This provides an accurate picture of cash capacity while incentivizing buffer retention."
 
 ---
 

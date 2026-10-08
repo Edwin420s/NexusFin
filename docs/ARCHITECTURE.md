@@ -1,5 +1,5 @@
 # NexusFin — Technical Architecture & Scaling Strategy
-**ASEAN Financial Health Challenge — Problem Statement 3: Responsible Credit**
+**ASEAN Financial Health Challenge 2026 — Problem Statement 3: Responsible Credit**
 
 ---
 
@@ -34,7 +34,7 @@ NexusFin is built as a modular, API-first financial health and credit decision-s
                               ├────────────────────────────────────────┤
                               │ • Affordability Engine (Deterministic) │
                               │ • Multi-Scenario Stress Engine         │
-                              │ • Financial Resilience Index (0-100)   │
+                              │ • Multidimensional Resilience Overview│
                               │ • Transaction Ingestion & Classifier   │
                               │ • Plain-Language Explainability Layer  │
                               └───────────────────┬────────────────────┘
@@ -44,8 +44,8 @@ NexusFin is built as a modular, API-first financial health and credit decision-s
    ┌───────────────────────────┐                                     ┌───────────────────────────┐
    │   GOVERNANCE & CONSENT    │                                     │     AUDIT TRAIL STORE     │
    │       (/api/consent)      │                                     │     (/api/audit-log)      │
-   │ • Granular source toggles │                                     │ • Immutable event logs    │
-   │ • Stated purpose registry │                                     │ • Ephemeral caching       │
+   │ • Granular source toggles │                                     │ • Governance event logs   │
+   │ • Stated purpose registry │                                     │ • Ephemeral session cache │
    └───────────────────────────┘                                     └───────────────────────────┘
 ```
 
@@ -67,10 +67,13 @@ NexusFin is built as a modular, API-first financial health and credit decision-s
 ### 2.2 Cash Flow & Affordability
 * **Base Available Cash Flow:**
   $$\text{CF}_{\text{base}} = \text{Income}_{\text{monthly}} - \text{Expenses}_{\text{essential}} - \text{Debt}_{\text{existing}}$$
-  *(Planned savings goal is strictly excluded from expenses to prevent penalizing savers).*
+  *(Planned voluntary savings goal is strictly excluded from mandatory debt/expenses to prevent penalizing savers).*
 
 * **Post-Loan Monthly Buffer:**
   $$\text{Buffer}_{\text{post}} = \text{CF}_{\text{base}} - M$$
+
+* **After Planned Savings Cushion:**
+  $$\text{Buffer}_{\text{after\_savings}} = \text{Buffer}_{\text{post}} - \text{Savings}_{\text{goal}}$$
 
 * **Debt-Service Burden (DTI):**
   $$\text{Burden}_{\text{debt}} = \frac{\text{Debt}_{\text{existing}} + M}{\text{Income}_{\text{monthly}}} \times 100\%$$
@@ -86,13 +89,14 @@ Evaluates 6 standardized household disruption scenarios:
 
 ---
 
-## 3. Financial Resilience Index (0–100 Points)
+## 3. Financial Resilience Evaluation & Objective Indicators
 
-The overall resilience score synthesizes 4 distinct pillars:
-* **Pillar 1: Buffer Adequacy (30 pts):** Ratio of post-loan buffer to income ($\ge 25\% \to 30\text{ pts}$).
-* **Pillar 2: Debt Burden Safety (25 pts):** Combined debt burden ($\le 20\% \to 25\text{ pts}$, $>55\% \to 0\text{ pts}$).
-* **Pillar 3: Emergency Reserve Runway (25 pts):** Months of liquid savings coverage ($\ge 3\text{ mos} \to 25\text{ pts}$).
-* **Pillar 4: Shock Survivability (20 pts):** Count of stress scenarios remaining cash-flow positive ($6/6 \to 20\text{ pts}$).
+Rather than generating an opaque 3-digit score, NexusFin provides evidence-based, multidimensional indicators:
+* **Dimension 1: Baseline Cash Buffer:** Transparent net monthly disposable buffer remaining after mandatory expenses and debt.
+* **Dimension 2: Debt-Service Burden:** Proportion of income consumed by combined debt obligations against standard 35% / 50% benchmarks.
+* **Dimension 3: Emergency Reserve Runway:** Months of essential living expenditures covered by immediately accessible liquid savings.
+* **Dimension 4: Stress Shock Resistance:** Survivability of cash flows across simulated income drops (detecting deficits at -25% and -40%).
+* **Qualitative Indicator Output:** `Baseline: Manageable | Shock Resilience: Needs Review` with explicit reason codes.
 
 ---
 
@@ -101,7 +105,7 @@ The overall resilience score synthesizes 4 distinct pillars:
 * **Data Minimization:** Only transaction inflows, outflows, and recurring debits are processed.
 * **Prohibited Data Sources:** Strict architectural prohibition against accessing contact books, camera rolls, geolocation history, or social media graphs.
 * **Consent Registry:** Every alternative data source requires an explicit opt-in with a declared purpose and retention horizon.
-* **Audit Trail:** Immutable logging of consent updates, assessments, and underwriter reviews with actor identification and timestamps.
+* **Audit Trail:** Governance logging of consent updates, assessments, and underwriter reviews with actor identification and timestamps.
 
 ---
 
@@ -115,7 +119,7 @@ The overall resilience score synthesizes 4 distinct pillars:
          ▼                           ▼                           ▼
     PHILIPPINES                  INDONESIA                    VIETNAM
 • Currency: PHP (₱)         • Currency: IDR (Rp)        • Currency: VND (₫)
-• BSP Circular No. 1133     • OJK FinTech POJK 10       • SBV Consumer Lending
+• Open Finance Framework    • OJK FinTech Standards     • SBV Consumer Lending
 • GCash / Maya connectors   • GoPay / OVO connectors    • MoMo / ZaloPay
 • Rural Bank / Co-op        • BPR / Koperasi            • Microfinance Co-ops
 ```
