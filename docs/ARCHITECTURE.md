@@ -1,5 +1,5 @@
 # NexusFin — Technical Architecture & Scaling Strategy
-**ASEAN Financial Health Challenge 2026 — Problem Statement 3: Responsible Credit**
+**Responsible Credit Decision Support & Affordability Intelligence Platform**
 
 ---
 
@@ -109,22 +109,22 @@ Rather than generating an opaque 3-digit score, NexusFin provides evidence-based
 
 ---
 
-## 5. ASEAN Localization & Scaling Strategy
+## 5. Multi-Market Localization & Scaling Strategy
 
 ```
                              NEXUSFIN CORE ENGINE
-                         (Deterministic Math + AI)
+                         (Deterministic Math + NLP)
                                      │
          ┌───────────────────────────┼───────────────────────────┐
          ▼                           ▼                           ▼
-    PHILIPPINES                  INDONESIA                    VIETNAM
-• Currency: PHP (₱)         • Currency: IDR (Rp)        • Currency: VND (₫)
-• Open Finance Framework    • OJK FinTech Standards     • SBV Consumer Lending
-• GCash / Maya connectors   • GoPay / OVO connectors    • MoMo / ZaloPay
-• Rural Bank / Co-op        • BPR / Koperasi            • Microfinance Co-ops
+     PHILIPPINES                  INDONESIA                     KENYA
+• Currency: PHP (₱)         • Currency: IDR (Rp)        • Currency: KES (KSh)
+• Open Finance Framework    • OJK FinTech Standards     • Central Bank Guidelines
+• GCash / Maya connectors   • GoPay / OVO connectors    • M-Pesa / Bank Statements
+• Rural Bank / Co-op        • BPR / Koperasi            • SACCOs / Microfinance
 ```
 
-The core engine is isolated from country-specific regulations. Deploying to a new ASEAN market only requires:
+The core engine is isolated from country-specific regulations. Deploying to a new market only requires:
 1. Configuring local currency and formatting rules.
 2. Mapping local open banking / mobile money statement CSV formats.
 3. Calibrating regulatory debt-service burden thresholds to local central bank guidelines.
