@@ -6,7 +6,7 @@ cd "$DIR"
 
 echo "=========================================================="
 echo " Starting NexusFin — Responsible Credit Decision Platform"
-echo " ASEAN Financial Health Challenge — Problem Statement 3"
+echo " Decision Support for Borrowers & Inclusive Lenders"
 echo "=========================================================="
 
 export PYTHONPATH="$DIR:$PYTHONPATH"
