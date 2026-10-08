@@ -81,5 +81,13 @@ const API = {
 
   getPartnerAssessments() {
     return this.get('/api/partner/assessments');
+  },
+
+  getPitchDeckInfo() {
+    return this.get('/api/pitch-deck/info');
+  },
+
+  getPitchDeckSlides() {
+    return this.get('/api/pitch-deck/slides');
   }
 };

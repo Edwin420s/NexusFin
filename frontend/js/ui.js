@@ -95,46 +95,123 @@ const UI = {
     document.getElementById('statusTitle').textContent = data.status_label;
     document.getElementById('statusReason').textContent = data.status_reason;
 
+    // Helper
+    const setVal = (id, val) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = val;
+    };
+
     // Metrics Row
-    const sym = data.currency_symbol || AppState.getSymbol();
-    document.getElementById('valMonthlyPayment').textContent = AppState.formatMoney(data.metrics.monthly_repayment);
-    document.getElementById('valTotalRepayment').textContent = AppState.formatMoney(data.metrics.total_repayment);
-    document.getElementById('valTotalCost').textContent = AppState.formatMoney(data.metrics.total_cost_of_credit);
-    document.getElementById('valPostBuffer').textContent = AppState.formatMoney(data.metrics.post_credit_buffer);
-    document.getElementById('valDebtBurden').textContent = `${data.metrics.debt_service_burden_pct}%`;
+    setVal('valMonthlyPayment', AppState.formatMoney(data.metrics.monthly_repayment));
+    setVal('valTotalRepayment', AppState.formatMoney(data.metrics.total_repayment));
+    setVal('valTotalCost', AppState.formatMoney(data.metrics.total_cost_of_credit));
+    setVal('valPostBuffer', AppState.formatMoney(data.metrics.post_credit_buffer));
+    setVal('valAfterSavingsBuffer', AppState.formatMoney(data.metrics.after_savings_buffer !== undefined ? data.metrics.after_savings_buffer : data.metrics.post_credit_buffer));
+    setVal('valDebtBurden', `${data.metrics.debt_service_burden_pct.toFixed(1)}%`);
+
+    if (data.metrics.goal_savings > 0) {
+      setVal('valPostBufferSubtext', 'Before voluntary savings');
+      setVal('valSavingsGoalSubtext', `After ${AppState.formatMoney(data.metrics.goal_savings)} savings goal`);
+    } else {
+      setVal('valPostBufferSubtext', 'Remaining disposable cash');
+      setVal('valSavingsGoalSubtext', 'No planned savings goal');
+    }
 
     // Savings runway subtext
     const savingsTxt = data.metrics.liquid_savings_months !== null
       ? `${data.metrics.liquid_savings_months.toFixed(1)} months reserve`
       : 'No savings buffer';
-    document.getElementById('valSavingsRunway').textContent = savingsTxt;
+    setVal('valSavingsRunway', savingsTxt);
 
-    // Resilience Dial
-    document.getElementById('resilienceScoreNum').textContent = data.resilience.total_score;
-    document.getElementById('resilienceTierName').textContent = data.resilience.tier;
-    document.getElementById('resilienceSummaryText').textContent = data.resilience.summary;
-    document.getElementById('scoreBufferPts').textContent = `${data.resilience.buffer_adequacy_pts}/30`;
-    document.getElementById('scoreDebtPts').textContent = `${data.resilience.debt_burden_pts}/25`;
-    document.getElementById('scoreReservePts').textContent = `${data.resilience.emergency_reserve_pts}/25`;
-    document.getElementById('scoreStabilityPts').textContent = `${data.resilience.income_stability_pts}/20`;
+    // Multidimensional Financial Resilience Overview
+    setVal('resilienceSummaryText', data.resilience.summary);
 
-    // Stress Scenarios Table
+    const baseBadge = document.getElementById('resilienceBaselineBadge');
+    if (baseBadge) {
+      const bStatus = data.resilience.baseline_status || (data.metrics.post_credit_buffer >= 0 ? 'Manageable' : 'Deficit');
+      baseBadge.textContent = `Baseline: ${bStatus}`;
+      baseBadge.className = `badge-status ${bStatus === 'Deficit' ? 'deficit' : 'healthy'}`;
+    }
+
+    const shockBadge = document.getElementById('resilienceShockBadge');
+    if (shockBadge) {
+      const sStatus = data.resilience.resilience_status || 'Needs Review';
+      shockBadge.textContent = `Shock Resilience: ${sStatus}`;
+      shockBadge.className = `badge-status ${sStatus === 'Needs Review' ? 'tight' : 'healthy'}`;
+    }
+
+    // Resilience Indicator Items
+    setVal('resilValBuffer', `+${AppState.formatMoney(data.metrics.post_credit_buffer)}`);
+    setVal('resilNoteBuffer', data.metrics.post_credit_buffer >= 0 ? 'Positive cash-flow margin' : 'Immediate cash deficit');
+
+    setVal('resilValBurden', `${data.metrics.debt_service_burden_pct.toFixed(1)}%`);
+    setVal('resilNoteBurden', data.metrics.debt_service_burden_pct <= 35 ? 'Within standard 35% safe ceiling' : 'Elevated debt concentration');
+
+    const runwayTxt = data.metrics.liquid_savings_months !== null ? `${data.metrics.liquid_savings_months.toFixed(1)} months` : '0 months';
+    setVal('resilValRunway', runwayTxt);
+    setVal('resilNoteRunway', data.metrics.liquid_savings_months !== null ? 'Living costs reserve cushion' : 'No liquid emergency buffer');
+
+    // 4 Stress Shock Resilience indicators
+    const shock10 = data.scenarios.find(s => s.name.includes('10%'));
+    const shock10Def = shock10 ? shock10.buffer : (data.resilience.shock_buffer_10 ?? 0);
+    const shock10El = document.getElementById('resilValShock10');
+    if (shock10El) {
+      shock10El.textContent = shock10Def < 0 ? AppState.formatMoney(shock10Def) : `+${AppState.formatMoney(shock10Def)}`;
+      shock10El.className = `resil-value ${shock10Def < 0 ? 'deficit' : 'healthy'}`;
+    }
+    setVal('resilNoteShock10', shock10Def < 0 ? 'Deficit incurred' : 'Buffer retained');
+
+    const shock25 = data.scenarios.find(s => s.name.includes('25%'));
+    const shockDef = shock25 ? shock25.buffer : (data.resilience.shock_deficit_25 ?? 0);
+    const shockEl = document.getElementById('resilValShock');
+    if (shockEl) {
+      shockEl.textContent = shockDef < 0 ? AppState.formatMoney(shockDef) : `+${AppState.formatMoney(shockDef)}`;
+      shockEl.className = `resil-value ${shockDef < 0 ? 'deficit' : 'healthy'}`;
+    }
+    setVal('resilNoteShock', shockDef < 0 ? 'Deficit incurred' : 'Buffer retained');
+
+    const shockExp = data.scenarios.find(s => s.name.includes('Expenses') || s.name.includes('+20%'));
+    const shockExpDef = shockExp ? shockExp.buffer : (data.resilience.shock_buffer_exp ?? 0);
+    const shockExpEl = document.getElementById('resilValShockExp');
+    if (shockExpEl) {
+      shockExpEl.textContent = shockExpDef < 0 ? AppState.formatMoney(shockExpDef) : `+${AppState.formatMoney(shockExpDef)}`;
+      shockExpEl.className = `resil-value ${shockExpDef < 0 ? 'deficit' : 'healthy'}`;
+    }
+    setVal('resilNoteShockExp', shockExpDef < 0 ? 'Deficit incurred' : 'Buffer retained');
+
+    const shockComb = data.scenarios.find(s => s.name.includes('Combined'));
+    const shockCombDef = shockComb ? shockComb.buffer : (data.resilience.combined_deficit ?? 0);
+    const shockCombEl = document.getElementById('resilValShockComb');
+    if (shockCombEl) {
+      shockCombEl.textContent = shockCombDef < 0 ? AppState.formatMoney(shockCombDef) : `+${AppState.formatMoney(shockCombDef)}`;
+      shockCombEl.className = `resil-value ${shockCombDef < 0 ? 'deficit' : 'healthy'}`;
+    }
+    setVal('resilNoteShockComb', shockCombDef < 0 ? 'Deficit incurred' : 'Buffer retained');
+
+    setVal('resilienceConclusionText', data.resilience.conclusion || 'Manageable today — vulnerable under income shock');
+
+    // Stress Scenarios Table (7 columns: Scenario, Income, Essential Expenses, Existing Debt, New Repayment, Remaining Buffer, Status)
     const tbody = document.getElementById('stressTableBody');
     tbody.innerHTML = data.scenarios.map(s => {
-      const bufferClass = s.is_positive ? 'badge-status healthy' : 'badge-status deficit';
-      const bufferLabel = s.is_positive ? `+${AppState.formatMoney(s.buffer)}` : AppState.formatMoney(s.buffer);
+      const isDeficit = s.buffer < 0;
+      const isReview = s.status === 'review' || s.status_label === 'Review';
+      const bufferClass = isDeficit ? 'badge-status deficit' : isReview ? 'badge-status tight' : 'badge-status healthy';
+      const bufferLabel = isDeficit ? AppState.formatMoney(s.buffer) : `+${AppState.formatMoney(s.buffer)}`;
+      const statusBadgeClass = isDeficit ? 'deficit' : isReview ? 'tight' : 'healthy';
+      const statusLabel = s.status_label || (isDeficit ? 'Deficit' : isReview ? 'Review' : 'Manageable');
+
       return `
         <tr>
           <td>
             <strong>${s.name}</strong>
             <div style="font-size: 11px; color: var(--ink-500);">${s.description}</div>
           </td>
-          <td>${AppState.formatMoney(s.income)}</td>
-          <td>${AppState.formatMoney(s.expenses)}</td>
-          <td><strong>${AppState.formatMoney(s.monthly_repayment)}</strong></td>
-          <td><span class="${bufferClass}">${bufferLabel}</span></td>
-          <td>${s.debt_service_burden_pct.toFixed(1)}%</td>
-          <td><span class="badge-status ${s.status}">${s.status}</span></td>
+          <td style="text-align:right;">${AppState.formatMoney(s.income)}</td>
+          <td style="text-align:right;">${AppState.formatMoney(s.expenses)}</td>
+          <td style="text-align:right;">${AppState.formatMoney(s.debt_payments)}</td>
+          <td style="text-align:right;"><strong>${AppState.formatMoney(s.monthly_repayment)}</strong></td>
+          <td style="text-align:right;"><span class="${bufferClass}">${bufferLabel}</span></td>
+          <td style="text-align:center;"><span class="badge-status ${statusBadgeClass}">${statusLabel}</span></td>
         </tr>
       `;
     }).join('');
@@ -206,6 +283,10 @@ const UI = {
       const lowestCostTag = row.is_lowest_total_cost ? '<span class="key-facts-highlight" style="background:#bbf7d0;color:#14532d;">Lowest Total Cost</span>' : '';
       const highestResilTag = row.is_highest_resilience ? '<span class="key-facts-highlight" style="background:#e0e7ff;color:#3730a3;">Most Resilient</span>' : '';
 
+      const isDeficit = row.status === 'deficit' || row.status === 'high-pressure';
+      const isReview = row.status === 'review' || (row.status_label && row.status_label.toLowerCase().includes('review'));
+      const statusBadgeClass = isDeficit ? 'deficit' : isReview ? 'tight' : 'healthy';
+
       return `
         <tr>
           <td>
@@ -213,16 +294,16 @@ const UI = {
             <div style="font-size: 11px; color: var(--ink-500);">${row.repayment_type} @ ${row.annual_interest_rate}% APR</div>
             ${bestMonthlyTag} ${lowestCostTag} ${highestResilTag}
           </td>
-          <td>${AppState.formatMoney(row.principal)}</td>
-          <td>${row.term_months} mos</td>
-          <td><strong>${AppState.formatMoney(row.monthly_repayment)}</strong></td>
-          <td>${AppState.formatMoney(row.total_repayment)}</td>
-          <td><strong style="color:var(--accent);">${AppState.formatMoney(row.total_cost_of_credit)}</strong></td>
-          <td>${AppState.formatMoney(row.post_credit_buffer)}</td>
-          <td>${row.debt_service_burden_pct.toFixed(1)}%</td>
-          <td>
-            <strong>${row.resilience_score}/100</strong>
-            <div style="font-size:11px;color:var(--ink-500);">${row.shock_survivability} shocks safe</div>
+          <td style="text-align:right;">${AppState.formatMoney(row.principal)}</td>
+          <td style="text-align:center;">${row.term_months} mos</td>
+          <td style="text-align:right;"><strong>${AppState.formatMoney(row.monthly_repayment)}</strong></td>
+          <td style="text-align:right;">${AppState.formatMoney(row.total_repayment)}</td>
+          <td style="text-align:right;"><strong style="color:var(--accent);">${AppState.formatMoney(row.total_cost_of_credit)}</strong></td>
+          <td style="text-align:right;">${AppState.formatMoney(row.post_credit_buffer)}</td>
+          <td style="text-align:right;">${row.debt_service_burden_pct.toFixed(1)}%</td>
+          <td style="text-align:center;">
+            <span class="badge-status ${statusBadgeClass}">${row.status_label || (row.shock_survivability + ' safe')}</span>
+            <div style="font-size:11px;color:var(--ink-500);margin-top:2px;">${row.shock_survivability} safe</div>
           </td>
         </tr>
       `;
@@ -240,12 +321,17 @@ const UI = {
     const resDiv = document.getElementById('txAnalysisResultArea');
     resDiv.style.display = 'block';
 
-    document.getElementById('txCountBadge').textContent = `${data.summary.transaction_count} Transactions`;
-    document.getElementById('txInflows').textContent = AppState.formatMoney(data.summary.total_inflows);
-    document.getElementById('txOutflows').textContent = AppState.formatMoney(data.summary.total_outflows);
-    document.getElementById('txNetCashflow').textContent = AppState.formatMoney(data.summary.net_cashflow);
-    document.getElementById('txVariabilityEst').textContent = `${data.income_variability_est_pct}%`;
-    document.getElementById('txDetectedDebt').textContent = AppState.formatMoney(data.detected_debt_payments);
+    const setVal = (id, val) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = val;
+    };
+
+    setVal('txCountBadge', `${data.summary.transaction_count} Transactions`);
+    setVal('txInflows', AppState.formatMoney(data.summary.total_inflows));
+    setVal('txOutflows', AppState.formatMoney(data.summary.total_outflows));
+    setVal('txNetCashflow', AppState.formatMoney(data.summary.net_cashflow));
+    setVal('txVariabilityEst', `${data.income_variability_est_pct}%`);
+    setVal('txDetectedDebt', AppState.formatMoney(data.detected_debt_payments));
 
     // Insights bullets
     document.getElementById('txInsightsList').innerHTML = data.insights.map(i => `<li>${i}</li>`).join('');
@@ -328,37 +414,137 @@ const UI = {
       return;
     }
 
-    container.innerHTML = data.assessments.map((item, idx) => `
+    container.innerHTML = data.assessments.map((item, idx) => {
+      const appType = item.applicant_type || 'Illustrative demo applicant';
+      const appName = item.applicant_name ? `${item.applicant_name} — ` : `Applicant #${idx + 1} — `;
+      const resilStatus = item.resilience?.resilience_status || 'Needs Review';
+      const resilClass = resilStatus === 'Needs Review' ? 'tight' : 'healthy';
+      const statusClass = item.status === 'fits' ? 'healthy' : item.status === 'review' ? 'tight' : 'deficit';
+
+      return `
       <div class="panel" style="margin-bottom:1.5rem;border-left:4px solid var(--accent);">
         <div class="panel-header">
           <div>
-            <span class="eyebrow-tag">CONSENTED APPLICANT FILE #${idx + 1}</span>
-            <h3>${item.offer.name} (${item.currency} ${item.offer.principal.toLocaleString()})</h3>
-            <p>Generated: ${new Date(item.generated_at).toLocaleString()} • Purpose: ${item.offer.purpose}</p>
+            <span class="eyebrow-tag">${appType.toUpperCase()}</span>
+            <h3>${appName}${item.offer.name} (${item.currency} ${item.offer.principal.toLocaleString()})</h3>
+            <p>Generated: ${new Date(item.generated_at).toLocaleDateString()} • Purpose: ${item.offer.purpose}</p>
           </div>
           <div>
-            <span class="badge-status ${item.status}">${item.status_label}</span>
+            <span class="badge-status ${statusClass}">${item.status_label}</span>
           </div>
         </div>
         <div class="grid-three-col" style="margin-bottom:1rem;">
           <div class="metric-card">
             <span class="metric-label">Debt-Service Burden</span>
-            <span class="metric-value">${item.metrics.debt_service_burden_pct}%</span>
+            <span class="metric-value">${item.metrics.debt_service_burden_pct.toFixed(1)}%</span>
+            <span class="metric-subtext">Existing debt + new instalment</span>
           </div>
           <div class="metric-card">
             <span class="metric-label">Post-Loan Buffer</span>
-            <span class="metric-value">${item.currency} ${item.metrics.post_credit_buffer.toLocaleString()}</span>
+            <span class="metric-value">${item.currency} ${item.metrics.post_credit_buffer.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
+            <span class="metric-subtext">After planned savings: ${item.currency} ${(item.metrics.after_savings_buffer !== undefined ? item.metrics.after_savings_buffer : item.metrics.post_credit_buffer).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
           </div>
           <div class="metric-card">
-            <span class="metric-label">Resilience Score</span>
-            <span class="metric-value">${item.resilience.total_score}/100</span>
+            <span class="metric-label">Resilience Assessment</span>
+            <span class="metric-value" style="font-size:18px;"><span class="badge-status ${resilClass}">${resilStatus}</span></span>
+            <span class="metric-subtext">${item.resilience?.summary ? item.resilience.summary.slice(0, 52) + '...' : 'Stress tested'}</span>
           </div>
         </div>
-        <div class="disclosure-box">
+        <div class="disclosure-box" style="margin-bottom:0.75rem;">
           <strong>Underwriter Decision Support Note:</strong>
           ${item.status_reason}
         </div>
+        <div style="font-size:11px;color:var(--ink-500);font-style:italic;">
+          Institutional Notice: NexusFin provides decision support. Final credit decisions remain with the financial institution.
+        </div>
       </div>
+    `;
+    }).join('');
+  },
+
+  // Initialize Slide Navigation Pills
+  initSlidePills(totalSlides, onPillClick) {
+    const container = document.getElementById('slidePillsBar');
+    if (!container) return;
+    container.innerHTML = '';
+    for (let i = 0; i < totalSlides; i++) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = `slide-pill-btn ${i === 0 ? 'active' : ''}`;
+      btn.textContent = `Slide ${i + 1}`;
+      btn.dataset.index = i;
+      btn.addEventListener('click', () => onPillClick(i));
+      container.appendChild(btn);
+    }
+  },
+
+  // Render Slide in Main Tab 6 Card
+  renderSlide(slide, index, totalSlides) {
+    if (!slide) return;
+    document.getElementById('slideCategory').textContent = slide.category || 'Overview';
+    document.getElementById('slideTitle').textContent = slide.title || '';
+    document.getElementById('slideSubtitle').textContent = slide.subtitle || '';
+    document.getElementById('slideNumberBadge').textContent = `SLIDE ${String(index + 1).padStart(2, '0')} / ${totalSlides}`;
+    document.getElementById('slideTagline').textContent = `"${slide.tagline || ''}"`;
+    document.getElementById('slideIndicator').textContent = `Slide ${index + 1} of ${totalSlides}`;
+
+    const pointsList = document.getElementById('slidePointsList');
+    pointsList.innerHTML = (slide.key_points || []).map(pt => `
+      <li>
+        <span class="slide-bullet-icon">✓</span>
+        <div>${pt}</div>
+      </li>
     `).join('');
+
+    // Update Next/Prev Button states
+    const prevBtn = document.getElementById('btnPrevSlide');
+    const nextBtn = document.getElementById('btnNextSlide');
+    if (prevBtn) prevBtn.disabled = index === 0;
+    if (nextBtn) nextBtn.disabled = index === totalSlides - 1;
+
+    // Update active pill
+    document.querySelectorAll('.slide-pill-btn').forEach((p, idx) => {
+      p.classList.toggle('active', idx === index);
+    });
+  },
+
+  // Render Slide into Modal Dialog
+  renderModalSlide(slide, index, totalSlides) {
+    const body = document.getElementById('modalDeckBody');
+    if (!body || !slide) return;
+    body.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--ink-200);padding-bottom:12px;">
+        <span class="slide-card-category">${slide.category || 'Overview'}</span>
+        <span class="slide-card-number">SLIDE ${String(index + 1).padStart(2, '0')} OF ${totalSlides}</span>
+      </div>
+      <div>
+        <h2 style="font-size:22px;margin:12px 0 4px;font-weight:800;color:var(--ink-900);">${slide.title}</h2>
+        <div style="font-size:14px;color:var(--accent);font-weight:600;margin-bottom:14px;">${slide.subtitle}</div>
+        <div class="slide-card-tagline">"${slide.tagline}"</div>
+      </div>
+      <ul class="slide-points-list">
+        ${(slide.key_points || []).map(pt => `
+          <li>
+            <span class="slide-bullet-icon">✓</span>
+            <div>${pt}</div>
+          </li>
+        `).join('')}
+      </ul>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--ink-200);">
+        <button type="button" class="btn-nav-slide" id="modalPrevSlide" ${index === 0 ? 'disabled' : ''}>← Previous</button>
+        <span style="font-size:12px;color:var(--ink-500);">Use Left/Right arrow keys</span>
+        <button type="button" class="btn-nav-slide" id="modalNextSlide" ${index === totalSlides - 1 ? 'disabled' : ''}>Next →</button>
+      </div>
+    `;
+  },
+
+  openModal(modalId) {
+    const m = document.getElementById(modalId);
+    if (m) m.classList.add('active');
+  },
+
+  closeModal(modalId) {
+    const m = document.getElementById(modalId);
+    if (m) m.classList.remove('active');
   }
 };

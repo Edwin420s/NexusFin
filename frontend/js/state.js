@@ -20,6 +20,8 @@ const AppState = {
   currentAssessment: null,
   comparedOffers: [],
   lastTransactionAnalysis: null,
+  slides: [],
+  currentSlideIndex: 0,
 
   getSymbol() {
     return this.currencySymbols[this.currency] || this.currency;
@@ -27,10 +29,12 @@ const AppState = {
 
   formatMoney(amount) {
     const sym = this.getSymbol();
-    const formatted = Number(amount || 0).toLocaleString(undefined, {
+    const val = Number(amount || 0);
+    const isNegative = val < 0;
+    const absFormatted = Math.abs(val).toLocaleString(undefined, {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2
     });
-    return `${sym} ${formatted}`;
+    return isNegative ? `-${sym} ${absFormatted}` : `${sym} ${absFormatted}`;
   }
 };

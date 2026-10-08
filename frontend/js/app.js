@@ -16,6 +16,7 @@ const App = {
       // Default to Carlos - Manila Gig Rider
       if (AppState.presets.length > 0) {
         this.selectPreset(AppState.presets[0].id);
+        this.runAssessment();
       }
 
       // 2. Fetch Consents & Audit Trail
@@ -24,6 +25,9 @@ const App = {
 
       // 3. Setup default comparison offers
       this.initComparisonOffers();
+
+      // 4. Load Pitch Deck slides
+      this.loadPitchDeck();
     } catch (err) {
       console.warn('Initialization note:', err);
     }
@@ -57,7 +61,10 @@ const App = {
     // Persona Preset Change
     document.getElementById('presetSelect').addEventListener('change', (e) => {
       const pid = e.target.value;
-      if (pid) this.selectPreset(pid);
+      if (pid) {
+        this.selectPreset(pid);
+        this.runAssessment();
+      }
     });
 
     // Income Variability Slider sync
@@ -92,6 +99,79 @@ const App = {
     document.getElementById('applyDetectedBtn').addEventListener('click', () => {
       this.applyDetectedDataToProfile();
     });
+
+    // Hero Action Buttons
+    document.getElementById('heroViewSlidesBtn')?.addEventListener('click', () => {
+      this.switchTab('pitchdeck');
+    });
+
+    document.getElementById('heroViewSubmissionBtn')?.addEventListener('click', () => {
+      UI.openModal('submissionModal');
+    });
+
+    document.getElementById('tabViewSubmissionBtn')?.addEventListener('click', () => {
+      UI.openModal('submissionModal');
+    });
+
+    document.getElementById('heroPrintReportBtn')?.addEventListener('click', () => {
+      window.print();
+    });
+
+    document.getElementById('openFullscreenDeckBtn')?.addEventListener('click', () => {
+      UI.openModal('pitchDeckModal');
+    });
+
+    // Slide Navigation Buttons
+    document.getElementById('btnPrevSlide')?.addEventListener('click', () => {
+      this.prevSlide();
+    });
+
+    document.getElementById('btnNextSlide')?.addEventListener('click', () => {
+      this.nextSlide();
+    });
+
+    // Modal Close Buttons
+    document.getElementById('closePitchDeckModal')?.addEventListener('click', () => {
+      UI.closeModal('pitchDeckModal');
+    });
+
+    document.getElementById('closePitchDeckModalFooter')?.addEventListener('click', () => {
+      UI.closeModal('pitchDeckModal');
+    });
+
+    document.getElementById('closeSubmissionModal')?.addEventListener('click', () => {
+      UI.closeModal('submissionModal');
+    });
+
+    document.getElementById('closeSubmissionModalFooter')?.addEventListener('click', () => {
+      UI.closeModal('submissionModal');
+    });
+
+    // Backdrop clicks to close modals
+    ['pitchDeckModal', 'submissionModal'].forEach(id => {
+      const m = document.getElementById(id);
+      if (m) {
+        m.addEventListener('click', (e) => {
+          if (e.target === m) UI.closeModal(id);
+        });
+      }
+    });
+
+    // Keyboard Navigation for Slides and Modals
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        UI.closeModal('pitchDeckModal');
+        UI.closeModal('submissionModal');
+      } else if (e.key === 'ArrowLeft') {
+        if (AppState.activeTab === 'pitchdeck' || document.getElementById('pitchDeckModal')?.classList.contains('active')) {
+          this.prevSlide();
+        }
+      } else if (e.key === 'ArrowRight') {
+        if (AppState.activeTab === 'pitchdeck' || document.getElementById('pitchDeckModal')?.classList.contains('active')) {
+          this.nextSlide();
+        }
+      }
+    });
   },
 
   switchTab(tabId) {
@@ -110,6 +190,10 @@ const App = {
       this.refreshAuditLog();
     } else if (tabId === 'partner') {
       this.refreshPartnerPortal();
+    } else if (tabId === 'pitchdeck') {
+      if (AppState.slides.length > 0) {
+        this.goToSlide(AppState.currentSlideIndex);
+      }
     }
   },
 
@@ -244,6 +328,7 @@ const App = {
   async loadSampleDataset(personaKey) {
     try {
       const data = await API.getSampleTransactions(personaKey);
+      AppState.lastTransactionAnalysis = data;
       UI.renderTransactionAnalysis(data);
       this.refreshAuditLog();
     } catch (err) {
@@ -254,6 +339,7 @@ const App = {
   async handleFileUpload(file) {
     try {
       const data = await API.uploadTransactions(file);
+      AppState.lastTransactionAnalysis = data;
       UI.renderTransactionAnalysis(data);
       this.refreshAuditLog();
     } catch (err) {
@@ -311,6 +397,41 @@ const App = {
     } catch (err) {
       console.error('Failed to load partner records:', err);
     }
+  },
+
+  async loadPitchDeck() {
+    try {
+      const res = await API.getPitchDeckSlides();
+      AppState.slides = res.slides || [];
+      if (AppState.slides.length > 0) {
+        UI.initSlidePills(AppState.slides.length, (idx) => this.goToSlide(idx));
+        this.goToSlide(0);
+      }
+    } catch (err) {
+      console.warn('Failed to load pitch deck slides:', err);
+    }
+  },
+
+  goToSlide(index) {
+    if (!AppState.slides || AppState.slides.length === 0) return;
+    if (index < 0) index = 0;
+    if (index >= AppState.slides.length) index = AppState.slides.length - 1;
+    AppState.currentSlideIndex = index;
+
+    UI.renderSlide(AppState.slides[index], index, AppState.slides.length);
+    UI.renderModalSlide(AppState.slides[index], index, AppState.slides.length);
+
+    // Rebind modal navigation buttons
+    document.getElementById('modalPrevSlide')?.addEventListener('click', () => this.prevSlide());
+    document.getElementById('modalNextSlide')?.addEventListener('click', () => this.nextSlide());
+  },
+
+  prevSlide() {
+    this.goToSlide(AppState.currentSlideIndex - 1);
+  },
+
+  nextSlide() {
+    this.goToSlide(AppState.currentSlideIndex + 1);
   }
 };
 
