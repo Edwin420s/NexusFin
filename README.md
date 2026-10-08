@@ -33,7 +33,7 @@ Furthermore, traditional credit scoring models rely heavily on static bureau his
 | **Standardized Key Facts Statement** | Compares competing loan offers side-by-side, exposing flat-rate markups, total financing costs, and monthly cash impact. |
 | **Consented Alternative Data** | Ingests bank and mobile-money statement CSVs to reconstruct verified cash flows, model income volatility (CV), and detect undeclared debt without invasive surveillance. |
 | **Privacy by Design** | Granular, revocable consent controls for every data source with declared legal basis, purpose limitation, and an immutable audit trail. |
-| **Multi-Currency Localization** | Pre-calibrated for international and emerging-market currencies (`PHP`, `KES`, `SGD`, `IDR`, `MYR`, `THB`, `VND`, `USD`) with dynamic symbol and locale formatting. |
+| **Multi-Currency Localization** | Pre-calibrated for international and emerging-market currencies (`PHP`, `KES`, `SGD`, `IDR`, `MYR`, `THB`, `VND`, `USD`, `EUR`, `GBP`) with dynamic symbol and locale formatting. |
 
 ---
 
@@ -113,7 +113,7 @@ PYTHONPATH=. pytest -v
 * `test_alternative_data.py`: Rule-based statement classification, CSV ingestion and volatility estimation.
 * `test_api.py`: Health check, presets, assess endpoint, compare endpoint, consent registry, audit trail, sample statements, partner portal, SPA fallback.
 * `test_e2e_flow.py`: Full borrower-to-underwriter lifecycle journey across all 8 currencies.
-* `test_currency_and_localization.py`: Multi-currency metadata, calculation validation, and localized symbol output across PHP, KES, SGD, IDR, MYR, THB, VND, USD.
+* `test_currency_and_localization.py`: Multi-currency metadata, calculation validation, and localized symbol output across PHP, KES, SGD, IDR, MYR, THB, VND, USD, EUR, GBP.
 * `test_regulatory_governance.py`: Data source privacy specifications, consent grant and revocation lifecycle, and underwriter audit trail logging.
 * `test_pitch_deck.py`: Architecture slides and whitepaper PDF endpoints.
 
