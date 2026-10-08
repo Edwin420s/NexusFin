@@ -27,9 +27,9 @@
 ## Dimension 3: The Solution — NexusFin
 * **What NexusFin Is:** An explainable decision-support platform that transforms raw cash flows and loan terms into an actionable financial resilience assessment.
 * **What NexusFin Is NOT:**
-  * ❌ NOT an opaque 3-digit AI credit score.
-  * ❌ NOT an automated robotic loan approval/rejection engine.
-  * ❌ NOT a predatory scraping tool.
+  * Not an opaque 3-digit AI credit score.
+  * Not an automated robotic loan approval/rejection engine.
+  * Not a predatory scraping tool.
 * **Four Core Pillars:**
   1. **Deterministic Affordability:** Rigorous cash-flow accounting where planned savings is never misclassified as mandatory debt.
   2. **Multi-Scenario Stress Testing:** Simulating 10%, 25%, 40% income drops and cost inflation spikes.
