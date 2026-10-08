@@ -9,10 +9,9 @@ DATA_DIR = BASE_DIR / "data"
 
 # Application Metadata
 APP_NAME = "NexusFin"
-APP_DESCRIPTION = "Responsible Credit & Informed Choice Decision-Support Platform"
+APP_DESCRIPTION = "Responsible Credit Decision Support & Affordability Intelligence Platform"
 APP_VERSION = "1.0.0"
-CHALLENGE = "ASEAN Financial Health Challenge 2026 — Problem Statement 3: Responsible Credit"
-ORGANIZERS = "GFTN & Bangko Sentral ng Pilipinas (BSP)"
+APP_TAGLINE = "Understand credit before it becomes a burden."
 
 # Supported Currencies & Symbols
 CURRENCY_CONFIG = {
