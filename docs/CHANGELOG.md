@@ -107,3 +107,4 @@ A granular, verifiable record of product development, actuarial modeling, data g
 - `2026-10-08 02:02` **docs(deck):** update BSP CFIS citations to 2026 across pitch deck documentation
 - `2026-10-08 02:54` **feat(frontend):** implement single-page application structure in index.html
 - `2026-10-08 03:47` **style(frontend):** define comprehensive design system and CSS custom properties
+- `2026-10-08 04:39` **feat(frontend):** implement responsive header, currency picker, and workspace mode switcher
