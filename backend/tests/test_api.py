@@ -118,7 +118,7 @@ def test_consent_and_audit_log_flow():
 
 
 def test_sample_transactions_endpoints():
-    """Verify all 3 ASEAN sample transaction datasets load and classify properly."""
+    """Verify all 3 sample transaction datasets load and classify properly."""
     for persona in ["manila", "kenya", "jakarta"]:
         res = client.get(f"/api/transactions/sample/{persona}")
         assert res.status_code == 200
