@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NexusFin — Responsible Credit &amp; Informed Choice</title>
+  <title>NexusFin — Responsible Credit Decision Support &amp; Affordability Intelligence</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
@@ -18,13 +18,13 @@
         <div class="brand-logo">N</div>
         <div class="brand-info">
           <h1>Nexus<span>Fin</span></h1>
-          <p>Responsible Credit Decision Support &amp; Informed Choice</p>
+          <p>Responsible Credit Decision Support &amp; Affordability Intelligence</p>
         </div>
       </div>
 
       <div class="header-controls">
         <div class="control-item">
-          <label for="presetSelect">Demo Profile:</label>
+          <label for="presetSelect">Sample Profile:</label>
           <select id="presetSelect" class="select-sm">
             <option value="">Loading profiles...</option>
           </select>
@@ -45,8 +45,8 @@
         </div>
 
         <div class="mode-toggle-group">
-          <button class="mode-btn active" data-mode="consumer">Consumer Workspace</button>
-          <button class="mode-btn" data-mode="partner">Lender / Partner Portal</button>
+          <button class="mode-btn active" data-mode="consumer">Borrower Workspace</button>
+          <button class="mode-btn" data-mode="partner">Lender &amp; Underwriter Portal</button>
         </div>
       </div>
     </div>
@@ -59,17 +59,20 @@
         <span class="badge-pill">Decision Support Platform</span>
         <h2>Understand credit before it becomes a burden.</h2>
         <p>
-          NexusFin bridges the gap between credit access and genuine affordability. By pairing deterministic cash-flow calculations, consented alternative data signals, multi-scenario stress testing, and plain-language explainability, NexusFin empowers borrowers and lenders to prevent over-indebtedness before signing.
+          NexusFin bridges the gap between credit access and genuine affordability. By pairing deterministic cash-flow calculations, consented alternative data signals, multi-scenario stress testing, and plain-language explainability, NexusFin empowers borrowers and lenders to prevent over-indebtedness before signing commitments.
         </p>
         <div class="hero-actions-bar">
-          <a href="/api/pitch-deck/download" class="btn-hero btn-primary" download="NexusFin_Product_Deck_10_Slides.pdf">
-            <span class="btn-icon">📥</span> Download Product Deck (PDF)
-          </a>
-          <button type="button" class="btn-hero btn-secondary" id="heroViewSlidesBtn">
-            <span class="btn-icon">👁️</span> View Product Deck
+          <button type="button" class="btn-hero btn-primary" onclick="App.switchTab('assessment'); document.getElementById('monthlyIncome').focus();">
+            <span class="btn-icon">⚡</span> Evaluate Loan Affordability
           </button>
-          <button type="button" class="btn-hero btn-ghost" id="heroPrintReportBtn">
+          <button type="button" class="btn-hero btn-secondary" onclick="App.switchTab('compare');">
+            <span class="btn-icon">⚖️</span> Compare Loan Offers
+          </button>
+          <button type="button" class="btn-hero btn-outline" id="heroPrintReportBtn">
             <span class="btn-icon">🖨️</span> Print / Export Assessment
+          </button>
+          <button type="button" class="btn-hero btn-ghost" id="heroViewSlidesBtn">
+            <span class="btn-icon">📖</span> Platform Architecture Guide
           </button>
         </div>
       </div>
@@ -101,7 +104,7 @@
         <span class="tab-num">05</span> Institutional Underwriter Portal
       </button>
       <button class="tab-nav-btn" data-tab="pitchdeck">
-        <span class="tab-num">06</span> Product Overview &amp; Deck
+        <span class="tab-num">06</span> Platform Architecture &amp; Methodology
       </button>
     </div>
   </nav>
@@ -525,7 +528,7 @@
             <div>
               <span class="eyebrow-tag">CONSENTED OPEN FINANCE</span>
               <h3>Ingest Alternative Transaction Signals</h3>
-              <p>Upload a transaction CSV or load curated ASEAN sample datasets to test cash-flow analysis.</p>
+              <p>Upload a transaction statement CSV or load curated sample statements to evaluate cash-flow dynamics.</p>
             </div>
           </div>
 
@@ -536,11 +539,11 @@
           </div>
 
           <div style="margin-top:1.25rem;">
-            <label style="font-size:12px;font-weight:700;color:var(--ink-700);">Or Load Curated ASEAN Datasets (1-Click):</label>
+            <label style="font-size:12px;font-weight:700;color:var(--ink-700);">Or Load Pre-Calibrated Sample Statements (1-Click):</label>
             <div class="sample-dataset-pills">
-              <button class="sample-pill-btn" onclick="App.loadSampleDataset('manila');">🇵🇭 Carlos — Manila Gig Rider</button>
-              <button class="sample-pill-btn" onclick="App.loadSampleDataset('kenya');">🇰🇪 Aisha — Nairobi MSME Freelancer</button>
-              <button class="sample-pill-btn" onclick="App.loadSampleDataset('jakarta');">🇮🇩 Dewi — Jakarta Warung Trader</button>
+              <button class="sample-pill-btn" onclick="App.loadSampleDataset('manila');">🛵 Delivery &amp; Logistics Contractor (PHP)</button>
+              <button class="sample-pill-btn" onclick="App.loadSampleDataset('kenya');">💼 Digital MSME &amp; Freelancer (KES)</button>
+              <button class="sample-pill-btn" onclick="App.loadSampleDataset('jakarta');">🏪 Small Retail Merchant (IDR)</button>
             </div>
           </div>
 
@@ -695,8 +698,8 @@
         <div class="panel-header">
           <div>
             <span class="eyebrow-tag">INSTITUTIONAL UNDERWRITING PORTAL</span>
-            <h3>Partner / Lender Governance &amp; Pilot Review</h3>
-            <p>For Financial Institutions, Microfinance Organizations, and Champions piloting responsible credit solutions.</p>
+            <h3>Lender &amp; Underwriter Decision Support Portal</h3>
+            <p>For Financial Institutions, Microfinance Organizations, and Community Credit Lenders reviewing consented applicant portfolios.</p>
           </div>
           <div>
             <span class="badge-pill" style="background:#e0f2fe;color:#0369a1;">API Integration Mode</span>
@@ -705,8 +708,8 @@
 
         <div class="disclosure-box" style="margin-bottom:1.25rem;background:#fffbeb;border-color:#fcd34d;color:#92400e;">
           <strong>Institutional Governance Notice:</strong>
-          Review affordability against institution-defined policies and configured risk controls.
-          <em>NexusFin provides decision support. Final credit decisions remain with the financial institution.</em>
+          Review applicant affordability against institution-defined credit policies, debt-to-income benchmarks, and shock thresholds.
+          <em>NexusFin provides independent decision support. Final underwriting decisions remain with the financial institution.</em>
         </div>
 
         <p style="font-size:14px;color:var(--ink-700);">
@@ -726,24 +729,24 @@
         <!-- Toolbar & Quick Action Header -->
         <div class="deck-toolbar">
           <div>
-            <span class="eyebrow-tag">ASEAN FINANCIAL HEALTH CHALLENGE 2026 • PRODUCT DECK</span>
-            <h3 style="margin:4px 0 0;font-size:18px;">NexusFin 10-Slide Product Deck</h3>
+            <span class="eyebrow-tag">FINANCIAL DECISION SUPPORT PLATFORM • ARCHITECTURE SPECIFICATION</span>
+            <h3 style="margin:4px 0 0;font-size:18px;">NexusFin Platform Architecture &amp; Methodology</h3>
           </div>
           <div style="display:flex;gap:10px;flex-wrap:wrap;">
-            <a href="/api/pitch-deck/download" class="btn-hero btn-primary" download="NexusFin_Pitch_Deck_10_Slides.pdf">
-              <span class="btn-icon">📥</span> Download 10-Slide PDF
+            <a href="/api/pitch-deck/download" class="btn-hero btn-primary" download="NexusFin_Platform_Architecture.pdf">
+              <span class="btn-icon">📥</span> Download Architecture PDF
             </a>
             <a href="/api/pitch-deck/view" target="_blank" class="btn-hero btn-secondary">
               <span class="btn-icon">📄</span> Open PDF in New Tab
             </a>
             <button type="button" class="btn-hero btn-secondary" id="openFullscreenDeckBtn">
-              <span class="btn-icon">🖥️</span> Fullscreen Slideshow
+              <span class="btn-icon">🖥️</span> Fullscreen Architecture Guide
             </button>
-            <a href="/api/pitch-deck/original/download" class="btn-hero btn-outline" download="Credit-access-is-not-the-same-as-credit-affordability.pdf">
-              <span class="btn-icon">📁</span> Original Source Deck (PDF)
+            <a href="/docs" target="_blank" class="btn-hero btn-outline">
+              <span class="btn-icon">⚙️</span> Interactive OpenAPI Docs
             </a>
             <button type="button" class="btn-hero btn-outline" id="tabViewSubmissionBtn">
-              <span class="btn-icon">📋</span> Solution Overview
+              <span class="btn-icon">📋</span> Platform Specification
             </button>
           </div>
         </div>
@@ -794,32 +797,32 @@
         <div class="panel" style="border-left:4px solid var(--accent);">
           <div class="panel-header">
             <div>
-              <span class="eyebrow-tag">SOLUTION PROFILE &amp; OBJECTIVE</span>
-              <h3>Challenge Solution Profile</h3>
-              <p>Problem Statement 3: Responsible Credit and Informed Choice • Bangko Sentral ng Pilipinas &amp; GFTN</p>
+              <span class="eyebrow-tag">PLATFORM SPECIFICATION &amp; METHODOLOGY</span>
+              <h3>Decision Support Architecture</h3>
+              <p>Transparent cash flow evaluation, actuarial stress testing, and explainable decision support.</p>
             </div>
             <div>
-              <span class="badge-pill" style="background:#ecfdf5;color:#065f46;">Track 3: Responsible Credit</span>
+              <span class="badge-pill" style="background:#ecfdf5;color:#065f46;">Production-Grade Architecture</span>
             </div>
           </div>
 
           <div class="disclosure-box" style="font-size:15px;line-height:1.7;color:var(--ink-800);background:#f8fafc;">
-            <strong>Solution Description:</strong><br>
-            <em>"NexusFin is a responsible credit decision-support platform that helps consumers understand whether credit is affordable, appropriate, and resilient to financial shocks before they commit. It analyzes income, essential expenses, existing obligations, savings, and credit terms; calculates affordability and total borrowing cost; compares options; and stress-tests scenarios such as income loss or rising expenses. It explains the key factors and trade-offs in plain language rather than relying on an opaque credit score. With consent, NexusFin can also use relevant alternative financial data to support underserved and thin-file borrowers while maintaining privacy, transparency, and human oversight."</em>
+            <strong>Platform Purpose:</strong><br>
+            <em>"NexusFin is a responsible credit decision-support platform that helps consumers and underwriters understand whether credit is affordable, appropriate, and resilient to financial shocks before they commit. It analyzes income, essential expenses, existing obligations, savings, and credit terms; calculates affordability and total borrowing cost; compares options; and stress-tests scenarios such as income loss or rising expenses. It explains the key factors and trade-offs in plain language rather than relying on an opaque credit score. With consent, NexusFin can also use relevant alternative financial data to support underserved and thin-file borrowers while maintaining privacy, transparency, and human oversight."</em>
           </div>
 
           <div class="grid-three-col" style="margin-top:1.25rem;">
             <div class="metric-card">
-              <span class="metric-label">Solo Applicant / Builder</span>
-              <span class="metric-value" style="font-size:16px;">Edwin Mwiti</span>
+              <span class="metric-label">Calculation Engine</span>
+              <span class="metric-value" style="font-size:15px;">Deterministic Actuarial Math</span>
             </div>
             <div class="metric-card">
-              <span class="metric-label">Challenge Focus</span>
-              <span class="metric-value" style="font-size:16px;">Track 3: Responsible Credit</span>
+              <span class="metric-label">Resilience Model</span>
+              <span class="metric-value" style="font-size:15px;">Multi-Dimensional Stress Testing</span>
             </div>
             <div class="metric-card">
               <span class="metric-label">Data Architecture</span>
-              <span class="metric-value" style="font-size:16px;">Responsible Data Governance</span>
+              <span class="metric-value" style="font-size:15px;">Responsible Data Governance</span>
             </div>
           </div>
         </div>
@@ -834,12 +837,13 @@
     <div class="footer-container">
       <div>
         <strong>NexusFin</strong> — Decision Support for Responsible Credit &amp; Informed Choice<br>
-        <span>ASEAN Financial Health Challenge 2026 • Problem Statement 3 • Solo Applicant: Edwin Mwiti</span>
+        <span>© 2026 NexusFin Technologies. Independent financial health and affordability intelligence.</span>
       </div>
       <div class="footer-badges">
-        <span class="footer-badge-pill">GFTN</span>
-        <span class="footer-badge-pill">Bangko Sentral ng Pilipinas (BSP)</span>
-        <span class="footer-badge-pill">Open Finance Standard</span>
+        <a href="#privacy" onclick="App.switchTab('privacy');" class="footer-badge-pill">Privacy by Design</a>
+        <a href="#pitchdeck" onclick="App.switchTab('pitchdeck');" class="footer-badge-pill">Architecture &amp; Methodology</a>
+        <a href="/docs" target="_blank" class="footer-badge-pill">OpenAPI Documentation</a>
+        <span class="footer-badge-pill">Explainable AI</span>
       </div>
     </div>
   </footer>
@@ -849,8 +853,8 @@
     <div class="modal-card">
       <div class="modal-header">
         <div>
-          <span class="eyebrow-tag">PRESENTATION VIEWER</span>
-          <h3 id="modalDeckTitle">NexusFin Pitch Deck — 10 Slides</h3>
+          <span class="eyebrow-tag">PLATFORM OVERVIEW &amp; ARCHITECTURE</span>
+          <h3 id="modalDeckTitle">NexusFin Platform Guide — 10 Key Dimensions</h3>
         </div>
         <button type="button" class="modal-close-btn" id="closePitchDeckModal">✕</button>
       </div>
@@ -858,7 +862,7 @@
         <!-- Rendered active slide inside modal -->
       </div>
       <div class="modal-footer">
-        <a href="/api/pitch-deck/download" class="btn-hero btn-primary" download="NexusFin_Pitch_Deck_10_Slides.pdf">
+        <a href="/api/pitch-deck/download" class="btn-hero btn-primary" download="NexusFin_Platform_Architecture.pdf">
           <span class="btn-icon">📥</span> Download PDF
         </a>
         <button type="button" class="btn-hero btn-secondary" id="closePitchDeckModalFooter">Close</button>
@@ -871,29 +875,29 @@
     <div class="modal-card">
       <div class="modal-header">
         <div>
-          <span class="eyebrow-tag">ASEAN FINANCIAL HEALTH CHALLENGE 2026</span>
-          <h3>Solution Profile &amp; Architecture Overview</h3>
+          <span class="eyebrow-tag">PLATFORM SPECIFICATION</span>
+          <h3>Solution Architecture &amp; Methodology Overview</h3>
         </div>
         <button type="button" class="modal-close-btn" id="closeSubmissionModal">✕</button>
       </div>
       <div class="modal-body">
         <div class="panel" style="background:var(--accent-soft);border-color:var(--accent-light);">
-          <h4 style="margin:0 0 6px;color:var(--accent);font-size:16px;">Problem Statement 3: Responsible Credit and Informed Choice</h4>
+          <h4 style="margin:0 0 6px;color:var(--accent);font-size:16px;">NexusFin Decision Support Platform</h4>
           <p style="margin:0;font-size:13px;color:var(--ink-700);">
-            Organized by the Global Finance &amp; Technology Network (GFTN) and the Bangko Sentral ng Pilipinas (BSP).
+            Independent financial health, transparent affordability calculations, and responsible lending intelligence.
           </p>
         </div>
 
         <div>
-          <h4 style="margin:0 0 8px;font-size:15px;">Solution Summary:</h4>
+          <h4 style="margin:0 0 8px;font-size:15px;">Platform Overview:</h4>
           <div class="disclosure-box" style="font-size:14px;line-height:1.65;">
-            "NexusFin is a responsible credit decision-support platform that helps consumers understand whether credit is affordable, appropriate, and resilient to financial shocks before they commit. It analyzes income, essential expenses, existing obligations, savings, and credit terms; calculates affordability and total borrowing cost; compares options; and stress-tests scenarios such as income loss or rising expenses. It explains the key factors and trade-offs in plain language rather than relying on an opaque credit score. With consent, NexusFin can also use relevant alternative financial data to support underserved and thin-file borrowers while maintaining privacy, transparency, and human oversight."
+            "NexusFin is a responsible credit decision-support platform that helps consumers and underwriters understand whether credit is affordable, appropriate, and resilient to financial shocks before they commit. It analyzes income, essential expenses, existing obligations, savings, and credit terms; calculates affordability and total borrowing cost; compares options; and stress-tests scenarios such as income loss or rising expenses. It explains the key factors and trade-offs in plain language rather than relying on an opaque credit score. With consent, NexusFin can also use relevant alternative financial data to support underserved and thin-file borrowers while maintaining privacy, transparency, and human oversight."
           </div>
         </div>
 
         <div class="grid-two-col">
           <div class="metric-card">
-            <span class="metric-label">Four Strategic Pillars</span>
+            <span class="metric-label">Four Core Pillars</span>
             <ul style="margin:8px 0 0 16px;padding:0;font-size:13px;line-height:1.5;color:var(--ink-700);">
               <li>Deterministic Affordability Calculation</li>
               <li>Multi-Scenario Shock Stress Testing</li>
@@ -902,13 +906,10 @@
             </ul>
           </div>
           <div class="metric-card">
-            <span class="metric-label">Deliverables &amp; Downloads</span>
+            <span class="metric-label">Architecture &amp; API</span>
             <div style="display:flex;flex-direction:column;gap:8px;margin-top:8px;">
-              <a href="/api/pitch-deck/download" class="btn-hero btn-primary" download="NexusFin_Pitch_Deck_10_Slides.pdf" style="font-size:12px;padding:6px 12px;">
-                📥 Official 10-Slide Deck (PDF)
-              </a>
-              <a href="/api/pitch-deck/original/download" class="btn-hero btn-outline" download="Credit-access-is-not-the-same-as-credit-affordability.pdf" style="font-size:12px;padding:6px 12px;">
-                📁 Original Reference Deck (PDF)
+              <a href="/api/pitch-deck/download" class="btn-hero btn-primary" download="NexusFin_Platform_Architecture.pdf" style="font-size:12px;padding:6px 12px;">
+                📥 Architecture Document (PDF)
               </a>
               <a href="/docs" target="_blank" class="btn-hero btn-secondary" style="font-size:12px;padding:6px 12px;">
                 ⚙️ Interactive OpenAPI / Swagger
