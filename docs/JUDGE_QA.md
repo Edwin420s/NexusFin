@@ -1,17 +1,17 @@
-# NexusFin — Judge & Regulatory Q&A Guide
-**ASEAN Financial Health Challenge — Problem Statement 3**
+# NexusFin — Regulatory & Institutional Underwriting Q&A Guide
+**Responsible Credit Decision Support & Affordability Intelligence Platform**
 
-This document provides strategic, rigorous answers to questions that judges, regulators (e.g., Bangko Sentral ng Pilipinas), and Financial Health Champions are likely to ask during clinics, interviews, and final presentations.
+This document provides rigorous answers to technical, methodological, and regulatory questions frequently raised by risk officers, regulators, and financial institutions.
 
 ---
 
 ### Q1: "How does NexusFin differ from existing credit scoring apps and credit bureaus?"
 **Answer:**
-> "Existing credit bureaus and credit scoring models are fundamentally **lender-centric risk predictors** designed to answer one question: *'Will the lender get repaid?'* They often produce an opaque number (e.g., 680) based on historical formal credit usage.
+> "Existing credit bureaus and credit scoring models are fundamentally **lender-centric risk predictors** designed to answer one question: *'Will the lender get repaid?'* They often produce an opaque 3-digit score (e.g., 680) based on historical formal credit usage.
 >
-> NexusFin is a **dual-sided financial resilience decision-support platform**. It does not try to replace underwriting or predict credit default probabilities with a black-box model. Instead, it asks: *'Can this borrower realistically afford this loan under normal conditions and realistic life shocks without sliding into financial distress?'*
+> NexusFin is an **independent financial resilience decision-support platform**. It does not replace underwriting or predict credit default probabilities with a black-box model. Instead, it answers: *'Can this borrower realistically afford this loan under normal conditions and realistic life shocks without sliding into distress?'*
 >
-> Furthermore, NexusFin translates actuarial and cash-flow reality into plain, transparent language and Key Facts Comparisons for the borrower, directly addressing the 'informed choice' mandate of Problem Statement 3."
+> Furthermore, NexusFin translates actuarial and cash-flow reality into plain, transparent language and standardized Key Facts Statements for both the borrower and the underwriter, eliminating credit opacity before contracts are executed."
 
 ---
 
@@ -45,23 +45,23 @@ This document provides strategic, rigorous answers to questions that judges, reg
 > NexusFin addresses income volatility in three ways:
 > 1. **Income Volatility Input & Detection:** Ingested transactions or declared profiles calculate an estimated volatility coefficient (e.g., 20% to 40%).
 > 2. **Dynamic Review Bands:** If a borrower has high income variability (>30%), a loan that appears manageable in a peak month is automatically flagged for *'Review Carefully'* if the buffer is less than 20% of income.
-> 3. **The 25% Flagship Shock Test:** We specifically simulate a 25% income drop scenario to show the borrower exactly what happens during their off-peak or rainy season before they commit."
+> 3. **The 25% Flagship Shock Test:** We specifically simulate a 25% income drop scenario to show the borrower exactly what happens during their off-peak or seasonal slowdown before they commit."
 
 ---
 
 ### Q5: "How does the business model work? Who pays for NexusFin?"
 **Answer:**
 > "NexusFin follows a sustainable **B2B SaaS and Open Finance API model**:
-> 1. **B2B Lending Partners (Banks, Rural Banks, Cooperatives, FinTechs):** Financial institutions pay an API subscription or per-assessment fee to integrate NexusFin’s affordability and stress-testing engine into their digital loan origination journeys. This improves their underwriting quality, reduces 90-day non-performing loans (NPLs), and fulfills regulatory consumer-protection compliance.
-> 2. **Financial Health & Employer Wellness Channels:** Gig platforms (Grab, Foodpanda) and large employers integrate NexusFin as a worker financial resilience benefit.
-> 3. **Free Consumer Tier:** The core consumer credit-fit workspace remains free, unburdened by advertising or referral commissions from predatory high-cost lenders, protecting our neutrality and borrower trust."
+> 1. **B2B Lending Partners (Banks, Community Banks, Cooperatives, FinTechs):** Financial institutions pay an API subscription or per-assessment fee to integrate NexusFin’s affordability and stress-testing engine into their digital loan origination journeys. This improves underwriting quality, reduces 90-day non-performing loans (NPLs), and fulfills regulatory consumer-protection compliance.
+> 2. **Financial Health & Employer Wellness Channels:** Gig platforms and employers integrate NexusFin as a worker financial resilience benefit.
+> 3. **Free Consumer Tier:** The core consumer workspace remains free, unburdened by advertising or referral commissions from predatory high-cost lenders, protecting neutrality and borrower trust."
 
 ---
 
-### Q6: "What is your pilot roadmap with Bangko Sentral ng Pilipinas (BSP) or Financial Health Champions?"
+### Q6: "What is your deployment and institutional integration roadmap?"
 **Answer:**
-> "Our pilot roadmap is structured into 4 phases:
-> * **Phase 1 (Months 1–2):** Deploy NexusFin within the BSP Regulatory Sandbox in collaboration with a partner Philippine rural bank or digital microfinance institution (e.g., ASA Philippines or CARD Bank).
-> * **Phase 2 (Months 3–4):** Controlled testing with a pilot cohort of 1,000 gig and MSME borrowers. Measure comprehension of Key Facts, rate of loan renegotiation/right-sizing, and user satisfaction.
+> "Our deployment roadmap is structured into 4 phases:
+> * **Phase 1 (Months 1–2):** Controlled deployment with partner community lenders and microfinance institutions.
+> * **Phase 2 (Months 3–4):** Controlled testing with a pilot cohort of 1,000 gig and MSME borrowers. Measure comprehension of Key Facts, rate of loan right-sizing, and borrower satisfaction.
 > * **Phase 3 (Months 5–6):** Longitudinal tracking of 90-day loan performance in the pilot cohort compared to traditional underwriting controls.
-> * **Phase 4 (Months 7+):** Regional rollout leveraging ASEAN Open Finance rails across Indonesia, Vietnam, and Thailand."
+> * **Phase 4 (Months 7+):** Multi-market rollout across Southeast Asia, East Africa, and emerging credit markets."
