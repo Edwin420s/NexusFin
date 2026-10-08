@@ -17,13 +17,13 @@ from backend.app.storage.memory_db import record_audit, store_assessment
 
 router = APIRouter(prefix="/api", tags=["Assessment"])
 
-# Realistic personas for ASEAN Financial Health Challenge
+# Curated representative borrower presets
 PERSONA_PRESETS = [
     {
         "id": "carlos_manila",
-        "label": "Carlos — Manila Food & Delivery Gig Rider (PHP)",
+        "label": "Delivery & Logistics Contractor (PHP)",
         "country": "Philippines",
-        "description": "Earns variable gig income across Grab and Foodpanda. Seeking loan for motorcycle repair and smartphone upgrade.",
+        "description": "Earns variable platform gig income. Evaluating a microloan for vehicle repair and smartphone upgrade.",
         "profile": {
             "currency": "PHP",
             "income": {"monthly": 38000, "variability_pct": 25.0, "employment_type": "gig_worker"},
@@ -47,9 +47,9 @@ PERSONA_PRESETS = [
     },
     {
         "id": "aisha_nairobi",
-        "label": "Aisha — Nairobi Digital MSME & Freelancer (KES)",
+        "label": "Digital MSME & Freelancer (KES)",
         "country": "Kenya",
-        "description": "Graphic designer and micro-merchant using M-Pesa. Seeking working capital to purchase equipment.",
+        "description": "Graphic designer and digital merchant. Seeking working capital to purchase equipment.",
         "profile": {
             "currency": "KES",
             "income": {"monthly": 65000, "variability_pct": 20.0, "employment_type": "freelance_msme"},
@@ -73,7 +73,7 @@ PERSONA_PRESETS = [
     },
     {
         "id": "dewi_jakarta",
-        "label": "Dewi — Jakarta Warung Small Trader (IDR)",
+        "label": "Small Retail Merchant (IDR)",
         "country": "Indonesia",
         "description": "Small kiosk retailer with high inventory turnover and modest savings buffer.",
         "profile": {
@@ -102,7 +102,7 @@ PERSONA_PRESETS = [
 
 @router.get("/presets")
 def get_presets():
-    """Returns curated demo personas reflecting ASEAN financial contexts."""
+    """Returns curated demo personas reflecting diverse real-world financial contexts."""
     return {"presets": PERSONA_PRESETS}
 
 
