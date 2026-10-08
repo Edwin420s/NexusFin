@@ -10,14 +10,13 @@ from backend.app.config import (
     APP_NAME,
     APP_DESCRIPTION,
     APP_VERSION,
-    CHALLENGE,
     FRONTEND_DIR,
 )
 from backend.app.routers import assess, compare, transactions, consent, partner, pitch_deck
 
 app = FastAPI(
     title=f"{APP_NAME} API",
-    description=f"{APP_DESCRIPTION}\n\nSubmission for {CHALLENGE}",
+    description=APP_DESCRIPTION,
     version=APP_VERSION,
     docs_url="/docs",
     redoc_url="/redoc",
@@ -48,7 +47,6 @@ def health():
         "status": "healthy",
         "product": APP_NAME,
         "version": APP_VERSION,
-        "challenge": CHALLENGE,
     }
 
 
