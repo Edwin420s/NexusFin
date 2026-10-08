@@ -1,88 +1,98 @@
-# NexusFin — Responsible Credit & Informed Choice Platform
+# NexusFin — Responsible Credit Decision Support & Affordability Intelligence
 
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688.svg?style=flat&logo=fastapi)](https://fastapi.tiangolo.com)
 [![Python](https://img.shields.io/badge/Python-3.12%20%7C%203.14-blue.svg)](https://python.org)
-[![Tests](https://img.shields.io/badge/Tests-27%2F27%20Passing-brightgreen.svg)]()
-[![Challenge](https://img.shields.io/badge/Challenge-ASEAN%20Financial%20Health%202026-orange.svg)](https://gftn.com)
-[![Track](https://img.shields.io/badge/Track-Problem%20Statement%203-blueviolet.svg)]()
+[![Tests](https://img.shields.io/badge/Tests-32%2F32%20Passing-brightgreen.svg)]()
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![OpenAPI](https://img.shields.io/badge/OpenAPI-3.1-indigo.svg)](http://127.0.0.1:8000/docs)
 
-> **"Understand the credit before it becomes a burden."**  
-> An explainable, AI-assisted financial health and credit decision-support platform built for the **ASEAN Financial Health Challenge 2026** (organized by the Global Finance & Technology Network [GFTN] and the Bangko Sentral ng Pilipinas [BSP]).
-
----
-
-## 🌟 Executive Summary
-
-Digital credit across Southeast Asia is expanding exponentially. However, **credit access is not the same as credit affordability**. Tens of millions of gig workers, freelancers, and micro-entrepreneurs qualify for instant loans on their phones, but have no way of understanding whether repayments remain sustainable when income drops or expenses spike. Traditional credit bureaus have thin files on these borrowers, while predatory digital apps trap households in compounding debt.
-
-**NexusFin** bridges this gap through a dual-sided decision-support infrastructure:
-1. **For Borrowers:** An interactive, plain-language financial health workspace that calculates true cash-flow capacity, simulates 6 real-life shock scenarios, and standardizes competing offers into a Key Facts comparison.
-2. **For Lenders & Regulators:** A responsible underwriting portal that evaluates consented alternative transaction data, enforces data minimization, monitors portfolio debt burden, and maintains a transparent governance audit trail.
+> **"Understand credit before it becomes a burden."**  
+> NexusFin is an explainable financial health and credit decision-support platform designed to prevent over-indebtedness, demystify borrowing terms, and empower borrowers and lenders with transparent affordability intelligence.
 
 ---
 
-## 🎯 Challenge Problem Statement Alignment
+## 🌟 Product Overview
 
-| Official Challenge Requirement | How NexusFin Solves It |
+Digital lending has expanded rapidly across emerging and frontier markets. However, **credit access is not the same as credit affordability**. Tens of millions of gig workers, freelancers, and micro-entrepreneurs can qualify for digital loans on their smartphones in minutes, but have no independent way to test whether repayments will remain sustainable when income drops or essential expenses surge.
+
+Furthermore, traditional credit scoring models rely heavily on static bureau histories that thin-file borrowers lack. Lenders frequently disguise high financing costs using flat-rate interest quotes and hidden disbursement fees, trapping vulnerable households in compounding cycles of re-borrowing.
+
+**NexusFin** solves this problem through a dual-sided decision-support infrastructure:
+
+1. **For Borrowers:** An interactive, plain-language financial health workspace that calculates true disposable cash flow, stress-tests commitments against 6 real-world shock scenarios, and standardizes competing offers into a clear Key Facts comparison.
+2. **For Lenders & Underwriters:** An institutional portal that evaluates consented alternative transaction signals, models income volatility, checks regulatory affordability thresholds, and maintains a transparent governance audit trail.
+
+---
+
+## 💡 Core Product Pillars
+
+| Pillar | How NexusFin Operates |
 | :--- | :--- |
-| **Improve Credit Assessment** | Uses consented alternative transaction cash flows to identify income regularity, volatility, and recurring obligations for thin-file borrowers. |
-| **Avoid Over-Indebtedness** | Calculates combined debt-service burden (DTI) and runs deterministic stress tests across 6 macroeconomic and household shocks. |
-| **Make Informed Choices** | Multi-offer comparison matrix presenting standardized Key Facts Statements, total borrowing costs, and explicit term trade-offs. |
-| **Responsible AI & Governance** | 100% deterministic safety-critical math; zero contact-list or social-media scraping; granular, revocable consent controls; governance audit trail. |
-| **ASEAN Localization & Scale** | Pre-calibrated for all ASEAN currencies (PHP, IDR, SGD, MYR, THB, VND) and emerging market contexts (KES, USD) with 1-click regional personas. |
+| **Deterministic Affordability** | 100% auditable actuarial formulas calculate reducing-balance schedules, upfront fees, ongoing service charges, and true Annual Percentage Rates (APR). |
+| **Multi-Scenario Stress Testing** | Evaluates loan commitments across 6 macroeconomic and household shock scenarios to verify buffer resilience before signing. |
+| **Standardized Key Facts Statement** | Compares competing loan offers side-by-side, exposing flat-rate markups, total financing costs, and monthly cash impact. |
+| **Consented Alternative Data** | Ingests bank and mobile-money statement CSVs to reconstruct verified cash flows, model income volatility (CV), and detect undeclared debt without invasive surveillance. |
+| **Privacy by Design** | Granular, revocable consent controls for every data source with declared legal basis, purpose limitation, and an immutable audit trail. |
+| **Multi-Currency Localization** | Pre-calibrated for international and emerging-market currencies (`PHP`, `KES`, `SGD`, `IDR`, `MYR`, `THB`, `VND`, `USD`) with dynamic symbol and locale formatting. |
 
 ---
 
-## 🏗️ The 10 Core Modules
+## 📐 Mathematical Framework & Methodology
 
-1. **Financial Health Profile:** Captures gross income, income volatility, essential living expenses, existing debt commitments, liquid savings, and planned savings goals.
-2. **Deterministic Loan Cost Engine:** Computes exact amortization schedules, flat-rate comparisons, upfront origination fees, monthly maintenance fees, and total financing charges.
-3. **Affordability & Buffer Engine:** Computes baseline disposable cash flow and post-credit monthly buffer. *(Planned savings is strictly treated as an emergency cushion, never penalized as debt).*
-4. **Multi-Scenario Stress Testing Engine:** Simulates 6 realistic shock scenarios:
-   * Base Case (100% income, 100% expenses)
-   * 10% Income Dip (minor seasonal slowdown)
-   * **25% Income Shock (Flagship Scenario: gig delivery downtime, client loss)**
-   * 40% Severe Disruption (prolonged illness or loss of primary client)
-   * 20% Essential Expense Surge (food/fuel inflation or family medical emergency)
-   * Combined Dual Shock (25% income contraction + 20% expense surge)
-5. **Multi-Offer Comparison (Key Facts Statement):** Side-by-side comparison of up to 5 competing credit options with tags for *Lowest Monthly*, *Lowest Total Cost*, and *Most Resilient*.
-6. **Evidence-Based Multidimensional Resilience Overview:** Transparent evaluation across baseline buffer, debt-service burden, liquid savings runway, and shock survivability ending with clear qualitative conclusion (zero black-box scoring).
-7. **Consented Alternative Data Engine:** Automated CSV transaction parsing, income regularity detection, expense categorization, and volatility coefficient estimation.
-8. **Plain-Language Explainability Layer:** Replaces black-box scores with structured reason codes, explicit term trade-offs, and actionable consumer recommendations.
-9. **Privacy by Design & Consent Registry:** Granular opt-in/opt-out toggles for each data source with declared legal purpose and retention periods.
-10. **Institutional Underwriter Portal & Governance Audit Trail:** Dedicated portal for microfinance institutions and partner banks with a transparent audit trail.
+NexusFin strictly isolates deterministic financial arithmetic from plain-language explainability. We never produce arbitrary 3-digit credit scores or automated algorithmic rejections.
 
----
+### 1. Loan Instalment Calculation
+* **Amortizing (Reducing Balance):**
+  $$M = P \cdot \frac{r(1+r)^n}{(1+r)^n - 1} + \text{Fee}_{\text{monthly}}$$
+  where $P$ is principal, $r = \frac{r_{\text{annual}}}{12 \times 100}$, and $n$ is repayment term in months.
 
-## 📐 Mathematical Integrity
+* **Flat Rate:**
+  $$M = \frac{P + (P \cdot r_{\text{annual}} \cdot \frac{n}{12})}{n} + \text{Fee}_{\text{monthly}}$$
 
+### 2. Cash-Flow Buffer & Debt Burden
 $$\text{Base Available Cash Flow} = \text{Income} - \text{Essential Expenses} - \text{Existing Debt}$$
-$$\text{Post-Loan Buffer} = \text{Base Available Cash Flow} - \text{Monthly Repayment}$$
-$$\text{Debt-Service Burden} = \frac{\text{Existing Debt} + \text{Monthly Repayment}}{\text{Income}} \times 100\%$$
+$$\text{Post-Credit Buffer} = \text{Base Available Cash Flow} - \text{Monthly Repayment}$$
+$$\text{Debt-Service Burden (DTI)} = \frac{\text{Existing Debt} + \text{Monthly Repayment}}{\text{Income}} \times 100\%$$
 
-> ⚠️ **Key Innovation:** Unlike legacy calculators that incorrectly subtract savings as an outflow, NexusFin treats planned savings as an emergency buffer. Prudent savers are never penalized in affordability assessments.
+> 💡 **The Prudent Savings Principle:** Unlike conventional calculators that erroneously deduct planned savings as a mandatory debt payment, NexusFin treats planned savings as an emergency buffer. Borrowers who save are rewarded with greater runway, never penalized in affordability checks.
+
+### 3. Shock Stress Testing Engine
+Every proposed commitment is dynamically stress-tested against 6 scenarios:
+1. **Base Case:** Current declared income and essential expenses.
+2. **Income −10%:** Mild seasonal contraction or brief platform downtime.
+3. **Income −25% (Flagship Benchmark):** Platform gig slowdown, temporary client loss, or vehicle downtime.
+4. **Income −40%:** Prolonged illness, economic recession, or major contract loss.
+5. **Expenses +20%:** Inflation in food, transport, or essential medical costs.
+6. **Combined Dual Shock:** Income −25% accompanied simultaneously by Expenses +20%.
 
 ---
 
 ## 🚀 Quick Start & Installation
 
-### Option 1: Native Startup (Recommended)
+### Prerequisites
+* Python 3.12+ (or 3.14)
+* Git
+
+### Option 1: Native Startup
 
 ```bash
-# Clone and enter the repository
-cd /home/skywalker/Projects/prj/Hack/NexusFin
+# Clone the repository
+git clone https://github.com/Edwin420s/NexusFin.git
+cd NexusFin
 
-# Run the automated launch script
+# Run the automated startup script
 ./run.sh
 ```
 
-Open your browser to:
-* **Application UI:** [http://127.0.0.1:8000](http://127.0.0.1:8000)
-* **Interactive OpenAPI Docs:** [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+The script will launch the FastAPI backend with Uvicorn. Access the platform at:
+* **Web Application:** [http://127.0.0.1:8000](http://127.0.0.1:8000)
+* **Interactive OpenAPI (Swagger):** [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+* **ReDoc Documentation:** [http://127.0.0.1:8000/redoc](http://127.0.0.1:8000/redoc)
 
-### Option 2: Docker / Containerized Launch
+### Option 2: Docker Container
 
 ```bash
+# Build and run container
 docker compose up --build
 ```
 
@@ -90,14 +100,22 @@ docker compose up --build
 
 ## 🧪 Automated Test Suite
 
-NexusFin includes automated unit and integration tests covering calculation formulas, edge cases, alternative data classification, and API routes.
+NexusFin maintains comprehensive test coverage across mathematical calculation engines, edge cases, alternative data classification, and API routes:
 
 ```bash
-# Run the test suite
 PYTHONPATH=. pytest -v
 ```
 
-**Results:** `27 passed in 0.82s`
+**Test Suite Coverage (32/32 Passing):**
+* `test_affordability.py`: Zero interest calculations, flat vs amortizing, buffer logic, affordability bands.
+* `test_stress.py`: 6 scenario generations, deficit detection under severe contraction.
+* `test_comparison.py`: Multi-offer ranking, lowest cost, lowest monthly, resilience ordering.
+* `test_alternative_data.py`: Rule-based statement classification, CSV ingestion and volatility estimation.
+* `test_api.py`: Health check, presets, assess endpoint, compare endpoint, consent registry, audit trail, sample statements, partner portal, SPA fallback.
+* `test_e2e_flow.py`: Full borrower-to-underwriter lifecycle journey across all 8 currencies.
+* `test_currency_and_localization.py`: Multi-currency metadata, calculation validation, and localized symbol output across PHP, KES, SGD, IDR, MYR, THB, VND, USD.
+* `test_regulatory_governance.py`: Data source privacy specifications, consent grant and revocation lifecycle, and underwriter audit trail logging.
+* `test_pitch_deck.py`: Architecture slides and whitepaper PDF endpoints.
 
 ---
 
@@ -108,13 +126,13 @@ NexusFin/
 ├── backend/
 │   ├── app/
 │   │   ├── main.py                  # FastAPI application entry point & SPA router
-│   │   ├── config.py                # App configuration, metadata, ASEAN currencies
+│   │   ├── config.py                # App configuration, currency metadata, paths
 │   │   ├── models/
 │   │   │   ├── schemas.py           # Pydantic v2 request & response schemas
-│   │   │   └── audit.py             # Audit trail and data governance models
+│   │   │   └── audit.py             # Audit trail and governance data models
 │   │   ├── engine/
 │   │   │   ├── affordability.py     # Deterministic affordability & cash flow engine
-│   │   │   ├── stress_test.py       # 6-scenario stress testing engine
+│   │   │   ├── stress_test.py       # 6-scenario shock stress testing engine
 │   │   │   ├── comparison.py        # Multi-offer comparison & Key Facts engine
 │   │   │   ├── resilience.py        # Multidimensional resilience assessment
 │   │   │   ├── alternative_data.py  # Transaction ingestion & categorization
@@ -124,42 +142,49 @@ NexusFin/
 │   │   │   ├── compare.py           # /api/compare
 │   │   │   ├── transactions.py      # /api/transactions & sample datasets
 │   │   │   ├── consent.py           # /api/consent & /api/audit-log
-│   │   │   └── partner.py           # /api/partner underwriter portal
+│   │   │   ├── partner.py           # /api/partner underwriter portal
+│   │   │   └── pitch_deck.py        # /api/pitch-deck platform architecture & docs
 │   │   └── storage/
 │   │       └── memory_db.py         # In-memory store, consent registry & audit logs
-│   ├── requirements.txt             # Python dependencies
-│   └── tests/                       # 27 unit and integration tests
+│   ├── requirements.txt             # Backend dependencies
+│   └── tests/                       # Automated pytest suite (27 tests)
 ├── frontend/
-│   ├── index.html                   # High-fidelity single page application
+│   ├── index.html                   # High-fidelity Single Page Application
 │   ├── css/
-│   │   └── styles.css               # Design system & responsive layout
+│   │   └── styles.css               # Design system & responsive UI styles
 │   └── js/
-│       ├── api.js                   # Client REST API module
-│       ├── state.js                 # Global application state & formatting
-│       ├── ui.js                    # DOM rendering & dynamic tables
+│       ├── api.js                   # Client REST API connector
+│       ├── state.js                 # Global state management & currency formatting
+│       ├── ui.js                    # UI rendering & dynamic DOM components
 │       └── app.js                   # Main application controller
 ├── data/
-│   ├── sample_transactions_manila_gig_rider.csv    # Carlos (PHP - Manila)
-│   ├── sample_transactions_kenya_freelancer.csv    # Aisha (KES - Nairobi)
-│   └── sample_transactions_jakarta_merchant.csv    # Dewi (IDR - Jakarta)
+│   ├── sample_transactions_manila_gig_rider.csv    # Gig delivery statement (PHP)
+│   ├── sample_transactions_kenya_freelancer.csv    # Digital freelancer statement (KES)
+│   └── sample_transactions_jakarta_merchant.csv    # Small retailer statement (IDR)
 ├── docs/
-│   ├── PITCH_DECK.md                # 10-Slide Competition Pitch Deck Script
-│   ├── DEMO_SCRIPT_3MIN.md          # 3-Minute Demo Video Walkthrough Script
-│   ├── JUDGE_QA.md                  # Comprehensive Judge & Regulatory Q&A Guide
-│   └── ARCHITECTURE.md              # Technical Architecture & ASEAN Scaling Roadmap
-├── Dockerfile                       # Production Docker container
+│   ├── ARCHITECTURE.md              # Technical Architecture & System Specifications
+│   ├── PLATFORM_OVERVIEW.md         # 10 Key Dimensions & Product Blueprint
+│   ├── PRODUCT_WALKTHROUGH.md       # Interactive Product Walkthrough Guide
+│   └── REGULATORY_QA.md             # Regulatory Compliance & Underwriting Q&A
+├── Dockerfile                       # Production Docker container definition
 ├── docker-compose.yml               # Container orchestration
-├── run.sh                           # One-click startup script
-└── README.md                        # Project documentation
+├── run.sh                           # Native launch script
+└── README.md                        # Documentation
 ```
 
 ---
 
-## 👥 Competition Submission Details
+## 🛡️ Responsible Data Governance
 
-* **Event:** ASEAN Financial Health Challenge 2026
-* **Track:** Problem Statement 3 — Responsible Credit and Informed Choice
-* **Format:** Technical Product (Working Prototype & Pilot-Ready System)
-* **Team Name:** NexusFin
-* **Solo Applicant / Team Leader:** Edwin Mwiti
-* **Contact:** eduedwyn5@gmail.com
+NexusFin adheres to strict ethical and privacy standards:
+* **Zero Invasive Scraping:** No access to phone contacts, photos, social media profiles, or continuous geolocation tracking.
+* **Data Minimization:** Only consented financial transactions, recurring debits, and verified cash flows are processed.
+* **Granular Consent:** Borrowers can grant or revoke access to individual data sources at any time.
+* **Regulatory Auditability:** Every data access, assessment calculation, and underwriter review is logged to an immutable audit trail.
+* **Transparent Explainability:** Every assessment outcome is accompanied by explicit plain-language reason codes, buffer metrics, and negotiation levers.
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
