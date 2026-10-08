@@ -8,7 +8,7 @@ const App = {
     UI.updateCurrencySymbols();
 
     try {
-      // 1. Fetch ASEAN Presets
+      // 1. Fetch Borrower Presets
       const presetsRes = await API.fetchPresets();
       AppState.presets = presetsRes.presets || [];
       this.populatePresetDropdown(AppState.presets);
