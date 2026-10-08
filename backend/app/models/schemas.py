@@ -12,7 +12,7 @@ class Income(BaseModel):
 
 
 class Profile(BaseModel):
-    currency: Literal["PHP", "KES", "SGD", "IDR", "MYR", "THB", "VND", "USD"] = "PHP"
+    currency: Literal["PHP", "KES", "SGD", "IDR", "MYR", "THB", "VND", "USD", "EUR", "GBP"] = "PHP"
     income: Income
     essential_expenses: float = Field(..., ge=0, description="Monthly essential living expenses (rent, food, utilities, health)")
     existing_debt_payments: float = Field(default=0.0, ge=0, description="Current monthly debt repayments (bank, BNPL, informal)")

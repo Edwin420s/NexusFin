@@ -102,8 +102,8 @@ def test_full_consumer_to_partner_journey():
 
 
 def test_all_supported_currencies():
-    """Verify system computes correctly across all 8 supported international and regional currencies."""
-    currencies = ["PHP", "KES", "SGD", "IDR", "MYR", "THB", "VND", "USD"]
+    """Verify system computes correctly across all 10 supported international and regional currencies."""
+    currencies = ["PHP", "KES", "SGD", "IDR", "MYR", "THB", "VND", "USD", "EUR", "GBP"]
     for curr in currencies:
         payload = {
             "profile": {

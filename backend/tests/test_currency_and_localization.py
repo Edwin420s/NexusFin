@@ -9,7 +9,7 @@ client = TestClient(app)
 
 def test_supported_currencies_structure():
     """Verify all 8 currencies have required symbol, name, and locale metadata."""
-    expected_currencies = ["PHP", "KES", "SGD", "IDR", "MYR", "THB", "VND", "USD"]
+    expected_currencies = ["PHP", "KES", "SGD", "IDR", "MYR", "THB", "VND", "USD", "EUR", "GBP"]
     for curr in expected_currencies:
         assert curr in CURRENCY_CONFIG
         meta = CURRENCY_CONFIG[curr]
@@ -31,6 +31,8 @@ def test_assessment_in_each_currency():
         "THB": (35000, 20000, 30000),
         "VND": (18000000, 11000000, 15000000),
         "USD": (3200, 1800, 2500),
+        "EUR": (2800, 1600, 2200),
+        "GBP": (2500, 1400, 2000),
     }
 
     for curr, (inc, exp, principal) in base_amounts.items():

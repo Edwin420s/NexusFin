@@ -12,7 +12,9 @@ const AppState = {
     MYR: 'RM',
     THB: '฿',
     VND: '₫',
-    USD: '$'
+    USD: '$',
+    EUR: '€',
+    GBP: '£'
   },
   activeTab: 'assessment',
   viewMode: 'consumer', // 'consumer' | 'partner'
