@@ -174,7 +174,7 @@ const App = {
   populatePresetDropdown(presets) {
     const select = document.getElementById('presetSelect');
     if (!select) return;
-    select.innerHTML = '<option value="" disabled selected>✨ Load Example Profile...</option>' +
+    select.innerHTML = '<option value="" disabled selected>Load Example Profile...</option>' +
       presets.map(p => `
         <option value="${p.id}">${p.label}</option>
       `).join('');
@@ -248,7 +248,7 @@ const App = {
       alert(`Assessment failed: ${err.message}`);
     } finally {
       assessBtn.disabled = false;
-      assessBtn.innerHTML = '⚡ Assess Affordability & Resilience';
+      assessBtn.innerHTML = 'Assess Affordability & Resilience';
     }
   },
 
@@ -328,7 +328,7 @@ const App = {
       alert(`Comparison failed: ${err.message}`);
     } finally {
       compBtn.disabled = false;
-      compBtn.textContent = '📊 Generate Key Facts Comparison';
+      compBtn.textContent = 'Generate Key Facts Comparison';
     }
   },
 
@@ -366,7 +366,7 @@ const App = {
     document.getElementById('essentialExpenses').value = d.detected_expenses;
     document.getElementById('existingDebt').value = d.detected_debt_payments;
 
-    alert('✓ Profile updated with detected transaction values! Switched to Assessment tab.');
+    alert('Profile updated with detected transaction values! Switched to Assessment tab.');
     this.switchTab('assessment');
   },
 
