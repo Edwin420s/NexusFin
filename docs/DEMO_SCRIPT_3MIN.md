@@ -15,7 +15,7 @@
 ---
 
 ### [0:25 – 1:15] Tab 1: Affordability Engine & Shock Stress Testing
-**Visual:** Screen recording of Tab 1. Select the *"Delivery & Logistics Contractor (PHP)"* sample profile. Click *"⚡ Assess Affordability & Resilience"*.
+**Visual:** Screen recording of Tab 1. Select the *"Delivery & Logistics Contractor (PHP)"* sample profile. Click *"Assess Affordability & Resilience"*.
 **Script:**
 > "Let’s take Carlos, a delivery contractor earning about ₱38,000 a month with 25% income variability. He is evaluating a ₱35,000 microloan over 10 months.
 > With one click, NexusFin computes the exact deterministic cash-flow impact.
@@ -28,7 +28,7 @@
 ---
 
 ### [1:15 – 1:55] Tab 2: Informed Choice & Comparative Key Facts
-**Visual:** Click Tab 2: *"02 Compare Credit Offers"*. Click *"📊 Generate Key Facts Comparison"*. Show the side-by-side comparison matrix.
+**Visual:** Click Tab 2: *"02 Compare Credit Offers"*. Click *"Generate Key Facts Comparison"*. Show the side-by-side comparison matrix.
 **Script:**
 > "Now let's examine **Informed Choice**.
 > Borrowers are frequently marketed loans using flat monthly rates that obscure the true cost of borrowing.
