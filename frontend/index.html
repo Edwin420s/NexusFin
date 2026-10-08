@@ -980,19 +980,22 @@
   -H "Content-Type: application/json" \
   -d '{
     "profile": {
-      "monthly_income": 38000,
+      "currency": "PHP",
+      "income": {
+        "monthly": 38000,
+        "variability_pct": 20
+      },
       "essential_expenses": 21000,
       "existing_debt_payments": 4500,
       "liquid_savings": 15000,
-      "income_variability_pct": 20,
-      "currency": "PHP"
+      "goal_savings": 2000
     },
     "offer": {
       "name": "Micro-Business Loan",
       "principal": 35000,
-      "annual_interest_rate_pct": 18,
+      "annual_interest_rate": 18,
       "term_months": 10,
-      "calculation_type": "amortizing"
+      "repayment_type": "amortizing"
     }
   }'</code></pre>
               </div>
@@ -1005,25 +1008,28 @@
   -H "Content-Type: application/json" \
   -d '{
     "profile": {
-      "monthly_income": 38000,
+      "currency": "PHP",
+      "income": {
+        "monthly": 38000,
+        "variability_pct": 20
+      },
       "essential_expenses": 21000,
-      "existing_debt_payments": 4500,
-      "currency": "PHP"
+      "existing_debt_payments": 4500
     },
     "offers": [
       {
         "name": "Community Amortizing",
         "principal": 35000,
-        "annual_interest_rate_pct": 18,
+        "annual_interest_rate": 18,
         "term_months": 10,
-        "calculation_type": "amortizing"
+        "repayment_type": "amortizing"
       },
       {
         "name": "Digital Flat Rate",
         "principal": 35000,
-        "annual_interest_rate_pct": 14,
+        "annual_interest_rate": 14,
         "term_months": 10,
-        "calculation_type": "flat"
+        "repayment_type": "flat"
       }
     ]
   }'</code></pre>
