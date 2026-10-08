@@ -11,7 +11,7 @@
 
 ---
 
-## 🌟 Product Overview
+## Product Overview
 
 Digital lending has expanded rapidly across emerging and frontier markets. However, **credit access is not the same as credit affordability**. Tens of millions of gig workers, freelancers, and micro-entrepreneurs can qualify for digital loans on their smartphones in minutes, but have no independent way to test whether repayments will remain sustainable when income drops or essential expenses surge.
 
@@ -24,7 +24,7 @@ Furthermore, traditional credit scoring models rely heavily on static bureau his
 
 ---
 
-## 💡 Core Product Pillars
+## Core Product Pillars
 
 | Pillar | How NexusFin Operates |
 | :--- | :--- |
@@ -37,7 +37,7 @@ Furthermore, traditional credit scoring models rely heavily on static bureau his
 
 ---
 
-## 📐 Mathematical Framework & Methodology
+## Mathematical Framework & Methodology
 
 NexusFin strictly isolates deterministic financial arithmetic from plain-language explainability. We never produce arbitrary 3-digit credit scores or automated algorithmic rejections.
 
@@ -54,7 +54,7 @@ $$\text{Base Available Cash Flow} = \text{Income} - \text{Essential Expenses} - 
 $$\text{Post-Credit Buffer} = \text{Base Available Cash Flow} - \text{Monthly Repayment}$$
 $$\text{Debt-Service Burden (DTI)} = \frac{\text{Existing Debt} + \text{Monthly Repayment}}{\text{Income}} \times 100\%$$
 
-> 💡 **The Prudent Savings Principle:** Unlike conventional calculators that erroneously deduct planned savings as a mandatory debt payment, NexusFin treats planned savings as an emergency buffer. Borrowers who save are rewarded with greater runway, never penalized in affordability checks.
+> **The Prudent Savings Principle:** Unlike conventional calculators that erroneously deduct planned savings as a mandatory debt payment, NexusFin treats planned savings as an emergency buffer. Borrowers who save are rewarded with greater runway, never penalized in affordability checks.
 
 ### 3. Shock Stress Testing Engine
 Every proposed commitment is dynamically stress-tested against 6 scenarios:
@@ -67,7 +67,7 @@ Every proposed commitment is dynamically stress-tested against 6 scenarios:
 
 ---
 
-## 🚀 Quick Start & Installation
+## Quick Start & Installation
 
 ### Prerequisites
 * Python 3.12+ (or 3.14)
@@ -98,7 +98,7 @@ docker compose up --build
 
 ---
 
-## 🧪 Automated Test Suite
+## Automated Test Suite
 
 NexusFin maintains comprehensive test coverage across mathematical calculation engines, edge cases, alternative data classification, and API routes:
 
@@ -119,7 +119,7 @@ PYTHONPATH=. pytest -v
 
 ---
 
-## 📁 Repository Structure
+## Repository Structure
 
 ```
 NexusFin/
@@ -151,7 +151,6 @@ NexusFin/
 ├── frontend/
 │   ├── index.html                   # High-fidelity Single Page Application
 │   ├── css/
-│   │   └── styles.css               # Design system & responsive UI styles
 │   └── js/
 │       ├── api.js                   # Client REST API connector
 │       ├── state.js                 # Global state management & currency formatting
@@ -174,7 +173,7 @@ NexusFin/
 
 ---
 
-## 🛡️ Responsible Data Governance
+## Responsible Data Governance
 
 NexusFin adheres to strict ethical and privacy standards:
 * **Zero Invasive Scraping:** No access to phone contacts, photos, social media profiles, or continuous geolocation tracking.
@@ -185,6 +184,6 @@ NexusFin adheres to strict ethical and privacy standards:
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
