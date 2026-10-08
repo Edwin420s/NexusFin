@@ -8,16 +8,13 @@ const App = {
     UI.updateCurrencySymbols();
 
     try {
-      // 1. Fetch Borrower Presets
+      // 1. Fetch Presets for example loader
       const presetsRes = await API.fetchPresets();
       AppState.presets = presetsRes.presets || [];
       this.populatePresetDropdown(AppState.presets);
 
-      // Default to Carlos - Manila Gig Rider
-      if (AppState.presets.length > 0) {
-        this.selectPreset(AppState.presets[0].id);
-        this.runAssessment();
-      }
+      // Run baseline initial assessment
+      this.runAssessment();
 
       // 2. Fetch Consents & Audit Trail
       this.refreshConsents();
@@ -48,62 +45,86 @@ const App = {
     });
 
     // Currency Change
-    document.getElementById('currencySelect').addEventListener('change', (e) => {
-      AppState.currency = e.target.value;
-      UI.updateCurrencySymbols();
-      // Also update comparison offers currency
-      this.initComparisonOffers();
-    });
+    const currencyEl = document.getElementById('currencySelect');
+    if (currencyEl) {
+      currencyEl.addEventListener('change', (e) => {
+        AppState.currency = e.target.value;
+        UI.updateCurrencySymbols();
+        this.initComparisonOffers();
+        if (AppState.currentAssessment) {
+          this.runAssessment();
+        }
+      });
+    }
 
-    // Persona Preset Change
-    document.getElementById('presetSelect').addEventListener('change', (e) => {
-      const pid = e.target.value;
-      if (pid) {
-        this.selectPreset(pid);
-        this.runAssessment();
-      }
-    });
+    // Example Profile Preset Change
+    const presetEl = document.getElementById('presetSelect');
+    if (presetEl) {
+      presetEl.addEventListener('change', (e) => {
+        const pid = e.target.value;
+        if (pid) {
+          this.selectPreset(pid);
+          this.runAssessment();
+        }
+      });
+    }
+
+    // Clear Form Button
+    const clearBtn = document.getElementById('clearProfileBtn');
+    if (clearBtn) {
+      clearBtn.addEventListener('click', () => {
+        this.clearProfile();
+      });
+    }
+
+    // Download CSV Template Button
+    const downloadCsvBtn = document.getElementById('downloadCsvTemplateBtn');
+    if (downloadCsvBtn) {
+      downloadCsvBtn.addEventListener('click', () => {
+        this.downloadCsvTemplate();
+      });
+    }
 
     // Income Variability Slider sync
     const varSlider = document.getElementById('incomeVariability');
-    varSlider.addEventListener('input', (e) => {
-      document.getElementById('variabilityValLabel').textContent = `${e.target.value}%`;
-    });
+    if (varSlider) {
+      varSlider.addEventListener('input', (e) => {
+        document.getElementById('variabilityValLabel').textContent = `${e.target.value}%`;
+      });
+    }
 
     // Assess Button
-    document.getElementById('assessBtn').addEventListener('click', () => {
+    document.getElementById('assessBtn')?.addEventListener('click', () => {
       this.runAssessment();
     });
 
     // Compare Offers Buttons
-    document.getElementById('addOfferBtn').addEventListener('click', () => {
+    document.getElementById('addOfferBtn')?.addEventListener('click', () => {
       this.addCompareOffer();
     });
 
-    document.getElementById('runCompareBtn').addEventListener('click', () => {
+    document.getElementById('runCompareBtn')?.addEventListener('click', () => {
       this.runComparison();
     });
 
     // Transaction Ingestion File Upload
     const fileInput = document.getElementById('txFileInput');
-    fileInput.addEventListener('change', (e) => {
-      if (e.target.files && e.target.files[0]) {
-        this.handleFileUpload(e.target.files[0]);
-      }
-    });
+    if (fileInput) {
+      fileInput.addEventListener('change', (e) => {
+        if (e.target.files && e.target.files[0]) {
+          this.handleFileUpload(e.target.files[0]);
+        }
+      });
+    }
 
     // Apply Detected Transaction Data to Profile Button
-    document.getElementById('applyDetectedBtn').addEventListener('click', () => {
+    document.getElementById('applyDetectedBtn')?.addEventListener('click', () => {
       this.applyDetectedDataToProfile();
     });
 
     // Hero Action Buttons
     document.getElementById('heroViewMethodologyBtn')?.addEventListener('click', () => {
-      this.switchTab('pitchdeck');
-    });
-
-    document.getElementById('heroViewSlidesBtn')?.addEventListener('click', () => {
-      this.switchTab('pitchdeck');
+      this.switchTab('methodology');
     });
 
     document.getElementById('heroPrintReportBtn')?.addEventListener('click', () => {
@@ -112,20 +133,27 @@ const App = {
   },
 
   switchTab(tabId) {
-    AppState.activeTab = tabId;
-    document.querySelectorAll('.tab-nav-btn').forEach(b => b.classList.remove('active'));
-    document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+    // Alias pitchdeck to methodology
+    const resolvedId = (tabId === 'pitchdeck') ? 'methodology' : tabId;
+    AppState.activeTab = resolvedId;
 
-    const activeBtn = document.querySelector(`.tab-nav-btn[data-tab="${tabId}"]`);
-    const activePane = document.getElementById(tabId);
-    if (activeBtn) activeBtn.classList.add('active');
-    if (activePane) activePane.classList.add('active');
+    document.querySelectorAll('.tab-nav-btn').forEach(b => {
+      const bTab = b.dataset.tab;
+      const bResolved = (bTab === 'pitchdeck') ? 'methodology' : bTab;
+      b.classList.toggle('active', bResolved === resolvedId);
+    });
+
+    document.querySelectorAll('.tab-pane').forEach(p => {
+      const pId = p.id;
+      const pResolved = (pId === 'pitchdeck') ? 'methodology' : pId;
+      p.classList.toggle('active', pResolved === resolvedId);
+    });
 
     // Trigger on-demand tab refreshes
-    if (tabId === 'privacy') {
+    if (resolvedId === 'privacy') {
       this.refreshConsents();
       this.refreshAuditLog();
-    } else if (tabId === 'partner') {
+    } else if (resolvedId === 'partner') {
       this.refreshPartnerPortal();
     }
   },
@@ -145,9 +173,55 @@ const App = {
 
   populatePresetDropdown(presets) {
     const select = document.getElementById('presetSelect');
-    select.innerHTML = presets.map(p => `
-      <option value="${p.id}">${p.label}</option>
-    `).join('');
+    if (!select) return;
+    select.innerHTML = '<option value="" disabled selected>✨ Load Example Profile...</option>' +
+      presets.map(p => `
+        <option value="${p.id}">${p.label}</option>
+      `).join('');
+  },
+
+  clearProfile() {
+    document.getElementById('monthlyIncome').value = '';
+    document.getElementById('incomeVariability').value = '15';
+    document.getElementById('variabilityValLabel').textContent = '15%';
+    document.getElementById('essentialExpenses').value = '';
+    document.getElementById('existingDebt').value = '';
+    document.getElementById('liquidSavings').value = '';
+    document.getElementById('goalSavings').value = '';
+    document.getElementById('householdDependents').value = '1';
+    document.getElementById('offerName').value = '';
+    document.getElementById('providerName').value = '';
+    document.getElementById('loanPrincipal').value = '';
+    document.getElementById('interestRate').value = '';
+    document.getElementById('loanTerm').value = '';
+    document.getElementById('upfrontFee').value = '0';
+    document.getElementById('monthlyFee').value = '0';
+    const presetSelect = document.getElementById('presetSelect');
+    if (presetSelect) presetSelect.value = '';
+    const resArea = document.getElementById('assessmentResultsArea');
+    if (resArea) resArea.style.display = 'none';
+    AppState.currentAssessment = null;
+    document.getElementById('monthlyIncome').focus();
+  },
+
+  downloadCsvTemplate() {
+    const csvContent = "date,description,amount\n" +
+      "2026-09-01,Client Consulting Payment,35000\n" +
+      "2026-09-03,Supermarket Groceries,-4200\n" +
+      "2026-09-05,Electricity & Water Utilities,-2100\n" +
+      "2026-09-08,Residential Rent,-12000\n" +
+      "2026-09-12,Equipment Installment Debit,-3500\n" +
+      "2026-09-15,Digital Invoice Payout,28000\n" +
+      "2026-09-20,Internet Subscription,-1500\n" +
+      "2026-09-25,Emergency Buffer Stash,-5000\n";
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'nexusfin_transaction_statement_template.csv');
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   },
 
   selectPreset(presetId) {

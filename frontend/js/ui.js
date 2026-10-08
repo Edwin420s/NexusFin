@@ -415,8 +415,8 @@ const UI = {
     }
 
     container.innerHTML = data.assessments.map((item, idx) => {
-      const appType = item.applicant_type || 'Illustrative demo applicant';
-      const appName = item.applicant_name ? `${item.applicant_name} — ` : `Applicant #${idx + 1} — `;
+      const appType = item.applicant_type || 'Consented Credit Assessment';
+      const appName = item.applicant_name ? `${item.applicant_name} — ` : `Assessment #${idx + 1} — `;
       const resilStatus = item.resilience?.resilience_status || 'Needs Review';
       const resilClass = resilStatus === 'Needs Review' ? 'tight' : 'healthy';
       const statusClass = item.status === 'fits' ? 'healthy' : item.status === 'review' ? 'tight' : 'deficit';

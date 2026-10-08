@@ -23,31 +23,18 @@
       </div>
 
       <div class="header-controls">
-        <div class="control-item">
-          <label for="presetSelect">Sample Profile:</label>
-          <select id="presetSelect" class="select-sm">
-            <option value="">Loading profiles...</option>
-          </select>
-        </div>
-
-        <div class="control-item">
-          <label for="currencySelect">Currency:</label>
-          <select id="currencySelect" class="select-sm">
-            <option value="PHP">PHP (₱) — Philippines</option>
-            <option value="KES">KES (KSh) — Kenya</option>
-            <option value="SGD">SGD (S$) — Singapore</option>
-            <option value="IDR">IDR (Rp) — Indonesia</option>
-            <option value="MYR">MYR (RM) — Malaysia</option>
-            <option value="THB">THB (฿) — Thailand</option>
-            <option value="VND">VND (₫) — Vietnam</option>
-            <option value="USD">USD ($) — International</option>
-          </select>
-        </div>
-
         <div class="mode-toggle-group">
           <button class="mode-btn active" data-mode="consumer">Borrower Workspace</button>
-          <button class="mode-btn" data-mode="partner">Lender &amp; Underwriter Portal</button>
+          <button class="mode-btn" data-mode="partner">Institutional Underwriter Portal</button>
         </div>
+
+        <button type="button" class="btn-hero btn-ghost" style="padding:6px 12px;font-size:12px;border:1px solid var(--ink-200);text-decoration:none;" onclick="App.switchTab('methodology');">
+          <span class="btn-icon">📐</span> Methodology
+        </button>
+
+        <a href="/docs" target="_blank" class="nav-api-link" title="OpenAPI Documentation">
+          <span style="font-size:12px;font-family:var(--font-mono);font-weight:600;">API Docs</span> ↗
+        </a>
       </div>
     </div>
   </header>
@@ -71,7 +58,7 @@
           <button type="button" class="btn-hero btn-outline" id="heroPrintReportBtn">
             <span class="btn-icon">🖨️</span> Print / Export Assessment
           </button>
-          <button type="button" class="btn-hero btn-ghost" id="heroViewMethodologyBtn" onclick="App.switchTab('pitchdeck');">
+          <button type="button" class="btn-hero btn-ghost" id="heroViewMethodologyBtn" onclick="App.switchTab('methodology');">
             <span class="btn-icon">📐</span> Methodology &amp; Financial Standards
           </button>
         </div>
@@ -103,7 +90,7 @@
       <button class="tab-nav-btn" data-tab="partner">
         <span class="tab-num">05</span> Institutional Underwriter Portal
       </button>
-      <button class="tab-nav-btn" data-tab="pitchdeck">
+      <button class="tab-nav-btn" data-tab="methodology">
         <span class="tab-num">06</span> Methodology &amp; Financial Standards
       </button>
     </div>
@@ -119,20 +106,45 @@
 
         <!-- Column 1: Financial Health Profile -->
         <div class="panel">
-          <div class="panel-header">
+          <div class="panel-header" style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;">
             <div>
               <span class="eyebrow-tag">STEP 1 • HOUSEHOLD CASH FLOW</span>
               <h3>Your Financial Position</h3>
-              <p>Declare your typical monthly cash flow and existing financial commitments.</p>
+              <p>Declare your real monthly cash flow, living expenses, and debt commitments.</p>
+            </div>
+            <div class="panel-actions" style="display:flex;align-items:center;gap:8px;">
+              <button type="button" id="clearProfileBtn" class="btn-sm btn-outline" title="Reset all fields to enter your own personal data">
+                🗑️ Clear Form
+              </button>
+              <select id="presetSelect" class="select-sm" title="Quickly load representative profiles to explore calculations">
+                <option value="" disabled selected>✨ Load Example Profile...</option>
+              </select>
             </div>
           </div>
 
           <div class="form-grid">
             <div class="form-group">
+              <label for="currencySelect">Operating Currency <span class="req">*</span></label>
+              <select id="currencySelect">
+                <option value="PHP" selected>PHP (₱) — Philippine Peso</option>
+                <option value="KES">KES (KSh) — Kenyan Shilling</option>
+                <option value="USD">USD ($) — US Dollar</option>
+                <option value="EUR">EUR (€) — Euro</option>
+                <option value="GBP">GBP (£) — British Pound</option>
+                <option value="SGD">SGD (S$) — Singapore Dollar</option>
+                <option value="IDR">IDR (Rp) — Indonesian Rupiah</option>
+                <option value="MYR">MYR (RM) — Malaysian Ringgit</option>
+                <option value="THB">THB (฿) — Thai Baht</option>
+                <option value="VND">VND (₫) — Vietnamese Dong</option>
+              </select>
+              <span class="form-hint">Denomination for calculations &amp; stress tests</span>
+            </div>
+
+            <div class="form-group">
               <label for="monthlyIncome">Gross Monthly Income <span class="req">*</span></label>
               <div class="input-with-symbol">
                 <span class="symbol-addon currency-symbol-label">₱</span>
-                <input type="number" id="monthlyIncome" value="38000" min="0" step="100">
+                <input type="number" id="monthlyIncome" value="38000" min="0" step="100" placeholder="e.g. 38000">
               </div>
               <span class="form-hint">Average monthly earnings</span>
             </div>
@@ -140,12 +152,18 @@
             <div class="form-group">
               <label for="employmentType">Employment Type</label>
               <select id="employmentType">
-                <option value="gig_worker">Platform / Gig Worker (Grab, Foodpanda)</option>
-                <option value="freelance_msme">Freelancer / Digital MSME</option>
-                <option value="informal_trader">Informal Trader / Sari-Sari / Warung</option>
+                <option value="gig_worker">Platform / Gig Worker (Transport, Delivery, Logistics)</option>
+                <option value="freelance_msme">Freelancer / Digital MSME / Self-Employed</option>
+                <option value="informal_trader">Informal Trader / Small Merchant</option>
                 <option value="salaried">Salaried Employee</option>
                 <option value="seasonal">Seasonal Worker</option>
               </select>
+            </div>
+
+            <div class="form-group">
+              <label for="householdDependents">Financial Dependents</label>
+              <input type="number" id="householdDependents" value="2" min="0" max="15">
+              <span class="form-hint">Family members reliant on your income</span>
             </div>
 
             <div class="form-group col-span-2">
@@ -160,7 +178,7 @@
               <label for="essentialExpenses">Essential Living Expenses <span class="req">*</span></label>
               <div class="input-with-symbol">
                 <span class="symbol-addon currency-symbol-label">₱</span>
-                <input type="number" id="essentialExpenses" value="21000" min="0" step="100">
+                <input type="number" id="essentialExpenses" value="21000" min="0" step="100" placeholder="e.g. 21000">
               </div>
               <span class="form-hint">Rent, food, utilities, health, school fees</span>
             </div>
@@ -169,7 +187,7 @@
               <label for="existingDebt">Existing Debt Payments <span class="req">*</span></label>
               <div class="input-with-symbol">
                 <span class="symbol-addon currency-symbol-label">₱</span>
-                <input type="number" id="existingDebt" value="4500" min="0" step="50">
+                <input type="number" id="existingDebt" value="4500" min="0" step="50" placeholder="e.g. 4500">
               </div>
               <span class="form-hint">Current bank, BNPL, or installment debits</span>
             </div>
@@ -178,7 +196,7 @@
               <label for="liquidSavings">Liquid Savings Reserve</label>
               <div class="input-with-symbol">
                 <span class="symbol-addon currency-symbol-label">₱</span>
-                <input type="number" id="liquidSavings" value="18000" min="0" step="100">
+                <input type="number" id="liquidSavings" value="18000" min="0" step="100" placeholder="e.g. 18000">
               </div>
               <span class="form-hint">Immediately accessible cash or e-wallet buffer</span>
             </div>
@@ -187,14 +205,9 @@
               <label for="goalSavings">Monthly Savings Goal</label>
               <div class="input-with-symbol">
                 <span class="symbol-addon currency-symbol-label">₱</span>
-                <input type="number" id="goalSavings" value="3000" min="0" step="50">
+                <input type="number" id="goalSavings" value="3000" min="0" step="50" placeholder="e.g. 3000">
               </div>
               <span class="form-hint">Voluntary target (not deducted as mandatory debt)</span>
-            </div>
-
-            <div class="form-group col-span-2">
-              <label for="householdDependents">Number of Financial Dependents</label>
-              <input type="number" id="householdDependents" value="2" min="0" max="15">
             </div>
           </div>
         </div>
@@ -539,11 +552,16 @@
           </div>
 
           <div style="margin-top:1.25rem;">
-            <label style="font-size:12px;font-weight:700;color:var(--ink-700);">Or Load Pre-Calibrated Sample Statements (1-Click):</label>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px;">
+              <label style="font-size:12px;font-weight:700;color:var(--ink-700);">Or Test with Standard Real-World Statements (1-Click):</label>
+              <button type="button" class="btn-sm btn-ghost" id="downloadCsvTemplateBtn" style="font-size:11px;padding:3px 8px;cursor:pointer;" title="Download sample CSV template format">
+                📥 Download CSV Template
+              </button>
+            </div>
             <div class="sample-dataset-pills">
-              <button class="sample-pill-btn" onclick="App.loadSampleDataset('manila');">🛵 Delivery &amp; Logistics Contractor (PHP)</button>
-              <button class="sample-pill-btn" onclick="App.loadSampleDataset('kenya');">💼 Digital MSME &amp; Freelancer (KES)</button>
-              <button class="sample-pill-btn" onclick="App.loadSampleDataset('jakarta');">🏪 Small Retail Merchant (IDR)</button>
+              <button class="sample-pill-btn" onclick="App.loadSampleDataset('manila');">🏦 Bank Account Statement (CSV)</button>
+              <button class="sample-pill-btn" onclick="App.loadSampleDataset('kenya');">📱 Mobile Money / M-Pesa Statement (CSV)</button>
+              <button class="sample-pill-btn" onclick="App.loadSampleDataset('jakarta');">🛒 Merchant Point-of-Sale Export (CSV)</button>
             </div>
           </div>
 
@@ -723,7 +741,7 @@
     </div>
 
     <!-- TAB 6: Methodology & Financial Standards -->
-    <div id="pitchdeck" class="tab-pane">
+    <div id="methodology" class="tab-pane">
       <div class="methodology-container">
 
         <!-- Header & Action Bar -->
@@ -736,7 +754,7 @@
             </p>
           </div>
           <div class="methodology-actions">
-            <a href="/api/pitch-deck/download" class="btn-hero btn-primary" download="NexusFin_Platform_Architecture.pdf">
+            <a href="/api/pitch-deck/download" class="btn-hero btn-primary" download="NexusFin_Technical_Specification.pdf">
               <span class="btn-icon">📥</span> Download Technical Whitepaper (PDF)
             </a>
             <a href="/docs" target="_blank" class="btn-hero btn-secondary">
@@ -1034,7 +1052,7 @@
       </div>
       <div class="footer-badges">
         <a href="#privacy" onclick="App.switchTab('privacy');" class="footer-badge-pill">Privacy by Design</a>
-        <a href="#pitchdeck" onclick="App.switchTab('pitchdeck');" class="footer-badge-pill">Architecture &amp; Methodology</a>
+        <a href="#methodology" onclick="App.switchTab('methodology');" class="footer-badge-pill">Architecture &amp; Methodology</a>
         <a href="/docs" target="_blank" class="footer-badge-pill">OpenAPI Documentation</a>
         <span class="footer-badge-pill">Explainable AI</span>
       </div>

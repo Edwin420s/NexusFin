@@ -529,6 +529,38 @@ textarea:focus {
   color: var(--ink-900);
 }
 
+.btn-sm {
+  padding: 5px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.nav-api-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-700);
+  background: var(--ink-100);
+  border: 1px solid var(--ink-200);
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.nav-api-link:hover {
+  background: var(--ink-200);
+  color: var(--ink-900);
+}
+
 /* ==========================================================================
    Results View
    ========================================================================== */
