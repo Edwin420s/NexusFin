@@ -117,3 +117,4 @@ A granular, verifiable record of product development, actuarial modeling, data g
 - `2026-10-08 10:46` **feat(frontend):** build transaction dropzone, 1-click ASEAN sample pills, and preview table
 - `2026-10-08 11:38` **feat(frontend):** build consent management toggle cards and live audit trail stream
 - `2026-10-08 12:30` **feat(frontend):** build institutional underwriter portal applicant review cards
+- `2026-10-08 13:23` **feat(frontend):** build interactive 10-slide deck viewer and fullscreen modal slideshow
