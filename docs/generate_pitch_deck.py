@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-NexusFin Pitch Deck Generator
-Generates the official 10-slide landscape A4 pitch deck PDF for the ASEAN Financial Health Challenge.
+NexusFin Platform Architecture Document Generator
+Generates the 10-slide landscape A4 Platform Architecture & Strategic Overview PDF for NexusFin.
 """
 
 import os
@@ -88,14 +88,14 @@ def box_table(items, widths=None):
 # -------------------------------------------------------------
 # Slide 1: Cover
 # -------------------------------------------------------------
-slide_header("ASEAN Financial Health Challenge 2026 • GFTN & Bangko Sentral ng Pilipinas", "NexusFin", "Problem Statement 3: Responsible Credit and Informed Choice")
+slide_header("NexusFin Technologies • Platform Specification", "NexusFin", "Responsible Credit Decision Support & Affordability Intelligence")
 story.append(Spacer(1, 10))
 story.append(Paragraph(
     "<b>Helping borrowers and lenders understand what credit is realistically affordable before committing.</b>",
     ParagraphStyle("Hero", parent=body, fontSize=17, leading=23, textColor=colors.HexColor("#0D2818"))
 ))
 story.append(Spacer(1, 8))
-story.append(Paragraph("Technical Product + Modular API Architecture • Solo Applicant: Edwin Mwiti • October 2026", subtitle))
+story.append(Paragraph("Platform Architecture & Strategic Overview • October 2026", subtitle))
 story.append(Spacer(1, 16))
 story.append(Paragraph(
     "NexusFin is a responsible credit decision-support platform that transforms raw financial data and proposed loan terms into understandable affordability insights, multi-scenario stress tests, and standardized Key Facts comparisons — without relying on opaque black-box credit scores.",
@@ -107,9 +107,9 @@ story.append(PageBreak())
 # Slide 2: The Problem
 # -------------------------------------------------------------
 slide_header("The Problem", "Credit access is not the same as credit affordability",
-             "Expanding digital credit without affordability assessment creates severe debt-trap risks across ASEAN.")
+             "Expanding digital credit without affordability assessment creates severe debt-trap risks.")
 for b in [
-    "Volatile Informal Incomes: 48% of Filipino adults say raising emergency funds is very difficult; gig and MSME workers face fluctuating monthly cash flows (BSP CFIS 2026).",
+    "Volatile Informal Incomes: Over 45% of emerging market adults report raising emergency funds is very difficult; gig and MSME workers face fluctuating monthly cash flows.",
     "Hidden Debt Concentration: Existing debts and recurring family obligations reduce available disposable cash flow, leading to compounding debt rollover.",
     "Misleading Flat-Rate Marketing: Borrowers often evaluate headline instalments without understanding the total cost of credit or effective APR.",
     "Shock Vulnerability: A repayment that appears manageable in a peak month becomes unsustainable when an unexpected income drop or medical emergency occurs."
@@ -209,7 +209,7 @@ story.append(box_table([
     ("FastAPI Backend", "High-performance Python asynchronous modular REST API architecture with Pydantic v2 strict typing and OpenAPI specifications."),
     ("Calculation Engines", "Deterministic loan amortization, fee accounting, 6-scenario stress testing, and evidence-based Multidimensional Resilience Overview."),
     ("Alternative Data", "Automated CSV transaction ingestion, classification keyword rules, and volatility coefficient analysis."),
-    ("Governance & Audit", "Granular consent registry with governance audit log stream aligned with BSP Circular No. 1133."),
+    ("Governance & Audit", "Granular consent registry with governance audit log stream aligned with international Open Finance and consumer data protection standards."),
     ("Deployment", "Fully containerized via Docker and docker-compose; ready for cloud or on-premise deployment."),
 ], [48 * mm, 194 * mm]))
 story.append(PageBreak())
@@ -228,28 +228,28 @@ story.append(box_table([
 story.append(PageBreak())
 
 # -------------------------------------------------------------
-# Slide 9: Sustainability & ASEAN Scale
+# Slide 9: Sustainability & Multi-Market Scale
 # -------------------------------------------------------------
-slide_header("Sustainability & Scale", "Viable B2B SaaS business model with regional replicability")
+slide_header("Sustainability & Scale", "Viable B2B SaaS business model with multi-market scalability")
 for b in [
     "B2B SaaS / API Tier: Financial institutions, rural banks, and cooperatives pay per assessment API call to improve responsible underwriting and ESG compliance.",
-    "Employer & Gig Platform Channel: Delivery platforms (Grab, Foodpanda) and employers integrate NexusFin as a worker financial wellness perk.",
+    "Employer & Gig Platform Channel: Delivery platforms and enterprise employers integrate NexusFin as a worker financial wellness perk.",
     "Free Neutral Consumer Tool: Core borrower workspace remains 100% free and independent from predatory referral commissions.",
-    "Modular ASEAN Localization: Pre-calibrated for all ASEAN currencies (PHP, IDR, SGD, MYR, THB, VND, KES, USD) with adaptable central bank regulatory thresholds.",
-    "Pilot-First Strategy: Designed for immediate entry into the BSP Regulatory Sandbox and partner microfinance clinics."
+    "Modular Multi-Currency Localization: Pre-calibrated for all regional currencies (PHP, IDR, SGD, MYR, THB, VND, KES, USD) with adaptable regulatory thresholds.",
+    "Institutional Strategy: Designed for immediate integration into partner digital lending workflows."
 ]:
     story.append(Paragraph("• " + b, bullet))
 story.append(PageBreak())
 
 # -------------------------------------------------------------
-# Slide 10: Pilot Roadmap & Conclusion
+# Slide 10: Deployment Roadmap & Conclusion
 # -------------------------------------------------------------
-slide_header("Pilot Roadmap", "From working prototype to ASEAN-wide implementation")
+slide_header("Deployment Roadmap", "From working prototype to industry-wide implementation")
 story.append(box_table([
-    ("Phase 1 (Months 1–2)", "Validation in BSP Regulatory Sandbox with Philippine microfinance cooperative or digital bank."),
+    ("Phase 1 (Months 1–2)", "Controlled deployment with partner microfinance cooperative or digital community bank."),
     ("Phase 2 (Months 3–4)", "Controlled pilot with 1,000 gig and MSME borrowers; measure loan right-sizing and user comprehension."),
     ("Phase 3 (Months 5–6)", "Longitudinal evaluation of 90-day loan performance; calibrate country-specific volatility thresholds."),
-    ("Phase 4 (Months 7+)", "Regional expansion into Indonesia (OJK framework), Vietnam (SBV), and Thailand (BOT)."),
+    ("Phase 4 (Months 7+)", "Regional expansion across Southeast Asia, East Africa, and emerging credit markets."),
 ], [50 * mm, 192 * mm]))
 story.append(Spacer(1, 10))
 story.append(Paragraph(
@@ -257,7 +257,7 @@ story.append(Paragraph(
     ParagraphStyle("Closing", parent=body, fontName=font_bold, fontSize=14, leading=19, textColor=colors.HexColor("#0D2818"))
 ))
 story.append(Paragraph(
-    "ASEAN Financial Health Challenge • Problem Statement 3: Responsible Credit and Informed Choice • Team NexusFin",
+    "NexusFin Technologies • Responsible Credit Decision Support & Affordability Intelligence Platform",
     small
 ))
 
