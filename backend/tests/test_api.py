@@ -145,4 +145,4 @@ def test_frontend_index_and_spa_routing():
     assert res.status_code == 200
     assert "text/html" in res.headers["content-type"]
     assert "NexusFin" in res.text
-    assert "10-Slide Pitch Deck" in res.text
+    assert "Methodology &amp; Financial Standards" in res.text or "Methodology & Financial Standards" in res.text

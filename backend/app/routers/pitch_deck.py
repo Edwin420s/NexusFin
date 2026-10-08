@@ -177,15 +177,6 @@ OFFICIAL_SUBMISSION = {
         "credit score. With consent, NexusFin can also use relevant alternative financial data to support "
         "underserved and thin-file borrowers while maintaining privacy, transparency, and human oversight."
     ),
-    "builderbase_description": (
-        "NexusFin is a responsible credit decision-support platform that helps consumers understand whether "
-        "credit is affordable, appropriate, and resilient to financial shocks before they commit. It analyzes "
-        "income, essential expenses, existing obligations, savings, and credit terms; calculates affordability "
-        "and total borrowing cost; compares options; and stress-tests scenarios such as income loss or rising "
-        "expenses. It explains the key factors and trade-offs in plain language rather than relying on an opaque "
-        "credit score. With consent, NexusFin can also use relevant alternative financial data to support "
-        "underserved and thin-file borrowers while maintaining privacy, transparency, and human oversight."
-    ),
     "word_count": 98,
     "readiness_level": "Production-Ready Modular Architecture",
     "repo_status": "Clean Architecture, Fully Tested Local Repository"

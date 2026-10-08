@@ -19,7 +19,7 @@ def test_pitch_deck_info_endpoint():
     assert sub["applicant"] == "Edwin Mwiti"
     assert sub["project_name"] == "NexusFin"
     assert "98" in str(sub["word_count"])
-    assert "responsible credit decision-support platform" in (sub.get("platform_description") or sub.get("builderbase_description")).lower()
+    assert "responsible credit decision-support platform" in (sub.get("platform_description") or sub.get("description", "")).lower()
 
     # File verification
     files = data["files"]
