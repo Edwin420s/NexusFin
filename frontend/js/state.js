@@ -20,8 +20,6 @@ const AppState = {
   currentAssessment: null,
   comparedOffers: [],
   lastTransactionAnalysis: null,
-  slides: [],
-  currentSlideIndex: 0,
 
   getSymbol() {
     return this.currencySymbols[this.currency] || this.currency;
