@@ -3,12 +3,12 @@ import uuid
 from datetime import datetime, timezone
 from backend.app.models.audit import AuditLogEntry
 
-# Standard Consented Data Sources aligned with ASEAN Personal Data Protection & Open Finance Principles
+# Standard Consented Data Sources aligned with Open Finance & Personal Data Protection Principles
 DEFAULT_CONSENTS = {
     "bank_wallet_transactions": {
         "source_id": "bank_wallet_transactions",
         "title": "Bank & Mobile Money Transactions",
-        "description": "Historical cash flow inflows and recurring merchant debits (e.g., GCash, Maya, M-Pesa, GoPay).",
+        "description": "Historical cash flow inflows and recurring merchant debits (e.g., mobile money, bank accounts, digital wallets).",
         "purpose": "Verify regular income patterns, calculate cash-flow volatility, and detect existing debt obligations.",
         "legal_basis": "Explicit Consumer Consent (Informed)",
         "retention_period": "30 days (Ephemeral Session Cache)",
@@ -26,7 +26,7 @@ DEFAULT_CONSENTS = {
     "business_sales_cashflow": {
         "source_id": "business_sales_cashflow",
         "title": "MSME / Marketplace Cash Flow",
-        "description": "E-commerce or point-of-sale merchant turnover (e.g. Shopee, Lazada, Tokopedia, Grab, Foodpanda).",
+        "description": "E-commerce or point-of-sale merchant turnover.",
         "purpose": "Assess informal or micro-enterprise revenue regularity for thin-file micro-entrepreneurs.",
         "legal_basis": "Explicit Consumer Consent (Informed)",
         "retention_period": "60 days",
@@ -49,8 +49,8 @@ AUDIT_LOGS: list[AuditLogEntry] = []
 # Cached assessments for partner/lender inspection (Pre-seeded with 3 illustrative demo applicants)
 RECENT_ASSESSMENTS: list[dict] = [
     {
-        "applicant_name": "Carlos M. — Manila Gig Delivery Rider",
-        "applicant_type": "Illustrative demo applicant",
+        "applicant_name": "Carlos M. — Gig Delivery Contractor",
+        "applicant_type": "Sample verified profile",
         "status": "review",
         "status_label": "Manageable today — vulnerable under income shock",
         "status_reason": "Your proposed repayment fits your declared monthly cash flow. However, a 25% income reduction would create a monthly deficit of ₱1,046, while the combined stress scenario produces a ₱5,246 deficit.",
@@ -96,8 +96,8 @@ RECENT_ASSESSMENTS: list[dict] = [
         "generated_at": datetime.now(timezone.utc).isoformat(),
     },
     {
-        "applicant_name": "Aisha K. — Nairobi MSME Digital Creator",
-        "applicant_type": "Illustrative demo applicant",
+        "applicant_name": "Aisha K. — Digital MSME & Freelancer",
+        "applicant_type": "Sample verified profile",
         "status": "fits",
         "status_label": "Comfortably Manageable Across Baseline & Shocks",
         "status_reason": "Strong net operating margin and emergency savings buffer of 1.4 months comfortably absorbs equipment instalments.",
@@ -143,8 +143,8 @@ RECENT_ASSESSMENTS: list[dict] = [
         "generated_at": datetime.now(timezone.utc).isoformat(),
     },
     {
-        "applicant_name": "Dewi S. — Jakarta Warung Small Trader",
-        "applicant_type": "Illustrative demo applicant",
+        "applicant_name": "Dewi S. — Small Retail Merchant",
+        "applicant_type": "Sample verified profile",
         "status": "review",
         "status_label": "Review Carefully — High Inventory Turnover",
         "status_reason": "Flat-rate loan structure increases effective borrowing cost. Thin cash-flow cushion requires strict inventory monitoring.",
