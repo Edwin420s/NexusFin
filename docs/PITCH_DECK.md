@@ -1,6 +1,5 @@
-# NexusFin — 10-Slide Pitch Deck
-**ASEAN Financial Health Challenge 2026 — Problem Statement 3: Responsible Credit and Informed Choice**
-*Applicant / Builder:* Edwin Mwiti (Solo Builder) • *Team:* NexusFin
+# NexusFin — Platform Architecture & Strategic Overview
+**Responsible Credit Decision Support & Affordability Intelligence Platform**
 
 ---
 
@@ -8,20 +7,20 @@
 * **Title:** NexusFin
 * **Subtitle:** Responsible Credit Decision Support & Informed Choice Platform
 * **Tagline:** Helping borrowers and lenders understand what credit is truly affordable before signing.
-* **Challenge:** ASEAN Financial Health Challenge 2026 (GFTN & Bangko Sentral ng Pilipinas)
-* **Track:** Problem Statement 3 — Responsible Credit & Informed Choice
-* **Format:** Technical Product + Modular API Architecture
+* **Platform:** NexusFin Responsible Credit Decision Support Platform
+* **Core Mission:** Transparent affordability analytics & over-indebtedness prevention
+* **Format:** Full-Stack Responsive Application + RESTful OpenAPI Backend
 
 ---
 
 ## Slide 2: The Problem — Credit Access Is Not Credit Affordability
 * **The Core Gap:** Expanding digital credit access without transparent affordability creates debt traps.
 * **The Borrower Reality:**
-  * 48% of Filipino adults say raising emergency funds is very difficult; only 3 in 10 say savings would last a month of lost income (BSP CFIS 2026).
+  * Over 45% of emerging market adults report raising emergency funds is very difficult; few possess sufficient emergency savings.
   * Platform gig workers and informal MSMEs have volatile, multi-stream cash flows that traditional fixed-monthly formulas misjudge.
   * Opaque pricing, flat-rate marketing, and hidden fees disguise the true cost of credit.
   * Borrowers focus on headline instalments without testing whether repayments survive a real-life income shock.
-* **The Lender Challenge:** Traditional credit bureaus have thin or non-existent files on tens of millions of creditworthy ASEAN workers.
+* **The Lender Challenge:** Traditional credit bureaus have thin or non-existent files on tens of millions of creditworthy workers.
 
 ---
 
@@ -107,11 +106,11 @@
 
 ---
 
-## Slide 10: Pilot Roadmap & ASEAN Scalability
-* **Phase 1 (Months 1–2): Validation & Sandbox**
-  * Pilot in the BSP Regulatory Sandbox with a Philippine digital bank or rural microfinance cooperative.
-* **Phase 2 (Months 3–4): Controlled Pilot Cohort**
-  * Onboard 1,000 thin-file borrowers; measure loan uptake, comprehension, and early repayment stability.
-* **Phase 3 (Months 5–6): Regional Localization**
-  * Modular localization layer allows rapid deployment to Indonesia (OJK framework), Vietnam (SBV), and Singapore (MAS).
-* **Vision:** The trusted responsible credit infrastructure for the next 100 million ASEAN borrowers.
+## Slide 10: Deployment Roadmap & Scalability
+* **Phase 1 (Months 1–2): Institutional Pilot Scoping**
+  * Controlled deployment with partner digital banks and community microfinance institutions.
+* **Phase 2 (Months 3–4): Controlled Borrower Cohort**
+  * Onboard 1,000 thin-file borrowers; measure loan comprehension, default reduction, and portfolio resilience.
+* **Phase 3 (Months 5–6): Regional Multi-Market Rollout**
+  * Deploy modular localization across Southeast Asia, East Africa, and emerging credit markets.
+* **Vision:** The trusted responsible credit decision-support infrastructure for emerging market borrowers.
