@@ -76,14 +76,14 @@ SLIDES_DATA = [
     },
     {
         "slide_number": 5,
-        "title": "Responsible AI & Alternative Data Engine",
+        "title": "Responsible Decision Support & Alternative Data Engine",
         "subtitle": "Ethical Cash-Flow Categorization with Zero Creepy Surveillance",
         "tagline": "Deterministic actuarial safety combined with explainable language translation.",
         "key_points": [
             "Strict Privacy: Zero contact-list scraping, zero social-media tracking, zero biometric profiling.",
             "Pattern Detection: Ingests CSV transaction exports from bank accounts, mobile money, and merchant POS.",
             "Volatility Estimation: Computes Coefficient of Variation (CV) to model irregular gig cash flow.",
-            "Deterministic Safety: 100% auditable formulas for financial math; NLP reserved strictly for plain-language explanations."
+            "Deterministic Safety: 100% auditable formulas for financial math; plain-language summaries for clarity."
         ],
         "category": "Technology"
     },
@@ -107,7 +107,7 @@ SLIDES_DATA = [
         "subtitle": "Modular API Architecture & Explainable Decision Support",
         "tagline": "Auditable tech stack with clear separation of math, analytics, and explainability.",
         "key_points": [
-            "Deterministic Engine: Actuarial math for reducing-balance schedules, fees, and stress tests (zero AI black box).",
+            "Deterministic Engine: Actuarial math for reducing-balance schedules, fees, and stress tests (transparent calculations, zero black box).",
             "Alternative Data Analytics: Consented cash-flow pattern ingestion and income volatility modeling.",
             "Explainability Layer: Plain-language reason codes, trade-offs, and neutral decision considerations.",
             "Backend: High-performance Python / FastAPI modular REST API architecture with Pydantic v2 schemas."

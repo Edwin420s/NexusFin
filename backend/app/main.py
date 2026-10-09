@@ -50,18 +50,45 @@ def health():
     }
 
 
-# Static file serving & Single Page App routing
+# Static file serving & Independent Page Routing
 if FRONTEND_DIR.exists():
     @app.get("/", include_in_schema=False)
     def index():
         return FileResponse(FRONTEND_DIR / "index.html")
+
+    @app.get("/assessment", include_in_schema=False)
+    def assessment_page():
+        return FileResponse(FRONTEND_DIR / "assessment.html")
+
+    @app.get("/compare", include_in_schema=False)
+    def compare_page():
+        return FileResponse(FRONTEND_DIR / "compare.html")
+
+    @app.get("/transactions", include_in_schema=False)
+    def transactions_page():
+        return FileResponse(FRONTEND_DIR / "transactions.html")
+
+    @app.get("/governance", include_in_schema=False)
+    def governance_page():
+        return FileResponse(FRONTEND_DIR / "governance.html")
+
+    @app.get("/underwriter", include_in_schema=False)
+    def underwriter_page():
+        return FileResponse(FRONTEND_DIR / "underwriter.html")
+
+    @app.get("/methodology", include_in_schema=False)
+    def methodology_page():
+        return FileResponse(FRONTEND_DIR / "methodology.html")
 
     @app.get("/{full_path:path}", include_in_schema=False)
     def serve_frontend_assets(full_path: str):
         target = FRONTEND_DIR / full_path
         if target.is_file():
             return FileResponse(target)
-        # SPA fallback to index.html
+        html_target = FRONTEND_DIR / f"{full_path}.html"
+        if html_target.is_file():
+            return FileResponse(html_target)
+        # Fallback to index.html
         return FileResponse(FRONTEND_DIR / "index.html")
 
 

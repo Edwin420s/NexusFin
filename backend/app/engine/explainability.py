@@ -1,4 +1,4 @@
-"""Explainable AI and Plain-Language Decision-Support Generator."""
+"""Transparent Financial Decision-Support and Plain-Language Reasoning Engine."""
 from __future__ import annotations
 
 import math
