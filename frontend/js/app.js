@@ -6,15 +6,14 @@ const App = {
   async init() {
     this.bindEvents();
     UI.updateCurrencySymbols();
+    UI.updateLiveCashflowSummary();
+    UI.updatePolicyThresholdLabels();
 
     try {
       // 1. Fetch Presets for example loader
       const presetsRes = await API.fetchPresets();
       AppState.presets = presetsRes.presets || [];
       this.populatePresetDropdown(AppState.presets);
-
-      // Run baseline initial assessment
-      this.runAssessment();
 
       // 2. Fetch Consents & Audit Trail
       this.refreshConsents();
@@ -44,12 +43,29 @@ const App = {
       });
     });
 
+    // Real-time Cash Flow Summary Live Updates
+    ['monthlyIncome', 'essentialExpenses', 'existingDebt', 'liquidSavings', 'applicantName'].forEach(id => {
+      document.getElementById(id)?.addEventListener('input', () => {
+        UI.updateLiveCashflowSummary();
+      });
+    });
+
+    // Custom Shock Simulator Slider
+    const shockSlider = document.getElementById('customShockSlider');
+    if (shockSlider) {
+      shockSlider.addEventListener('input', (e) => {
+        UI.updateCustomShock(e.target.value);
+      });
+    }
+
     // Currency Change
     const currencyEl = document.getElementById('currencySelect');
     if (currencyEl) {
       currencyEl.addEventListener('change', (e) => {
         AppState.currency = e.target.value;
         UI.updateCurrencySymbols();
+        UI.updateLiveCashflowSummary();
+        UI.updatePolicyThresholdLabels();
         this.initComparisonOffers();
         if (AppState.currentAssessment) {
           this.runAssessment();
@@ -93,10 +109,58 @@ const App = {
       });
     }
 
-    // Assess Button
+    // Assess Buttons
     document.getElementById('assessBtn')?.addEventListener('click', () => {
       this.runAssessment();
     });
+
+    document.getElementById('emptyStateAssessBtn')?.addEventListener('click', () => {
+      this.runAssessment();
+    });
+
+    // Institutional Risk Policy Sliders & Controls
+    const burdenSlider = document.getElementById('policyBurdenSlider');
+    if (burdenSlider) {
+      burdenSlider.addEventListener('input', (e) => {
+        AppState.institutionalPolicy.maxDebtBurdenPct = parseFloat(e.target.value);
+        UI.updatePolicyThresholdLabels();
+        this.refreshPartnerPortal();
+      });
+    }
+
+    const bufferInput = document.getElementById('policyBufferInput');
+    if (bufferInput) {
+      bufferInput.addEventListener('input', (e) => {
+        AppState.institutionalPolicy.minPostBuffer = parseFloat(e.target.value) || 0;
+        UI.updatePolicyThresholdLabels();
+        this.refreshPartnerPortal();
+      });
+    }
+
+    const runwaySlider = document.getElementById('policyRunwaySlider');
+    if (runwaySlider) {
+      runwaySlider.addEventListener('input', (e) => {
+        AppState.institutionalPolicy.minSavingsRunwayMonths = parseFloat(e.target.value);
+        UI.updatePolicyThresholdLabels();
+        this.refreshPartnerPortal();
+      });
+    }
+
+    const resetPolicyBtn = document.getElementById('resetPolicyBtn');
+    if (resetPolicyBtn) {
+      resetPolicyBtn.addEventListener('click', () => {
+        AppState.institutionalPolicy = {
+          maxDebtBurdenPct: 35.0,
+          minPostBuffer: 5000.0,
+          minSavingsRunwayMonths: 1.0,
+        };
+        if (burdenSlider) burdenSlider.value = 35;
+        if (bufferInput) bufferInput.value = 5000;
+        if (runwaySlider) runwaySlider.value = 1.0;
+        UI.updatePolicyThresholdLabels();
+        this.refreshPartnerPortal();
+      });
+    }
 
     // Compare Offers Buttons
     document.getElementById('addOfferBtn')?.addEventListener('click', () => {
@@ -181,6 +245,8 @@ const App = {
   },
 
   clearProfile() {
+    const nameEl = document.getElementById('applicantName');
+    if (nameEl) nameEl.value = 'Household Profile';
     document.getElementById('monthlyIncome').value = '';
     document.getElementById('incomeVariability').value = '15';
     document.getElementById('variabilityValLabel').textContent = '15%';
@@ -200,7 +266,10 @@ const App = {
     if (presetSelect) presetSelect.value = '';
     const resArea = document.getElementById('assessmentResultsArea');
     if (resArea) resArea.style.display = 'none';
+    const emptyEl = document.getElementById('assessmentEmptyState');
+    if (emptyEl) emptyEl.style.display = 'block';
     AppState.currentAssessment = null;
+    UI.updateLiveCashflowSummary();
     document.getElementById('monthlyIncome').focus();
   },
 
@@ -227,28 +296,40 @@ const App = {
   selectPreset(presetId) {
     const p = AppState.presets.find(x => x.id === presetId);
     if (!p) return;
+    const nameEl = document.getElementById('applicantName');
+    if (nameEl) nameEl.value = p.label;
     UI.populateProfileForm(p.profile);
     UI.populateOfferForm(p.offer);
+    UI.updateLiveCashflowSummary();
     this.initComparisonOffers();
   },
 
   async runAssessment() {
     const assessBtn = document.getElementById('assessBtn');
-    assessBtn.disabled = true;
-    assessBtn.textContent = 'Calculating Affordability & Stress Scenarios...';
+    if (assessBtn) {
+      assessBtn.disabled = true;
+      assessBtn.textContent = 'Calculating Affordability & Stress Scenarios...';
+    }
 
     try {
+      const applicantName = UI.readApplicantNameFromForm();
       const profile = UI.readProfileFromForm();
       const offer = UI.readOfferFromForm();
-      const res = await API.assess(profile, offer);
+      const res = await API.assess(profile, offer, applicantName);
       AppState.currentAssessment = res;
+
+      const emptyEl = document.getElementById('assessmentEmptyState');
+      if (emptyEl) emptyEl.style.display = 'none';
+
       UI.renderAssessmentResult(res);
       this.refreshAuditLog();
     } catch (err) {
       alert(`Assessment failed: ${err.message}`);
     } finally {
-      assessBtn.disabled = false;
-      assessBtn.innerHTML = 'Assess Affordability & Resilience';
+      if (assessBtn) {
+        assessBtn.disabled = false;
+        assessBtn.innerHTML = 'Assess Affordability & Resilience';
+      }
     }
   },
 
@@ -403,6 +484,25 @@ const App = {
       UI.renderPartnerPortal(data);
     } catch (err) {
       console.error('Failed to load partner records:', err);
+    }
+  },
+
+  async submitUnderwriterDecision(assessmentId, idx) {
+    const actSelect = document.getElementById(`decAction_${idx}`);
+    const ratInput = document.getElementById(`decRationale_${idx}`);
+    if (!actSelect) return;
+
+    const decision = actSelect.value;
+    const rationale = ratInput?.value?.trim() || `Institution determined ${decision} based on stress test metrics.`;
+    const officerName = 'Institutional Credit Underwriter';
+
+    try {
+      await API.recordPartnerDecision(assessmentId, decision, rationale, officerName);
+      alert(`Decision recorded: Facility ${decision.toUpperCase()} for record ${assessmentId}. Audit trail updated.`);
+      await this.refreshPartnerPortal();
+      await this.refreshAuditLog();
+    } catch (err) {
+      alert(`Failed to record underwriter decision: ${err.message}`);
     }
   }
 };
