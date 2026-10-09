@@ -16,7 +16,10 @@ class AuditLogEntry(BaseModel):
         "COMPARISON_PERFORMED",
         "TRANSACTIONS_INGESTED",
         "PARTNER_REVIEW_ACCESSED",
-        "UNDERWRITER_DECISION_RECORDED"
+        "UNDERWRITER_DECISION_RECORDED",
+        "ACCOUNT_REGISTERED",
+        "USER_LOGIN",
+        "USER_LOGOUT"
     ]
     actor: str
     details: dict

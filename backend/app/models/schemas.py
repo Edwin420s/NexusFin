@@ -6,7 +6,7 @@ from pydantic import BaseModel, Field
 
 
 class Income(BaseModel):
-    monthly: float = Field(..., ge=0, description="Gross monthly income in selected currency")
+    monthly: float = Field(..., ge=0, le=100_000_000, description="Gross monthly income in selected currency")
     variability_pct: float = Field(default=15.0, ge=0, le=100, description="Estimated monthly income variability percentage")
     employment_type: Literal["salaried", "gig_worker", "freelance_msme", "informal_trader", "seasonal"] = "gig_worker"
 
@@ -14,21 +14,21 @@ class Income(BaseModel):
 class Profile(BaseModel):
     currency: Literal["PHP", "KES", "SGD", "IDR", "MYR", "THB", "VND", "USD", "EUR", "GBP"] = "PHP"
     income: Income
-    essential_expenses: float = Field(..., ge=0, description="Monthly essential living expenses (rent, food, utilities, health)")
-    existing_debt_payments: float = Field(default=0.0, ge=0, description="Current monthly debt repayments (bank, BNPL, informal)")
-    liquid_savings: float = Field(default=0.0, ge=0, description="Immediately accessible liquid savings buffer")
-    goal_savings: float = Field(default=0.0, ge=0, description="Discretionary monthly planned savings goal")
-    household_dependents: int = Field(default=1, ge=0, description="Number of financial dependents in household")
+    essential_expenses: float = Field(..., ge=0, le=100_000_000, description="Monthly essential living expenses (rent, food, utilities, health)")
+    existing_debt_payments: float = Field(default=0.0, ge=0, le=100_000_000, description="Current monthly debt repayments (bank, BNPL, informal)")
+    liquid_savings: float = Field(default=0.0, ge=0, le=100_000_000, description="Immediately accessible liquid savings buffer")
+    goal_savings: float = Field(default=0.0, ge=0, le=100_000_000, description="Discretionary monthly planned savings goal")
+    household_dependents: int = Field(default=1, ge=0, le=50, description="Number of financial dependents in household")
 
 
 class CreditOffer(BaseModel):
-    name: str = Field(default="Proposed Microloan", description="Display name of credit offer")
-    provider: str = Field(default="Community Digital Lender", description="Provider / Institution name")
-    principal: float = Field(..., gt=0, description="Requested or approved loan principal")
+    name: str = Field(default="Proposed Microloan", max_length=150, description="Display name of credit offer")
+    provider: str = Field(default="Community Digital Lender", max_length=150, description="Provider / Institution name")
+    principal: float = Field(..., gt=0, le=100_000_000, description="Requested or approved loan principal")
     annual_interest_rate: float = Field(default=18.0, ge=0, le=200, description="Nominal annual interest rate in percent")
     term_months: int = Field(..., gt=0, le=120, description="Loan repayment duration in months")
-    upfront_fee: float = Field(default=0.0, ge=0, description="Origination, appraisal or disbursement fees")
-    monthly_fee: float = Field(default=0.0, ge=0, description="Monthly account maintenance or admin fee")
+    upfront_fee: float = Field(default=0.0, ge=0, le=10_000_000, description="Origination, appraisal or disbursement fees")
+    monthly_fee: float = Field(default=0.0, ge=0, le=10_000_000, description="Monthly account maintenance or admin fee")
     repayment_type: Literal["amortizing", "flat"] = Field(
         default="amortizing",
         description="Calculation structure: reducing balance (amortizing) or flat rate"
@@ -45,7 +45,7 @@ class CreditOffer(BaseModel):
 
 
 class AssessmentRequest(BaseModel):
-    applicant_name: str | None = Field(default="Self-Service Applicant", description="Name or identifier for the borrower / applicant")
+    applicant_name: str | None = Field(default="Self-Service Applicant", max_length=150, description="Name or identifier for the borrower / applicant")
     profile: Profile
     offer: CreditOffer
 
@@ -153,14 +153,14 @@ class ConsentItem(BaseModel):
 
 
 class ConsentUpdateRequest(BaseModel):
-    source_id: str
+    source_id: str = Field(..., max_length=100)
     granted: bool
-    actor: str = "consumer"
+    actor: str = Field(default="consumer", min_length=1, max_length=150)
 
 
 class PartnerDecisionRequest(BaseModel):
-    assessment_id: str = Field(..., description="Unique assessment identifier")
+    assessment_id: str = Field(..., max_length=100, description="Unique assessment identifier")
     decision: Literal["approved", "conditional", "declined"] = Field(..., description="Underwriting decision")
-    rationale: str = Field(..., description="Underwriter reasoning and risk considerations")
-    officer_name: str = Field(default="Senior Credit Underwriter", description="Name of underwriting officer")
+    rationale: str = Field(..., max_length=1000, description="Underwriter reasoning and risk considerations")
+    officer_name: str = Field(default="Senior Credit Underwriter", max_length=150, description="Name of underwriting officer")
 

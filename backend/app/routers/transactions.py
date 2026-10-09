@@ -10,25 +10,38 @@ from backend.app.storage.memory_db import record_audit
 router = APIRouter(prefix="/api/transactions", tags=["Alternative Data"])
 
 
+MAX_CSV_SIZE = 5 * 1024 * 1024  # 5 MB
+
+
 @router.post("")
 async def upload_transactions(file: UploadFile = File(...)):
     """Uploads a transaction export CSV and extracts alternative cash flow signals."""
-    if not file.filename.endswith(".csv"):
-        raise HTTPException(status_code=400, detail="Only CSV files are supported.")
+    if not file.filename or not file.filename.lower().endswith(".csv"):
+        raise HTTPException(status_code=400, detail="Only CSV files (.csv) are supported.")
 
-    content = await file.read()
+    content = await file.read(MAX_CSV_SIZE + 1)
+    if len(content) > MAX_CSV_SIZE:
+        raise HTTPException(
+            status_code=413,
+            detail="File size exceeds maximum allowable limit of 5MB."
+        )
+
     try:
         text = content.decode("utf-8-sig")
     except UnicodeDecodeError:
         text = content.decode("latin-1")
 
-    res = process_transaction_csv(text)
+    try:
+        res = process_transaction_csv(text)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
 
+    safe_filename = os.path.basename(file.filename)[:100]
     record_audit(
         event_type="TRANSACTIONS_INGESTED",
         actor="consumer",
         details={
-            "filename": file.filename,
+            "filename": safe_filename,
             "transaction_count": res.summary["transaction_count"],
             "total_inflows": res.summary["total_inflows"],
         }

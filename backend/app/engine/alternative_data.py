@@ -83,16 +83,24 @@ def process_transaction_csv(file_content: str) -> TransactionAnalysisResponse:
         except ValueError:
             continue
 
-        category, is_rec = classify_description(desc_val, amt_val)
+        # Formula injection mitigation
+        clean_desc = str(desc_val).strip()
+        if clean_desc and clean_desc[0] in ("=", "+", "-", "@", "\t", "\r"):
+            clean_desc = f"'{clean_desc}"
+
+        category, is_rec = classify_description(clean_desc, amt_val)
         transactions.append(
             TransactionItem(
-                date=str(date_val).strip(),
-                description=str(desc_val).strip(),
+                date=str(date_val).strip()[:30],
+                description=clean_desc[:150],
                 amount=amt_val,
                 category=category,
                 is_recurring=is_rec,
             )
         )
+
+    if not transactions:
+        raise ValueError("The uploaded statement contains no valid transaction rows. Ensure CSV includes date, description, and numeric amount columns.")
 
     # Inflow and Outflow analysis
     inflows = [t.amount for t in transactions if t.amount > 0]
@@ -110,21 +118,25 @@ def process_transaction_csv(file_content: str) -> TransactionAnalysisResponse:
     # Debt payments detected
     detected_debt = cat_breakdown.get("Debt / Credit Repayment", 0.0)
 
-    # Income variability estimate:
-    # If multiple inflows exist, calculate standard deviation of inflows
+    # Income variability estimate
     variability_pct = 15.0
-    if len(inflows) >= 3:
+    if len(inflows) >= 3 and total_inflow > 0:
         mean_inflow = total_inflow / len(inflows)
         variance = sum((x - mean_inflow) ** 2 for x in inflows) / len(inflows)
         std_dev = math.sqrt(variance)
-        # Coefficient of variation in percent
         variability_pct = round(min(80.0, max(5.0, (std_dev / mean_inflow) * 100.0)), 1)
     elif any(t.category == "Variable / Gig / Business Income" for t in transactions):
         variability_pct = 28.0
 
+    cashflow_note = (
+        f"Net positive cash flow generated over the period: +{net_cashflow:,.2f}."
+        if net_cashflow >= 0
+        else f"Net cash flow deficit of -{abs(net_cashflow):,.2f} recorded over the period (outflows exceed verified inflows)."
+    )
+
     insights = [
         f"Processed {len(transactions)} transaction records with total verified inflows of {total_inflow:,.2f} and outflows of {total_outflow:,.2f}.",
-        f"Net positive cash flow generated over the period: {net_cashflow:,.2f}.",
+        cashflow_note,
     ]
 
     if detected_debt > 0:
