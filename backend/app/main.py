@@ -1,7 +1,7 @@
 """Main FastAPI application entry point for NexusFin."""
 import os
 from pathlib import Path
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
@@ -12,7 +12,7 @@ from backend.app.config import (
     APP_VERSION,
     FRONTEND_DIR,
 )
-from backend.app.routers import assess, compare, transactions, consent, partner, pitch_deck
+from backend.app.routers import assess, compare, transactions, consent, partner, pitch_deck, auth
 
 app = FastAPI(
     title=f"{APP_NAME} API",
@@ -32,6 +32,7 @@ app.add_middleware(
 )
 
 # Register API routers
+app.include_router(auth.router)
 app.include_router(assess.router)
 app.include_router(compare.router)
 app.include_router(transactions.router)
@@ -82,14 +83,25 @@ if FRONTEND_DIR.exists():
 
     @app.get("/{full_path:path}", include_in_schema=False)
     def serve_frontend_assets(full_path: str):
-        target = FRONTEND_DIR / full_path
+        resolved_frontend = FRONTEND_DIR.resolve()
+        clean_path = full_path.lstrip("/")
+
+        # Block directory traversal sequences
+        if ".." in clean_path:
+            raise HTTPException(status_code=400, detail="Invalid path sequence.")
+
+        target = (resolved_frontend / clean_path).resolve()
+        if not target.is_relative_to(resolved_frontend):
+            raise HTTPException(status_code=400, detail="Path traversal forbidden.")
+
         if target.is_file():
             return FileResponse(target)
-        html_target = FRONTEND_DIR / f"{full_path}.html"
-        if html_target.is_file():
+
+        html_target = (resolved_frontend / f"{clean_path}.html").resolve()
+        if html_target.is_file() and html_target.is_relative_to(resolved_frontend):
             return FileResponse(html_target)
-        # Fallback to index.html
-        return FileResponse(FRONTEND_DIR / "index.html")
+
+        raise HTTPException(status_code=404, detail="Page or asset not found.")
 
 
 if __name__ == "__main__":
