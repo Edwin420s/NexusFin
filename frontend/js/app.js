@@ -167,16 +167,46 @@ const App = {
       this.addCompareOffer();
     });
 
+    document.getElementById('resetCompareBtn')?.addEventListener('click', () => {
+      this.initComparisonOffers();
+      UI.showToast('Benchmark credit offers reset to defaults.', 'info');
+    });
+
     document.getElementById('runCompareBtn')?.addEventListener('click', () => {
       this.runComparison();
     });
 
-    // Transaction Ingestion File Upload
+    // Transaction Ingestion File Upload & Drag-and-Drop
     const fileInput = document.getElementById('txFileInput');
     if (fileInput) {
       fileInput.addEventListener('change', (e) => {
         if (e.target.files && e.target.files[0]) {
           this.handleFileUpload(e.target.files[0]);
+        }
+      });
+    }
+
+    const dropzone = document.querySelector('.upload-dropzone');
+    if (dropzone) {
+      ['dragenter', 'dragover'].forEach(eventName => {
+        dropzone.addEventListener(eventName, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropzone.classList.add('drag-over');
+        });
+      });
+      ['dragleave', 'drop'].forEach(eventName => {
+        dropzone.addEventListener(eventName, (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          dropzone.classList.remove('drag-over');
+        });
+      });
+      dropzone.addEventListener('drop', (e) => {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+        if (files && files[0]) {
+          this.handleFileUpload(files[0]);
         }
       });
     }
@@ -324,7 +354,7 @@ const App = {
       UI.renderAssessmentResult(res);
       this.refreshAuditLog();
     } catch (err) {
-      alert(`Assessment failed: ${err.message}`);
+      UI.showToast(`Assessment failed: ${err.message}`, 'error');
     } finally {
       if (assessBtn) {
         assessBtn.disabled = false;
@@ -368,7 +398,7 @@ const App = {
 
   addCompareOffer() {
     if (AppState.comparedOffers.length >= 5) {
-      alert('Maximum of 5 offers can be compared simultaneously.');
+      UI.showToast('Maximum of 5 offers can be compared simultaneously.', 'info');
       return;
     }
     const basePrincipal = parseFloat(document.getElementById('loanPrincipal').value) || 30000;
@@ -388,7 +418,7 @@ const App = {
 
   removeCompareOffer(index) {
     if (AppState.comparedOffers.length <= 1) {
-      alert('You must compare at least 1 credit offer.');
+      UI.showToast('You must compare at least 1 credit offer.', 'info');
       return;
     }
     AppState.comparedOffers.splice(index, 1);
@@ -403,10 +433,12 @@ const App = {
     try {
       const profile = UI.readProfileFromForm();
       const res = await API.compare(profile, AppState.comparedOffers);
+      const emptyComp = document.getElementById('comparisonEmptyState');
+      if (emptyComp) emptyComp.style.display = 'none';
       UI.renderComparisonTable(res);
       this.refreshAuditLog();
     } catch (err) {
-      alert(`Comparison failed: ${err.message}`);
+      UI.showToast(`Comparison failed: ${err.message}`, 'error');
     } finally {
       compBtn.disabled = false;
       compBtn.textContent = 'Generate Key Facts Comparison';
@@ -418,9 +450,10 @@ const App = {
       const data = await API.getSampleTransactions(personaKey);
       AppState.lastTransactionAnalysis = data;
       UI.renderTransactionAnalysis(data);
+      UI.showToast(`Ingested sample transaction statement for ${personaKey}.`, 'success');
       this.refreshAuditLog();
     } catch (err) {
-      alert(`Failed to load sample data: ${err.message}`);
+      UI.showToast(`Failed to load sample data: ${err.message}`, 'error');
     }
   },
 
@@ -429,15 +462,16 @@ const App = {
       const data = await API.uploadTransactions(file);
       AppState.lastTransactionAnalysis = data;
       UI.renderTransactionAnalysis(data);
+      UI.showToast(`Successfully analyzed ${data.summary.transaction_count} transactions from ${file.name}.`, 'success');
       this.refreshAuditLog();
     } catch (err) {
-      alert(`CSV Upload Failed: ${err.message}`);
+      UI.showToast(`CSV Upload Failed: ${err.message}`, 'error');
     }
   },
 
   applyDetectedDataToProfile() {
     if (!AppState.lastTransactionAnalysis) {
-      alert('Analyze a transaction CSV first before applying.');
+      UI.showToast('Analyze a transaction CSV first before applying.', 'info');
       return;
     }
     const d = AppState.lastTransactionAnalysis;
@@ -447,7 +481,8 @@ const App = {
     document.getElementById('essentialExpenses').value = d.detected_expenses;
     document.getElementById('existingDebt').value = d.detected_debt_payments;
 
-    alert('Profile updated with detected transaction values! Switched to Assessment tab.');
+    UI.updateLiveCashflowSummary();
+    UI.showToast('Profile updated with detected cash flows. Ready for assessment.', 'success');
     this.switchTab('assessment');
   },
 
@@ -463,9 +498,10 @@ const App = {
   async handleConsentToggle(sourceId, granted) {
     try {
       await API.updateConsent(sourceId, granted);
+      UI.showToast(`Consent ${granted ? 'granted' : 'revoked'} for ${sourceId.replace(/_/g, ' ')}.`, 'info');
       this.refreshAuditLog();
     } catch (err) {
-      alert(`Could not update consent: ${err.message}`);
+      UI.showToast(`Could not update consent: ${err.message}`, 'error');
     }
   },
 
@@ -498,11 +534,11 @@ const App = {
 
     try {
       await API.recordPartnerDecision(assessmentId, decision, rationale, officerName);
-      alert(`Decision recorded: Facility ${decision.toUpperCase()} for record ${assessmentId}. Audit trail updated.`);
+      UI.showToast(`Decision recorded: Facility ${decision.toUpperCase()} for record ${assessmentId}. Audit trail updated.`, 'success');
       await this.refreshPartnerPortal();
       await this.refreshAuditLog();
     } catch (err) {
-      alert(`Failed to record underwriter decision: ${err.message}`);
+      UI.showToast(`Failed to record underwriter decision: ${err.message}`, 'error');
     }
   }
 };
