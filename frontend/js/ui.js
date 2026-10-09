@@ -585,7 +585,16 @@ const UI = {
     const container = document.getElementById('consentsContainer');
     if (!container) return;
 
-    container.innerHTML = consents.map(c => `
+    let guestBanner = '';
+    if (!AppState.currentUser) {
+      guestBanner = `
+        <div class="disclosure-box" style="margin-bottom:14px;background:var(--surface-alt);border-left:4px solid var(--accent);font-size:12.5px;">
+          <strong>Guest Preview:</strong> You are viewing standard data governance frameworks. <button type="button" class="btn-sm btn-ghost" onclick="UI.openAuthModal('login')" style="color:var(--accent);font-weight:700;padding:0;text-decoration:underline;cursor:pointer;">Sign in or create an account</button> to link sovereign data sharing consents to your personal profile.
+        </div>
+      `;
+    }
+
+    container.innerHTML = guestBanner + consents.map(c => `
       <div class="consent-card">
         <div style="flex:1;">
           <h4>${this.escapeHtml(c.title)}</h4>
@@ -634,8 +643,18 @@ const UI = {
     const container = document.getElementById('auditTrailStream');
     if (!container) return;
 
+    let guestNotice = '';
+    if (!AppState.currentUser) {
+      guestNotice = `
+        <div style="padding:10px 14px;margin-bottom:12px;background:var(--surface-alt);border:1px dashed var(--ink-300);border-radius:var(--radius-md);font-size:12px;color:var(--ink-700);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+          <span><strong>Public Session Stream:</strong> Sign in to maintain a persistent, sovereign compliance audit trail across all your assessments and consent decisions.</span>
+          <button type="button" class="btn-sm btn-primary" onclick="UI.openAuthModal('login')" style="padding:4px 10px;font-size:11.5px;cursor:pointer;">Sign In</button>
+        </div>
+      `;
+    }
+
     if (!logs || logs.length === 0) {
-      container.innerHTML = '<div style="color:var(--ink-500);padding:1.5rem;text-align:center;">No compliance events recorded in this session yet.</div>';
+      container.innerHTML = guestNotice + '<div style="color:var(--ink-500);padding:1.5rem;text-align:center;">No compliance events recorded in this session yet.</div>';
       return;
     }
 
@@ -702,7 +721,7 @@ const UI = {
         .join(' • ');
     };
 
-    container.innerHTML = logs.map(l => {
+    container.innerHTML = (guestNotice || '') + logs.map(l => {
       const dateStr = new Date(l.timestamp).toLocaleTimeString();
       const eventTitle = formatEventTitle(l.event_type);
       const actorLabel = formatActor(l.actor);
@@ -725,10 +744,64 @@ const UI = {
     }).join('');
   },
 
+  // Render Access Gate for Underwriter Portal when unauthenticated or not an underwriter
+  renderUnderwriterAuthGate() {
+    const container = document.getElementById('partnerAssessmentsList');
+    if (!container) return;
+
+    const isBorrower = AppState.currentUser && AppState.currentUser.role === 'borrower';
+    const userName = AppState.currentUser ? this.escapeHtml(AppState.currentUser.full_name) : '';
+
+    container.innerHTML = `
+      <div class="panel" style="padding:2.5rem 1.75rem;text-align:center;background:var(--surface-alt);border:1px dashed var(--ink-300);border-radius:var(--radius-lg);margin-top:1rem;">
+        <div style="width:52px;height:52px;background:var(--accent-soft);color:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 1.25rem;">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+        </div>
+
+        <h3 style="margin:0 0 8px;font-size:20px;color:var(--ink-900);">
+          ${isBorrower ? 'Institutional Underwriter Credentials Required' : 'Institutional Underwriter Access Required'}
+        </h3>
+
+        <p style="margin:0 auto 18px;max-width:580px;font-size:13.5px;color:var(--ink-600);line-height:1.6;">
+          ${isBorrower
+            ? `You are currently signed in as <strong>${userName}</strong> with a self-service <strong>Borrower</strong> account. Applicant credit portfolios and facility approval controls are restricted to verified institutional credit underwriters.`
+            : 'Borrower assessment portfolios, debt-to-income metrics, and facility approval controls are protected and restricted to verified institutional credit underwriters. <strong>Non-registered and unauthorized visitors cannot view applicant records or approve credit facilities.</strong>'
+          }
+        </p>
+
+        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;">
+          <button type="button" class="btn-hero btn-primary" id="gateSignInUnderwriterBtn" style="padding:8px 18px;font-size:13px;cursor:pointer;">
+            ${isBorrower ? 'Switch to Underwriter Account' : 'Sign In as Underwriter'}
+          </button>
+          <button type="button" class="btn-hero btn-outline" id="gateQuickDemoUnderwriterBtn" style="padding:8px 18px;font-size:13px;cursor:pointer;">
+            1-Click Demo: Underwriter Sign In
+          </button>
+        </div>
+
+        <div style="font-size:12px;color:var(--ink-500);padding-top:12px;border-top:1px solid var(--ink-200);">
+          Evaluating personal loans? <a href="/assessment" style="color:var(--accent);font-weight:600;text-decoration:none;">Go to Borrower Affordability Workspace &rarr;</a>
+        </div>
+      </div>
+    `;
+
+    document.getElementById('gateSignInUnderwriterBtn')?.addEventListener('click', () => {
+      this.openAuthModal('login');
+    });
+
+    document.getElementById('gateQuickDemoUnderwriterBtn')?.addEventListener('click', () => {
+      App.handleQuickLogin('underwriter@nexusfin.org', 'NexusOfficer123!');
+    });
+  },
+
   // Render Partner / Institutional Portal
   renderPartnerPortal(data) {
     const container = document.getElementById('partnerAssessmentsList');
     if (!container) return;
+
+    if (!AppState.currentUser || AppState.currentUser.role !== 'underwriter') {
+      this.renderUnderwriterAuthGate();
+      return;
+    }
 
     if (!data.assessments || data.assessments.length === 0) {
       container.innerHTML = '<p class="muted">No assessments currently awaiting underwriter review. Run an assessment in Borrower Mode to generate records.</p>';
@@ -736,8 +809,19 @@ const UI = {
     }
 
     const policy = AppState.institutionalPolicy;
+    const officerName = this.escapeHtml(AppState.currentUser.full_name);
+    const officerOrg = this.escapeHtml(AppState.currentUser.organization || 'Institutional Underwriting Department');
 
-    container.innerHTML = data.assessments.map((item, idx) => {
+    const officerBanner = `
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:#e0f2fe;border:1px solid #bae6fd;border-radius:var(--radius-md);margin-bottom:1.25rem;flex-wrap:wrap;gap:10px;">
+        <div style="font-size:12.5px;color:#0369a1;">
+          <strong>Authenticated Underwriter Session:</strong> ${officerName} • Organization: <strong>${officerOrg}</strong>
+        </div>
+        <span class="badge-pill" style="background:#0284c7;color:white;font-size:11px;">Verified Institutional Underwriter</span>
+      </div>
+    `;
+
+    container.innerHTML = officerBanner + data.assessments.map((item, idx) => {
       const appType = this.escapeHtml(item.applicant_type || 'Consented Credit Assessment');
       const appName = item.applicant_name ? `${this.escapeHtml(item.applicant_name)} — ` : `Assessment #${idx + 1} — `;
       const resilStatus = this.escapeHtml(item.resilience?.resilience_status || 'Needs Review');
@@ -902,6 +986,31 @@ const UI = {
       document.getElementById('openAuthModalBtn')?.addEventListener('click', () => {
         this.openAuthModal('register');
       });
+    }
+
+    // Synchronize home page session banner if present
+    const indexActionEl = document.getElementById('indexAccountActionGroup');
+    if (indexActionEl) {
+      if (AppState.currentUser) {
+        const u = AppState.currentUser;
+        indexActionEl.innerHTML = `
+          <a href="${u.role === 'underwriter' ? '/underwriter' : '/assessment'}" class="btn-hero btn-primary" style="padding:7px 16px;font-size:12.5px;text-decoration:none;">
+            Go to ${u.role === 'underwriter' ? 'Underwriter Portal' : 'My Workspace'} &rarr;
+          </a>
+          <button type="button" class="btn-hero btn-outline" onclick="App.handleLogout()" style="padding:7px 14px;font-size:12.5px;cursor:pointer;">
+            Sign Out
+          </button>
+        `;
+      } else {
+        indexActionEl.innerHTML = `
+          <button type="button" class="btn-hero btn-outline" onclick="UI.openAuthModal('login')" style="padding:7px 16px;font-size:12.5px;cursor:pointer;">
+            Sign In
+          </button>
+          <button type="button" class="btn-hero btn-primary" onclick="UI.openAuthModal('register')" style="padding:7px 16px;font-size:12.5px;cursor:pointer;">
+            Create Free Account
+          </button>
+        `;
+      }
     }
   },
 

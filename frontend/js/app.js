@@ -580,6 +580,12 @@ const App = {
   },
 
   async handleConsentToggle(sourceId, granted) {
+    if (!AppState.currentUser) {
+      UI.showToast('Please sign in or create an account to manage personal data sharing permissions.', 'warning');
+      UI.openAuthModal('login');
+      await this.refreshConsents();
+      return;
+    }
     try {
       await API.updateConsent(sourceId, granted);
       UI.showToast(`Consent ${granted ? 'granted' : 'revoked'} for ${sourceId.replace(/_/g, ' ')}.`, 'info');
@@ -599,22 +605,33 @@ const App = {
   },
 
   async refreshPartnerPortal() {
+    if (!AppState.currentUser || AppState.currentUser.role !== 'underwriter') {
+      UI.renderUnderwriterAuthGate();
+      return;
+    }
     try {
       const data = await API.getPartnerAssessments();
       UI.renderPartnerPortal(data);
     } catch (err) {
-      console.error('Failed to load partner records:', err);
+      console.warn('Failed to load partner records:', err);
+      UI.renderUnderwriterAuthGate();
     }
   },
 
   async submitUnderwriterDecision(assessmentId, idx) {
+    if (!AppState.currentUser || AppState.currentUser.role !== 'underwriter') {
+      UI.showToast('Access Denied: Non-registered users or borrower accounts cannot approve credit facilities. Please sign in as an underwriter.', 'warning');
+      UI.openAuthModal('login');
+      return;
+    }
+
     const actSelect = document.getElementById(`decAction_${idx}`);
     const ratInput = document.getElementById(`decRationale_${idx}`);
     if (!actSelect) return;
 
     const decision = actSelect.value;
     const rationale = ratInput?.value?.trim() || `Institution determined ${decision} based on stress test metrics.`;
-    const officerName = 'Institutional Credit Underwriter';
+    const officerName = AppState.currentUser.full_name;
 
     try {
       await API.recordPartnerDecision(assessmentId, decision, rationale, officerName);
@@ -646,6 +663,15 @@ const App = {
       AppState.setAuth(res.user, res.access_token);
       UI.closeAuthModal();
       UI.updateAuthDisplay();
+      if (document.getElementById('partnerAssessmentsList')) {
+        await this.refreshPartnerPortal();
+      }
+      if (document.getElementById('consentsContainer')) {
+        await this.refreshConsents();
+      }
+      if (document.getElementById('auditTrailStream')) {
+        await this.refreshAuditLog();
+      }
       UI.showToast(`Account created successfully! Welcome, ${res.user.full_name}.`, 'success');
     } catch (err) {
       UI.showToast(`Registration failed: ${err.message}`, 'error');
@@ -666,6 +692,15 @@ const App = {
       AppState.setAuth(res.user, res.access_token);
       UI.closeAuthModal();
       UI.updateAuthDisplay();
+      if (document.getElementById('partnerAssessmentsList')) {
+        await this.refreshPartnerPortal();
+      }
+      if (document.getElementById('consentsContainer')) {
+        await this.refreshConsents();
+      }
+      if (document.getElementById('auditTrailStream')) {
+        await this.refreshAuditLog();
+      }
       UI.showToast(`Signed in successfully as ${res.user.full_name}.`, 'success');
     } catch (err) {
       UI.showToast(`Sign in failed: ${err.message}`, 'error');
@@ -680,6 +715,15 @@ const App = {
     }
     AppState.clearAuth();
     UI.updateAuthDisplay();
+    if (document.getElementById('partnerAssessmentsList')) {
+      UI.renderUnderwriterAuthGate();
+    }
+    if (document.getElementById('consentsContainer')) {
+      await this.refreshConsents();
+    }
+    if (document.getElementById('auditTrailStream')) {
+      await this.refreshAuditLog();
+    }
     UI.showToast('Signed out successfully.', 'info');
   },
 
@@ -689,6 +733,15 @@ const App = {
       AppState.setAuth(res.user, res.access_token);
       UI.closeAuthModal();
       UI.updateAuthDisplay();
+      if (document.getElementById('partnerAssessmentsList')) {
+        await this.refreshPartnerPortal();
+      }
+      if (document.getElementById('consentsContainer')) {
+        await this.refreshConsents();
+      }
+      if (document.getElementById('auditTrailStream')) {
+        await this.refreshAuditLog();
+      }
       UI.showToast(`Signed in as ${res.user.full_name} (${res.user.role}).`, 'success');
     } catch (err) {
       UI.showToast(`Demo sign in failed: ${err.message}`, 'error');
