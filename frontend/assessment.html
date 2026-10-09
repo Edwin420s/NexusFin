@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loan Affordability &amp; Stress Testing — NexusFin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="header-container">
+      <a href="/" class="brand-wrapper" style="text-decoration:none;color:inherit;">
+        <div class="brand-logo">N</div>
+        <div class="brand-info">
+          <h1>Nexus<span>Fin</span></h1>
+          <p>Responsible Credit Decision Support &amp; Affordability Intelligence</p>
+        </div>
+      </a>
+
+      <div class="header-controls">
+        <div class="mode-toggle-group">
+          <a href="/assessment" class="mode-btn active" style="text-decoration:none;">Borrower Workspace</a>
+          <a href="/underwriter" class="mode-btn" style="text-decoration:none;">Institutional Underwriter Portal</a>
+        </div>
+
+        <a href="/methodology" class="btn-hero btn-ghost" style="padding:6px 12px;font-size:12px;border:1px solid var(--ink-200);text-decoration:none;">
+          Methodology &amp; Standards
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Workspace Navigation Tabs -->
+  <nav class="workspace-tabs">
+    <div class="tabs-container">
+      <a href="/" class="tab-nav-btn">
+        <span class="tab-num">00</span> Platform Overview
+      </a>
+      <a href="/assessment" class="tab-nav-btn active">
+        <span class="tab-num">01</span> Affordability &amp; Stress Testing
+      </a>
+      <a href="/compare" class="tab-nav-btn">
+        <span class="tab-num">02</span> Compare Credit Offers (Key Facts)
+      </a>
+      <a href="/transactions" class="tab-nav-btn">
+        <span class="tab-num">03</span> Alternative Data &amp; Cash Flow
+      </a>
+      <a href="/governance" class="tab-nav-btn">
+        <span class="tab-num">04</span> Data Governance &amp; Audit Trail
+      </a>
+      <a href="/underwriter" class="tab-nav-btn">
+        <span class="tab-num">05</span> Institutional Underwriter Portal
+      </a>
+      <a href="/methodology" class="tab-nav-btn">
+        <span class="tab-num">06</span> Methodology &amp; Financial Standards
+      </a>
+    </div>
+  </nav>
+
+  <!-- Dedicated Page Banner -->
+  <section class="page-banner">
+    <div class="page-banner-container">
+      <div class="page-banner-title">
+        <span class="eyebrow-tag">BORROWER DECISION SUPPORT WORKSPACE</span>
+        <h2>Loan Affordability &amp; Multi-Scenario Stress Testing</h2>
+        <p>
+          Evaluate whether a financing commitment fits your real household cash flow. Test reducing-balance repayments, protect voluntary savings buffers, and stress-test your finances against 6 real-world income and inflation shocks before signing.
+        </p>
+      </div>
+      <div class="page-banner-actions">
+        <a href="/compare" class="btn-hero btn-secondary" style="text-decoration:none;font-size:13px;padding:8px 16px;">
+          Compare Alternative Offers
+        </a>
+        <button type="button" class="btn-hero btn-outline" id="heroPrintReportBtn" style="font-size:13px;padding:8px 16px;">
+          Print / Export Report
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content Workspace -->
+  <main class="workspace-content">
+    <div id="assessment" class="tab-pane">
+      <div class="grid-two-col">
+
+        <!-- Column 1: Financial Health Position -->
+        <div class="panel">
+          <div class="panel-header" style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;">
+            <div>
+              <span class="eyebrow-tag">STEP 1 • HOUSEHOLD CASH FLOW</span>
+              <h3>Your Financial Position</h3>
+              <p>Declare your real monthly cash flow, living expenses, and debt commitments.</p>
+            </div>
+            <div class="panel-actions" style="display:flex;align-items:center;gap:8px;">
+              <button type="button" id="clearProfileBtn" class="btn-sm btn-outline" title="Reset all fields to enter your own personal data">
+                Clear Form
+              </button>
+              <select id="presetSelect" class="select-sm" title="Quickly load representative profiles to explore calculations">
+                <option value="" disabled selected>Load Example Profile...</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Live Real-Time Cash Flow Snapshot -->
+          <div class="live-cashflow-banner" id="liveCashflowSummary">
+            <div class="cashflow-metric">
+              <span class="label">Gross Monthly Inflow</span>
+              <span class="value" id="liveGrossIncome">₱ 38,000.00</span>
+            </div>
+            <div class="cashflow-metric">
+              <span class="label">Living + Debt Outflow</span>
+              <span class="value" id="liveTotalOutflow">₱ 25,500.00</span>
+            </div>
+            <div class="cashflow-metric highlight">
+              <span class="label">Baseline Available Cushion</span>
+              <span class="value" id="liveNetCashflow">₱ 12,500.00</span>
+            </div>
+            <div class="cashflow-metric">
+              <span class="label">Reserve Runway</span>
+              <span class="value" id="liveReserveRunway">0.9 Months</span>
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group col-span-2">
+              <label for="applicantName">Borrower / Profile Name</label>
+              <input type="text" id="applicantName" value="My Household Profile" placeholder="e.g. Maria Santos or Personal Evaluation">
+              <span class="form-hint">Used for institutional assessment review and exported reports</span>
+            </div>
+
+            <div class="form-group">
+              <label for="currencySelect">Operating Currency <span class="req">*</span></label>
+              <select id="currencySelect">
+                <option value="PHP" selected>PHP (₱) — Philippine Peso</option>
+                <option value="KES">KES (KSh) — Kenyan Shilling</option>
+                <option value="USD">USD ($) — US Dollar</option>
+                <option value="EUR">EUR (€) — Euro</option>
+                <option value="GBP">GBP (£) — British Pound</option>
+                <option value="SGD">SGD (S$) — Singapore Dollar</option>
+                <option value="IDR">IDR (Rp) — Indonesian Rupiah</option>
+                <option value="MYR">MYR (RM) — Malaysian Ringgit</option>
+                <option value="THB">THB (฿) — Thai Baht</option>
+                <option value="VND">VND (₫) — Vietnamese Dong</option>
+              </select>
+              <span class="form-hint">Denomination for calculations &amp; stress tests</span>
+            </div>
+
+            <div class="form-group">
+              <label for="monthlyIncome">Gross Monthly Income <span class="req">*</span></label>
+              <div class="input-with-symbol">
+                <span class="symbol-addon currency-symbol-label">₱</span>
+                <input type="number" id="monthlyIncome" value="38000" min="0" step="100" placeholder="e.g. 38000">
+              </div>
+              <span class="form-hint">Average monthly earnings</span>
+            </div>
+
+            <div class="form-group">
+              <label for="employmentType">Employment Type</label>
+              <select id="employmentType">
+                <option value="gig_worker">Platform / Gig Worker (Transport, Delivery, Logistics)</option>
+                <option value="freelance_msme">Freelancer / Digital MSME / Self-Employed</option>
+                <option value="informal_trader">Informal Trader / Small Merchant</option>
+                <option value="salaried">Salaried Employee</option>
+                <option value="seasonal">Seasonal Worker</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="householdDependents">Financial Dependents</label>
+              <input type="number" id="householdDependents" value="2" min="0" max="15">
+              <span class="form-hint">Family members reliant on your income</span>
+            </div>
+
+            <div class="form-group col-span-2">
+              <label for="incomeVariability">
+                Monthly Income Volatility: <span id="variabilityValLabel" style="color:var(--accent);font-weight:700;">20%</span>
+              </label>
+              <input type="range" id="incomeVariability" min="0" max="60" value="20" style="width:100%;">
+              <span class="form-hint">How much your monthly earnings fluctuate between peak and low seasons</span>
+            </div>
+
+            <div class="form-group">
+              <label for="essentialExpenses">Essential Living Expenses <span class="req">*</span></label>
+              <div class="input-with-symbol">
+                <span class="symbol-addon currency-symbol-label">₱</span>
+                <input type="number" id="essentialExpenses" value="21000" min="0" step="100" placeholder="e.g. 21000">
+              </div>
+              <span class="form-hint">Rent, food, utilities, health, school fees</span>
+            </div>
+
+            <div class="form-group">
+              <label for="existingDebt">Existing Debt Payments <span class="req">*</span></label>
+              <div class="input-with-symbol">
+                <span class="symbol-addon currency-symbol-label">₱</span>
+                <input type="number" id="existingDebt" value="4500" min="0" step="50" placeholder="e.g. 4500">
+              </div>
+              <span class="form-hint">Current bank, BNPL, or installment debits</span>
+            </div>
+
+            <div class="form-group">
+              <label for="liquidSavings">Liquid Savings Reserve</label>
+              <div class="input-with-symbol">
+                <span class="symbol-addon currency-symbol-label">₱</span>
+                <input type="number" id="liquidSavings" value="18000" min="0" step="100" placeholder="e.g. 18000">
+              </div>
+              <span class="form-hint">Immediately accessible cash or e-wallet buffer</span>
+            </div>
+
+            <div class="form-group">
+              <label for="goalSavings">Monthly Savings Goal</label>
+              <div class="input-with-symbol">
+                <span class="symbol-addon currency-symbol-label">₱</span>
+                <input type="number" id="goalSavings" value="3000" min="0" step="50" placeholder="e.g. 3000">
+              </div>
+              <span class="form-hint">Voluntary target (not deducted as mandatory debt)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Column 2: Proposed Credit Commitment -->
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <span class="eyebrow-tag">STEP 2 • CREDIT PRODUCT TERMS</span>
+              <h3>Proposed Credit Commitment</h3>
+              <p>Enter the financing offer or loan option you are evaluating.</p>
+            </div>
+          </div>
+
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="offerName">Loan Display Name</label>
+              <input type="text" id="offerName" value="Digital Fast Microloan">
+            </div>
+
+            <div class="form-group">
+              <label for="providerName">Lender / Financial Institution</label>
+              <input type="text" id="providerName" value="Digital Nano-Fintech">
+            </div>
+
+            <div class="form-group">
+              <label for="loanPrincipal">Requested Principal <span class="req">*</span></label>
+              <div class="input-with-symbol">
+                <span class="symbol-addon currency-symbol-label">₱</span>
+                <input type="number" id="loanPrincipal" value="35000" min="500" step="500">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="interestRate">Annual Interest Rate (%) <span class="req">*</span></label>
+              <input type="number" id="interestRate" value="24.0" min="0" max="150" step="0.5">
+            </div>
+
+            <div class="form-group">
+              <label for="loanTerm">Loan Term (Months) <span class="req">*</span></label>
+              <input type="number" id="loanTerm" value="10" min="1" max="120">
+            </div>
+
+            <div class="form-group">
+              <label for="repaymentType">Repayment Model</label>
+              <select id="repaymentType">
+                <option value="amortizing" selected>Amortizing (Reducing Balance)</option>
+                <option value="flat">Flat Rate (Fixed Total Interest)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="upfrontFee">Upfront Processing Fee</label>
+              <div class="input-with-symbol">
+                <span class="symbol-addon currency-symbol-label">₱</span>
+                <input type="number" id="upfrontFee" value="800" min="0" step="50">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="monthlyFee">Monthly Admin / Service Fee</label>
+              <div class="input-with-symbol">
+                <span class="symbol-addon currency-symbol-label">₱</span>
+                <input type="number" id="monthlyFee" value="150" min="0" step="10">
+              </div>
+            </div>
+
+            <div class="form-group col-span-2">
+              <label for="loanPurpose">Financing Purpose</label>
+              <select id="loanPurpose">
+                <option value="Asset Acquisition" selected>Asset Acquisition / Equipment</option>
+                <option value="Working Capital / MSME">Working Capital / MSME Inventory</option>
+                <option value="Emergency / Medical">Emergency / Medical Shock</option>
+                <option value="Education / Tuition">Education / Tuition</option>
+                <option value="Debt Consolidation">Debt Consolidation</option>
+                <option value="General Consumer Need">General Consumer Need</option>
+              </select>
+            </div>
+          </div>
+
+          <button id="assessBtn" class="btn-primary" style="margin-top:10px;">Assess Affordability &amp; Resilience</button>
+        </div>
+
+      </div>
+
+      <!-- Assessment Empty State -->
+      <div id="assessmentEmptyState" class="empty-state-card" style="margin-top: 1.5rem;">
+        <div style="width:48px;height:48px;border-radius:50%;background:var(--accent-light);color:var(--accent);display:inline-flex;align-items:center;justify-content:center;margin-bottom:12px;">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+        </div>
+        <h4>Ready for Dynamic Credit &amp; Resilience Evaluation</h4>
+        <p>Review or adjust your household cash flow and financing terms above, or select an example profile from the dropdown, then click <strong>Assess Affordability &amp; Resilience</strong> to execute deterministic debt-service calculations and 6 stress scenario models.</p>
+        <button type="button" class="btn btn-outline" id="emptyStateAssessBtn">Assess Current Profile</button>
+      </div>
+
+      <!-- Assessment Results Area (Dynamic) -->
+      <div id="assessmentResultsArea" class="assessment-results-area" style="display:none;margin-top:1.5rem;">
+
+        <!-- Status Banner -->
+        <div id="statusBanner" class="status-banner review">
+          <div id="statusBadgeIcon" class="status-icon-badge">!</div>
+          <div class="status-text">
+            <h4 id="statusTitle">Manageable today — vulnerable under income shock</h4>
+            <p id="statusReason">Your proposed repayment fits your declared monthly cash flow. However, a 25% income reduction would create a monthly deficit.</p>
+          </div>
+        </div>
+
+        <!-- Metric Cards -->
+        <div class="metrics-row">
+          <div class="metric-card">
+            <span class="metric-label">New Monthly Repayment</span>
+            <span id="valMonthlyPayment" class="metric-value">₱ 0.00</span>
+            <span class="metric-subtext">Principal + interest + fees</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Total Repayment</span>
+            <span id="valTotalRepayment" class="metric-value">₱ 0.00</span>
+            <span class="metric-subtext">Total cost over full term</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Total Financing Cost</span>
+            <span id="valTotalCost" class="metric-value">₱ 0.00</span>
+            <span class="metric-subtext">Finance charges &amp; fees</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Post-Loan Buffer</span>
+            <span id="valPostBuffer" class="metric-value">₱ 0.00</span>
+            <span id="valPostBufferSubtext" class="metric-subtext">Before voluntary savings</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">After Planned Savings</span>
+            <span id="valAfterSavingsBuffer" class="metric-value">₱ 0.00</span>
+            <span id="valSavingsGoalSubtext" class="metric-subtext">Discretionary remainder</span>
+          </div>
+          <div class="metric-card">
+            <span class="metric-label">Debt-Service Burden</span>
+            <span id="valDebtBurden" class="metric-value">0.0%</span>
+            <span id="valSavingsRunway" class="metric-subtext">0 months reserve</span>
+          </div>
+        </div>
+
+        <!-- Evidence-Based Multidimensional Financial Resilience Overview -->
+        <div class="resilience-overview-card">
+          <div class="resilience-overview-header">
+            <div>
+              <span class="eyebrow-tag">EVIDENCE-BASED FINANCIAL RESILIENCE</span>
+              <h3 style="margin:2px 0 4px;font-size:18px;">Financial Resilience Overview</h3>
+              <p id="resilienceSummaryText" style="margin:0;font-size:13px;color:rgba(255,255,255,0.85);line-height:1.5;">
+                Multidimensional assessment across monthly buffer, debt-service burden, liquid reserves, and shock survivability.
+              </p>
+            </div>
+            <div class="resilience-badges-group">
+              <span class="badge-status healthy" id="resilienceBaselineBadge">Baseline: Manageable</span>
+              <span class="badge-status tight" id="resilienceShockBadge">Shock Resilience: Needs Review</span>
+            </div>
+          </div>
+
+          <!-- Two-Pillar Evidence Grid: Current Position vs Stress Resilience -->
+          <div class="resilience-pillars-grid" style="display:grid;grid-template-columns:1fr 1.3fr;gap:16px;margin-bottom:12px;">
+            <!-- Pillar 1: Current Position -->
+            <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius-md);padding:14px;">
+              <div style="font-size:11px;font-weight:700;letter-spacing:0.05em;color:rgba(255,255,255,0.6);text-transform:uppercase;margin-bottom:10px;">
+                Current Position
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+                <div class="resil-metric-item" style="padding:10px;">
+                  <span class="resil-label">Monthly Buffer</span>
+                  <span class="resil-value healthy" id="resilValBuffer">+₱ 8,454</span>
+                  <span class="resil-note" id="resilNoteBuffer">Manageable cushion</span>
+                </div>
+                <div class="resil-metric-item" style="padding:10px;">
+                  <span class="resil-label">Debt-Service</span>
+                  <span class="resil-value" id="resilValBurden">22.5%</span>
+                  <span class="resil-note" id="resilNoteBurden">Within 35% safe ceiling</span>
+                </div>
+                <div class="resil-metric-item" style="padding:10px;">
+                  <span class="resil-label">Savings Runway</span>
+                  <span class="resil-value" id="resilValRunway">0.9 mos</span>
+                  <span class="resil-note" id="resilNoteRunway">Living costs reserve</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Pillar 2: Stress Shock Resilience -->
+            <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius-md);padding:14px;">
+              <div style="font-size:11px;font-weight:700;letter-spacing:0.05em;color:rgba(255,255,255,0.6);text-transform:uppercase;margin-bottom:10px;">
+                Stress Shock Resilience
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;">
+                <div class="resil-metric-item" style="padding:10px;">
+                  <span class="resil-label">−10% Income</span>
+                  <span class="resil-value healthy" id="resilValShock10">+₱ 4,654</span>
+                  <span class="resil-note" id="resilNoteShock10">Buffer retained</span>
+                </div>
+                <div class="resil-metric-item" style="padding:10px;">
+                  <span class="resil-label">−25% Income</span>
+                  <span class="resil-value deficit" id="resilValShock">−₱ 1,046</span>
+                  <span class="resil-note" id="resilNoteShock">Deficit incurred</span>
+                </div>
+                <div class="resil-metric-item" style="padding:10px;">
+                  <span class="resil-label">+20% Expenses</span>
+                  <span class="resil-value healthy" id="resilValShockExp">+₱ 4,254</span>
+                  <span class="resil-note" id="resilNoteShockExp">Buffer retained</span>
+                </div>
+                <div class="resil-metric-item" style="padding:10px;">
+                  <span class="resil-label">Combined</span>
+                  <span class="resil-value deficit" id="resilValShockComb">−₱ 5,246</span>
+                  <span class="resil-note" id="resilNoteShockComb">Deficit incurred</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Conclusion Bar -->
+          <div style="background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.3);border-radius:var(--radius-md);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+            <div>
+              <span style="font-size:11px;font-weight:700;text-transform:uppercase;color:#fbbf24;letter-spacing:0.05em;">Resilience Conclusion:</span>
+              <strong id="resilienceConclusionText" style="margin-left:6px;font-size:13.5px;color:#fff;">Manageable today — vulnerable under income shock</strong>
+            </div>
+            <span style="font-size:11.5px;color:rgba(255,255,255,0.7);">Evidence-based decision support • Zero black-box scoring</span>
+          </div>
+        </div>
+
+        <!-- Multi-Scenario Stress Test Matrix -->
+        <div class="panel" style="margin-bottom:1.5rem;">
+          <div class="panel-header">
+            <div>
+              <span class="eyebrow-tag">STEP 3 • RESILIENCE UNDER FINANCIAL SHOCKS</span>
+              <h3>What Happens If Circumstances Change?</h3>
+              <p>Simulating 6 macroeconomic and household shock scenarios to verify if repayments remain manageable.</p>
+            </div>
+          </div>
+          <div class="stress-table-wrapper">
+            <table class="nexus-table">
+              <thead>
+                <tr>
+                  <th>Scenario</th>
+                  <th style="text-align:right;">Income</th>
+                  <th style="text-align:right;">Essential Expenses</th>
+                  <th style="text-align:right;">Existing Debt</th>
+                  <th style="text-align:right;">New Repayment</th>
+                  <th style="text-align:right;">Remaining Buffer</th>
+                  <th style="text-align:center;">Status</th>
+                </tr>
+              </thead>
+              <tbody id="stressTableBody">
+                <!-- Injected via JavaScript -->
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Custom Shock Simulation Slider -->
+          <div class="custom-shock-panel" style="margin-top:1.25rem;">
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:12px;">
+              <div>
+                <span class="eyebrow-tag" style="margin-bottom:2px;">INTERACTIVE SHOCK SIMULATOR</span>
+                <h4 style="margin:0;font-size:14px;color:var(--ink-900);">Simulate Custom Macroeconomic or Income Shift</h4>
+                <p style="margin:2px 0 0;font-size:12px;color:var(--ink-500);">Drag slider to dynamically evaluate cash-flow sustainability at any specific income contraction or expansion percentage.</p>
+              </div>
+              <div class="shock-slider-badge" id="customShockBadge">-25% Contraction</div>
+            </div>
+
+            <div style="margin-bottom:1rem;">
+              <input type="range" id="customShockSlider" min="-50" max="25" step="5" value="-25" style="width:100%;">
+              <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--ink-500);margin-top:4px;">
+                <span>-50% (Severe Crisis)</span>
+                <span>-25% (Flagship Stress)</span>
+                <span>0% (Current Base)</span>
+                <span>+25% (Revenue Growth)</span>
+              </div>
+            </div>
+
+            <div class="metrics-row" style="grid-template-columns: repeat(4, 1fr); gap:10px; margin-bottom:10px;">
+              <div class="metric-card">
+                <span class="metric-label">Stressed Inflow</span>
+                <span class="metric-value" id="customStressedIncome">₱ 28,500.00</span>
+              </div>
+              <div class="metric-card">
+                <span class="metric-label">Fixed Commitments</span>
+                <span class="metric-value" id="customStressedCommitments">₱ 29,546.43</span>
+              </div>
+              <div class="metric-card">
+                <span class="metric-label">Simulated Cushion</span>
+                <span class="metric-value" id="customStressedBuffer" style="color:var(--deficit-text);">-₱ 1,046.43</span>
+              </div>
+              <div class="metric-card">
+                <span class="metric-label">Stress Debt Burden</span>
+                <span class="metric-value" id="customStressedBurden">29.8%</span>
+              </div>
+            </div>
+            <div id="customStressVerdict" style="padding:8px 12px;border-radius:var(--radius-sm);background:var(--ink-100);font-size:12.5px;color:var(--ink-800);">
+              Simulated 25% income reduction yields a monthly deficit of ₱1,046.43. Household requires emergency reserves or reduced principal.
+            </div>
+          </div>
+        </div>
+
+        <!-- Plain-Language Insights & Trade-Offs -->
+        <div class="grid-two-col">
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <span class="eyebrow-tag">TRANSPARENT REASONING</span>
+                <h3>Why Did NexusFin Reach This Result?</h3>
+              </div>
+            </div>
+            <ul id="explanationList" class="bullet-list"></ul>
+            <h4 style="margin:1.25rem 0 0.5rem;font-size:15px;color:var(--ink-900);">Financial Trade-Offs</h4>
+            <ul id="tradeOffsList" class="bullet-list"></ul>
+          </div>
+
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <span class="eyebrow-tag">INFORMED CHOICE</span>
+                <h3>Actionable Recommendations</h3>
+              </div>
+            </div>
+            <ul id="recommendationsList" class="bullet-list"></ul>
+            <div class="disclosure-box">
+              <strong>Methodology &amp; Regulatory Disclosures:</strong>
+              <ul id="methodologyList" style="margin:6px 0 0;padding-left:16px;"></ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div>
+        <strong>NexusFin</strong> — Decision Support for Responsible Credit &amp; Informed Choice<br>
+        <span>© 2026 NexusFin Technologies. Independent financial health and affordability intelligence.</span>
+      </div>
+      <div class="footer-badges">
+        <a href="/governance" class="footer-badge-pill">Privacy by Design</a>
+        <a href="/methodology" class="footer-badge-pill">Architecture &amp; Methodology</a>
+        <a href="/methodology" class="footer-badge-pill">Institutional Standards</a>
+        <span class="footer-badge-pill">Transparent Decision Support</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/js/api.js"></script>
+  <script src="/js/state.js"></script>
+  <script src="/js/ui.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>
