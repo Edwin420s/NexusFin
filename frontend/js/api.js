@@ -47,8 +47,12 @@ const API = {
     return this.get('/api/presets');
   },
 
-  assess(profile, offer) {
-    return this.post('/api/assess', { profile, offer });
+  assess(profile, offer, applicantName = 'Self-Service Applicant') {
+    return this.post('/api/assess', {
+      applicant_name: applicantName,
+      profile,
+      offer
+    });
   },
 
   compare(profile, offers) {
@@ -81,6 +85,15 @@ const API = {
 
   getPartnerAssessments() {
     return this.get('/api/partner/assessments');
+  },
+
+  recordPartnerDecision(assessmentId, decision, rationale, officerName = 'Senior Credit Underwriter') {
+    return this.post('/api/partner/decision', {
+      assessment_id: assessmentId,
+      decision: decision,
+      rationale: rationale,
+      officer_name: officerName
+    });
   },
 
   getPitchDeckInfo() {
