@@ -82,6 +82,104 @@ const UI = {
     };
   },
 
+  // Read current applicant / borrower name from form
+  readApplicantNameFromForm() {
+    const el = document.getElementById('applicantName');
+    return el && el.value.trim() ? el.value.trim() : 'Household Profile';
+  },
+
+  // Live Household Cash Flow Summary Bar
+  updateLiveCashflowSummary() {
+    const income = parseFloat(document.getElementById('monthlyIncome')?.value) || 0;
+    const expenses = parseFloat(document.getElementById('essentialExpenses')?.value) || 0;
+    const debt = parseFloat(document.getElementById('existingDebt')?.value) || 0;
+    const savings = parseFloat(document.getElementById('liquidSavings')?.value) || 0;
+
+    const totalOutflow = expenses + debt;
+    const netCashflow = income - totalOutflow;
+    const runway = expenses > 0 ? (savings / expenses).toFixed(1) : '0.0';
+
+    const setEl = (id, txt) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = txt;
+    };
+
+    setEl('liveGrossIncome', AppState.formatMoney(income));
+    setEl('liveTotalOutflow', AppState.formatMoney(totalOutflow));
+
+    const netEl = document.getElementById('liveNetCashflow');
+    if (netEl) {
+      netEl.textContent = AppState.formatMoney(netCashflow);
+      netEl.style.color = netCashflow >= 0 ? 'var(--good-text)' : 'var(--deficit-text)';
+    }
+
+    setEl('liveReserveRunway', `${runway} Mos`);
+  },
+
+  // Interactive Custom Income Shock Simulator
+  updateCustomShock(shockPct) {
+    AppState.customShockPct = parseFloat(shockPct);
+    const badge = document.getElementById('customShockBadge');
+    if (badge) {
+      badge.textContent = `${shockPct >= 0 ? '+' : ''}${shockPct}% ${shockPct < 0 ? 'Contraction' : 'Expansion'}`;
+    }
+
+    const profile = this.readProfileFromForm();
+    const offer = this.readOfferFromForm();
+    const monthlyPayment = AppState.currentAssessment?.metrics?.monthly_repayment || (offer.principal / offer.term_months);
+
+    const baseIncome = profile.income.monthly;
+    const factor = 1 + (AppState.customShockPct / 100);
+    const stressedIncome = baseIncome * factor;
+    const commitments = profile.essential_expenses + profile.existing_debt_payments + monthlyPayment;
+    const stressedBuffer = stressedIncome - commitments;
+    const stressBurden = stressedIncome > 0 ? ((profile.existing_debt_payments + monthlyPayment) / stressedIncome * 100) : 100;
+
+    const setEl = (id, txt) => {
+      const el = document.getElementById(id);
+      if (el) el.textContent = txt;
+    };
+
+    setEl('customStressedIncome', AppState.formatMoney(stressedIncome));
+    setEl('customStressedCommitments', AppState.formatMoney(commitments));
+
+    const bufEl = document.getElementById('customStressedBuffer');
+    if (bufEl) {
+      bufEl.textContent = AppState.formatMoney(stressedBuffer);
+      bufEl.style.color = stressedBuffer >= 0 ? 'var(--good-text)' : 'var(--deficit-text)';
+    }
+
+    setEl('customStressedBurden', `${stressBurden.toFixed(1)}%`);
+
+    const verdictEl = document.getElementById('customStressVerdict');
+    if (verdictEl) {
+      if (stressedBuffer >= 1000) {
+        verdictEl.style.background = '#ecfdf5';
+        verdictEl.style.color = '#065f46';
+        verdictEl.textContent = `At ${shockPct}% income shift, monthly buffer remains resilient at ${AppState.formatMoney(stressedBuffer)}. Instalments remain sustainable without depleting liquid reserves.`;
+      } else if (stressedBuffer >= 0) {
+        verdictEl.style.background = '#fffbeb';
+        verdictEl.style.color = '#92400e';
+        verdictEl.textContent = `At ${shockPct}% income shift, monthly buffer contracts to a tight ${AppState.formatMoney(stressedBuffer)}. Discretionary spending should be curtailed to prevent debt distress.`;
+      } else {
+        verdictEl.style.background = '#fef2f2';
+        verdictEl.style.color = '#991b1b';
+        verdictEl.textContent = `At ${shockPct}% income shift, cash flow falls into a monthly deficit of ${AppState.formatMoney(Math.abs(stressedBuffer))}. Borrower requires emergency savings drawdowns or restructuring.`;
+      }
+    }
+  },
+
+  // Update Institutional Policy labels
+  updatePolicyThresholdLabels() {
+    const p = AppState.institutionalPolicy;
+    const burdenLbl = document.getElementById('policyBurdenLabel');
+    if (burdenLbl) burdenLbl.textContent = `${p.maxDebtBurdenPct}%`;
+    const bufLbl = document.getElementById('policyBufferLabel');
+    if (bufLbl) bufLbl.textContent = AppState.formatMoney(p.minPostBuffer);
+    const runLbl = document.getElementById('policyRunwayLabel');
+    if (runLbl) runLbl.textContent = `${p.minSavingsRunwayMonths.toFixed(1)} Mo`;
+  },
+
   // Render Full Assessment Results
   renderAssessmentResult(data) {
     const resArea = document.getElementById('assessmentResultsArea');
@@ -225,6 +323,9 @@ const UI = {
     document.getElementById('tradeOffsList').innerHTML = data.trade_offs.map(item => `<li>${item}</li>`).join('');
     document.getElementById('recommendationsList').innerHTML = data.recommendations.map(item => `<li>${item}</li>`).join('');
     document.getElementById('methodologyList').innerHTML = data.methodology.map(item => `<li>${item}</li>`).join('');
+
+    // Synchronize interactive custom shock simulator
+    this.updateCustomShock(AppState.customShockPct || -25);
 
     // Smooth scroll down to results
     resArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -418,6 +519,8 @@ const UI = {
       return;
     }
 
+    const policy = AppState.institutionalPolicy;
+
     container.innerHTML = data.assessments.map((item, idx) => {
       const appType = item.applicant_type || 'Consented Credit Assessment';
       const appName = item.applicant_name ? `${item.applicant_name} — ` : `Assessment #${idx + 1} — `;
@@ -425,18 +528,93 @@ const UI = {
       const resilClass = resilStatus === 'Needs Review' ? 'tight' : 'healthy';
       const statusClass = item.status === 'fits' ? 'healthy' : item.status === 'review' ? 'tight' : 'deficit';
 
+      // Dynamic Policy Rule Evaluations
+      const burdenPass = item.metrics.debt_service_burden_pct <= policy.maxDebtBurdenPct;
+      const bufferPass = item.metrics.post_credit_buffer >= policy.minPostBuffer;
+      const runwayMonths = item.metrics.liquid_savings_months !== null && item.metrics.liquid_savings_months !== undefined ? item.metrics.liquid_savings_months : 0;
+      const runwayPass = runwayMonths >= policy.minSavingsRunwayMonths;
+
+      const policyPass = burdenPass && bufferPass && runwayPass;
+      const policyOverallTag = policyPass
+        ? '<span class="compliance-tag pass">Policy Compliant</span>'
+        : (!burdenPass || item.metrics.post_credit_buffer < 0)
+        ? '<span class="compliance-tag fail">Policy Breach</span>'
+        : '<span class="compliance-tag review">Underwriting Review Required</span>';
+
+      const burdenTag = burdenPass
+        ? `<span class="compliance-tag pass">Burden &le; ${policy.maxDebtBurdenPct}%</span>`
+        : `<span class="compliance-tag fail">Burden ${item.metrics.debt_service_burden_pct.toFixed(1)}% &gt; ${policy.maxDebtBurdenPct}%</span>`;
+
+      const bufferTag = bufferPass
+        ? `<span class="compliance-tag pass">Buffer &ge; ${AppState.formatMoney(policy.minPostBuffer)}</span>`
+        : item.metrics.post_credit_buffer >= 0
+        ? `<span class="compliance-tag review">Buffer ${item.currency} ${item.metrics.post_credit_buffer.toFixed(0)} &lt; ${AppState.formatMoney(policy.minPostBuffer)}</span>`
+        : `<span class="compliance-tag fail">Deficit ${item.currency} ${item.metrics.post_credit_buffer.toFixed(0)}</span>`;
+
+      const runwayTag = runwayPass
+        ? `<span class="compliance-tag pass">Runway &ge; ${policy.minSavingsRunwayMonths.toFixed(1)} Mo</span>`
+        : `<span class="compliance-tag review">Runway ${runwayMonths.toFixed(1)} Mo &lt; ${policy.minSavingsRunwayMonths.toFixed(1)} Mo</span>`;
+
+      // Render Underwriting Decision Box (if decided or open)
+      let decisionHtml = '';
+      if (item.decision) {
+        const decVal = item.decision.decision || 'approved';
+        const decClass = decVal === 'approved' ? 'pass' : decVal === 'conditional' ? 'review' : 'fail';
+        decisionHtml = `
+          <div class="underwriter-decision-box" style="border-left: 3px solid ${decVal === 'approved' ? 'var(--good-text)' : decVal === 'conditional' ? 'var(--warn-text)' : 'var(--deficit-text)'};">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-wrap:wrap;gap:8px;">
+              <span class="compliance-tag ${decClass}">RECORDED: ${decVal.toUpperCase()}</span>
+              <span style="font-size:11px;color:var(--ink-500);font-family:var(--font-mono);">${new Date(item.decision.decided_at || Date.now()).toLocaleString()}</span>
+            </div>
+            <div style="font-size:12.5px;color:var(--ink-800);margin-bottom:4px;">
+              <strong>Underwriter Rationale:</strong> ${item.decision.rationale || 'Standard institutional policy determination.'}
+            </div>
+            <div style="font-size:11px;color:var(--ink-600);">
+              Recorded by: <strong>${item.decision.officer_name || 'Senior Underwriter'}</strong>
+            </div>
+          </div>
+        `;
+      } else {
+        decisionHtml = `
+          <div class="underwriter-decision-box">
+            <div style="font-size:12px;font-weight:700;color:var(--ink-800);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.04em;">
+              Institutional Underwriting Decision Form
+            </div>
+            <div style="display:grid;grid-template-columns: 180px 1fr auto; gap:10px; align-items:center;">
+              <select id="decAction_${idx}" class="form-input" style="padding:7px 10px;font-size:12.5px;border:1px solid var(--ink-300);border-radius:var(--radius-sm);background:white;">
+                <option value="approved">Approve Facility</option>
+                <option value="conditional" ${item.status === 'review' ? 'selected' : ''}>Conditional Approval</option>
+                <option value="declined" ${item.status === 'deficit' ? 'selected' : ''}>Decline Facility</option>
+              </select>
+              <input type="text" id="decRationale_${idx}" class="form-input" placeholder="Enter underwriter rationale / stipulations..." value="${item.status_reason ? item.status_reason.slice(0, 75) + '...' : ''}" style="padding:7px 10px;font-size:12.5px;border:1px solid var(--ink-300);border-radius:var(--radius-sm);">
+              <button type="button" class="btn-sm btn-primary" onclick="App.submitUnderwriterDecision('${item.id}', ${idx})">
+                Record Decision
+              </button>
+            </div>
+          </div>
+        `;
+      }
+
       return `
       <div class="panel" style="margin-bottom:1.5rem;border-left:4px solid var(--accent);">
         <div class="panel-header">
           <div>
             <span class="eyebrow-tag">${appType.toUpperCase()}</span>
-            <h3>${appName}${item.offer.name} (${item.currency} ${item.offer.principal.toLocaleString()})</h3>
-            <p>Generated: ${new Date(item.generated_at).toLocaleDateString()} • Purpose: ${item.offer.purpose}</p>
+            <h3 style="margin-top:2px;">${appName}${item.offer.name} (${item.currency} ${item.offer.principal.toLocaleString()})</h3>
+            <p style="margin:2px 0 0;font-size:12px;color:var(--ink-500);">Generated: ${new Date(item.generated_at).toLocaleDateString()} • Purpose: ${item.offer.purpose}</p>
           </div>
-          <div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end;">
+            ${policyOverallTag}
             <span class="badge-status ${statusClass}">${item.status_label}</span>
           </div>
         </div>
+
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;">
+          ${burdenTag}
+          ${bufferTag}
+          ${runwayTag}
+        </div>
+
         <div class="grid-three-col" style="margin-bottom:1rem;">
           <div class="metric-card">
             <span class="metric-label">Debt-Service Burden</span>
@@ -454,11 +632,15 @@ const UI = {
             <span class="metric-subtext">${item.resilience?.summary ? item.resilience.summary.slice(0, 52) + '...' : 'Stress tested'}</span>
           </div>
         </div>
+
         <div class="disclosure-box" style="margin-bottom:0.75rem;">
           <strong>Underwriter Decision Support Note:</strong>
           ${item.status_reason}
         </div>
-        <div style="font-size:11px;color:var(--ink-500);font-style:italic;">
+
+        ${decisionHtml}
+
+        <div style="font-size:11px;color:var(--ink-500);font-style:italic;margin-top:8px;">
           Institutional Notice: NexusFin provides decision support. Final credit decisions remain with the financial institution.
         </div>
       </div>
