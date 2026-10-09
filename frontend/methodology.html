@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Methodology &amp; Financial Standards — NexusFin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="header-container">
+      <a href="/" class="brand-wrapper" style="text-decoration:none;color:inherit;">
+        <div class="brand-logo">N</div>
+        <div class="brand-info">
+          <h1>Nexus<span>Fin</span></h1>
+          <p>Responsible Credit Decision Support &amp; Affordability Intelligence</p>
+        </div>
+      </a>
+
+      <div class="header-controls">
+        <div class="mode-toggle-group">
+          <a href="/assessment" class="mode-btn" style="text-decoration:none;">Borrower Workspace</a>
+          <a href="/underwriter" class="mode-btn" style="text-decoration:none;">Institutional Underwriter Portal</a>
+        </div>
+
+        <a href="/methodology" class="btn-hero btn-ghost active" style="padding:6px 12px;font-size:12px;border:1px solid var(--ink-200);text-decoration:none;">
+          Methodology &amp; Standards
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Workspace Navigation Tabs -->
+  <nav class="workspace-tabs">
+    <div class="tabs-container">
+      <a href="/" class="tab-nav-btn">
+        <span class="tab-num">00</span> Platform Overview
+      </a>
+      <a href="/assessment" class="tab-nav-btn">
+        <span class="tab-num">01</span> Affordability &amp; Stress Testing
+      </a>
+      <a href="/compare" class="tab-nav-btn">
+        <span class="tab-num">02</span> Compare Credit Offers (Key Facts)
+      </a>
+      <a href="/transactions" class="tab-nav-btn">
+        <span class="tab-num">03</span> Alternative Data &amp; Cash Flow
+      </a>
+      <a href="/governance" class="tab-nav-btn">
+        <span class="tab-num">04</span> Data Governance &amp; Audit Trail
+      </a>
+      <a href="/underwriter" class="tab-nav-btn">
+        <span class="tab-num">05</span> Institutional Underwriter Portal
+      </a>
+      <a href="/methodology" class="tab-nav-btn active">
+        <span class="tab-num">06</span> Methodology &amp; Financial Standards
+      </a>
+    </div>
+  </nav>
+
+  <!-- Dedicated Page Banner -->
+  <section class="page-banner">
+    <div class="page-banner-container">
+      <div class="page-banner-title">
+        <span class="eyebrow-tag">FINANCIAL STANDARDS &amp; MATHEMATICAL SPECIFICATION</span>
+        <h2>Platform Methodology, Actuarial Formulations &amp; Governance Architecture</h2>
+        <p>
+          NexusFin enforces deterministic cash-flow math, transparent reducing-balance amortization schedules, standardized shock stress testing, and explainable decision support. Below is the rigorous mathematical specification and institutional governance reference.
+        </p>
+      </div>
+      <div class="page-banner-actions">
+        <a href="/api/pitch-deck/download" class="btn-hero btn-primary" download="NexusFin_Technical_Specification.pdf" style="text-decoration:none;font-size:13px;padding:8px 16px;">
+          Download Technical Whitepaper (PDF)
+        </a>
+        <button type="button" class="btn-hero btn-outline" onclick="window.print();" style="font-size:13px;padding:8px 16px;">
+          Print Methodology Guide
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content Workspace -->
+  <main class="workspace-content">
+    <div id="methodology" class="tab-pane">
+      <div class="methodology-container">
+
+        <!-- Core Tenets Grid -->
+        <div class="grid-three-col" style="margin-bottom:1.5rem;">
+          <div class="panel" style="border-top:3px solid var(--accent);">
+            <h4>1. Deterministic Core Math</h4>
+            <p style="font-size:13px;color:var(--ink-700);line-height:1.5;">
+              Safety-critical affordability and stress computations are 100% deterministic code. No black-box machine learning or stochastic models decide loan affordability.
+            </p>
+          </div>
+          <div class="panel" style="border-top:3px solid #10b981;">
+            <h4>2. Savings Buffer Protection</h4>
+            <p style="font-size:13px;color:var(--ink-700);line-height:1.5;">
+              Voluntary savings is treated as an emergency buffer asset, never subtracted as mandatory debt. Prudent savers are never penalized with artificial unaffordability.
+            </p>
+          </div>
+          <div class="panel" style="border-top:3px solid #6366f1;">
+            <h4>3. Multi-Scenario Shock Testing</h4>
+            <p style="font-size:13px;color:var(--ink-700);line-height:1.5;">
+              Loans are evaluated against 6 macroeconomic and household shocks (10%, 25%, 40% income drops, inflation, and emergency reserve depletion) before signing.
+            </p>
+          </div>
+        </div>
+
+        <!-- Section 1: Mathematical Foundations -->
+        <div class="panel" style="margin-bottom:1.5rem;">
+          <div class="panel-header">
+            <div>
+              <span class="eyebrow-tag">ACTUARIAL FORMULATIONS</span>
+              <h3>Core Financial Calculations &amp; Amortization Mechanics</h3>
+              <p>Transparent formulas governing loan instalments, true APRs, disposable buffers, and debt burden ratios.</p>
+            </div>
+          </div>
+
+          <div class="form-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:1.25rem;">
+            
+            <!-- Formula 1: Reducing-Balance Monthly Payment -->
+            <div class="methodology-card">
+              <div class="methodology-card-title">1. Reducing-Balance Instalment (PMT)</div>
+              <div class="formula-box">
+                <span class="math-expr">PMT = P &times; [ r(1 + r)<sup>n</sup> ] &divide; [ (1 + r)<sup>n</sup> &minus; 1 ]</span>
+              </div>
+              <p class="methodology-card-desc">
+                <strong>P:</strong> Principal borrowed &bull; <strong>r:</strong> Monthly interest rate (annual rate &divide; 12) &bull; <strong>n:</strong> Tenure in months.<br>
+                <em>Standard amortization: each payment reduces the remaining principal balance, lowering the interest incurred in subsequent periods.</em>
+              </p>
+            </div>
+
+            <!-- Formula 2: Flat Rate vs True APR -->
+            <div class="methodology-card">
+              <div class="methodology-card-title">2. Flat-Rate vs True APR Distortion</div>
+              <div class="formula-box">
+                <span class="math-expr">Total Interest = P &times; r<sub>flat</sub> &times; n<br>True Effective APR &asymp; 1.85 &times; Flat Rate</span>
+              </div>
+              <p class="methodology-card-desc">
+                Flat rates charge interest on the entire original principal for the full tenure, even when half the loan has been repaid. NexusFin exposes true effective APR to prevent marketing deception.
+              </p>
+            </div>
+
+            <!-- Formula 3: Post-Loan Disposable Buffer -->
+            <div class="methodology-card">
+              <div class="methodology-card-title">3. Net Post-Loan Cash Buffer</div>
+              <div class="formula-box">
+                <span class="math-expr">Net Buffer = Gross Income &minus; Living Essentials &minus; Existing Debt &minus; PMT</span>
+              </div>
+              <p class="methodology-card-desc">
+                Measures actual uncommitted cash remaining after living essentials and all debt service. A positive buffer ensures basic survival without borrowing to service obligations.
+              </p>
+            </div>
+
+            <!-- Formula 4: Debt-Service Burden (DSB / DTI) -->
+            <div class="methodology-card">
+              <div class="methodology-card-title">4. Debt-Service Burden (DSB / DTI)</div>
+              <div class="formula-box">
+                <span class="math-expr">Debt-Service Burden (%) = [ (Existing Debt + PMT) &divide; Gross Income ] &times; 100%</span>
+              </div>
+              <p class="methodology-card-desc">
+                <strong>&lt; 30%:</strong> Sustainable &bull; <strong>30% &ndash; 45%:</strong> Caution / Tight &bull; <strong>&gt; 45%:</strong> High Risk of Over-Indebtedness.<br>
+                Aligned with international responsible lending guidelines and debt ceilings.
+              </p>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Section 2: Actuarial Stress Testing Framework -->
+        <div class="panel" style="margin-bottom:1.5rem;">
+          <div class="panel-header">
+            <div>
+              <span class="eyebrow-tag">RESILIENCE ARCHITECTURE</span>
+              <h3>Actuarial Stress Testing: 6 Real-World Shocks</h3>
+              <p>Simulating economic volatility, seasonal downturns, living cost inflation, and emergency savings depletion.</p>
+            </div>
+          </div>
+
+          <div class="stress-table-wrapper">
+            <table class="nexus-table">
+              <thead>
+                <tr>
+                  <th>Scenario</th>
+                  <th>Shock Parameter</th>
+                  <th>Mathematical Simulation</th>
+                  <th>Vulnerability Evaluated</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Mild Income Shock</strong></td>
+                  <td>-10% Income</td>
+                  <td><span class="math-expr">Income &times; 90% &minus; Expenses &minus; Debt &minus; PMT</span></td>
+                  <td>Tests minor gig order slowdown or temporary client reduction.</td>
+                </tr>
+                <tr>
+                  <td><strong>Moderate Income Shock</strong></td>
+                  <td>-25% Income</td>
+                  <td><span class="math-expr">Income &times; 75% &minus; Expenses &minus; Debt &minus; PMT</span></td>
+                  <td>Tests seasonal off-peak earnings typical of platform &amp; informal workers.</td>
+                </tr>
+                <tr>
+                  <td><strong>Severe Income Shock</strong></td>
+                  <td>-40% Income</td>
+                  <td><span class="math-expr">Income &times; 60% &minus; Expenses &minus; Debt &minus; PMT</span></td>
+                  <td>Tests major work disruption, illness, or platform account suspension.</td>
+                </tr>
+                <tr>
+                  <td><strong>Cost-of-Living Shock</strong></td>
+                  <td>+15% Expenses</td>
+                  <td><span class="math-expr">Income &minus; (Expenses &times; 115%) &minus; Debt &minus; PMT</span></td>
+                  <td>Tests fuel spikes, food price inflation, or unexpected utility increases.</td>
+                </tr>
+                <tr>
+                  <td><strong>Compound Shock</strong></td>
+                  <td>-25% Income &amp; +15% Expenses</td>
+                  <td><span class="math-expr">(Income &times; 75%) &minus; (Expenses &times; 115%) &minus; Debt &minus; PMT</span></td>
+                  <td>Tests simultaneous income reduction and inflation pressure.</td>
+                </tr>
+                <tr>
+                  <td><strong>Emergency Reserve Runway</strong></td>
+                  <td>Liquid Savings / PMT</td>
+                  <td><span class="math-expr">Liquid Savings &divide; Monthly Instalment</span></td>
+                  <td>Calculates exact number of months existing liquid savings can cover instalments.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="disclosure-box" style="margin-top:1.25rem;">
+            <strong>Affordability Status Classification Bands:</strong>
+            <ul style="margin:6px 0 0 16px;padding:0;">
+              <li><span class="badge-status healthy">Fits Budget</span> Buffer &ge; 20% of monthly income with positive reserves across baseline and mild stress.</li>
+              <li><span class="badge-status tight">Review Terms</span> Buffer between 0% and 20%, or borrower enters negative buffer during moderate shock. Recommends extending tenure or reducing borrowing amount.</li>
+              <li><span class="badge-status deficit">Deficit Risk</span> Buffer &lt; 0 in baseline or severe deficit under shock. Indicates immediate risk of default or forced asset liquidation.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Section 3: Alternative Data & Privacy by Design -->
+        <div class="grid-two-col" style="margin-bottom:1.5rem;">
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <span class="eyebrow-tag">ALTERNATIVE DATA ENGINE</span>
+                <h3>Ethical Cash-Flow Analytics</h3>
+                <p>Supporting underserved and thin-file borrowers with consented transaction turnover.</p>
+              </div>
+            </div>
+            <ul class="bullet-list">
+              <li><strong>Zero Contact Scraping:</strong> NexusFin strictly rejects accessing contacts, call logs, device storage, photos, or social media data.</li>
+              <li><strong>Financial Turnover Only:</strong> Ingests consented transaction history from bank accounts, mobile money (M-Pesa), and merchant platforms (Grab, Foodpanda).</li>
+              <li><strong>Volatility Modeling:</strong> Computes the standard coefficient of variation (<span class="math-expr">CV = &sigma; &divide; &mu; &times; 100%</span>) to capture irregular earning cycles.</li>
+              <li><strong>Recurring Debt Detection:</strong> Algorithmic pattern mining identifies recurring debits, cross-checking borrower self-declarations.</li>
+            </ul>
+          </div>
+
+          <div class="panel">
+            <div class="panel-header">
+              <div>
+                <span class="eyebrow-tag">RESPONSIBLE DATA GOVERNANCE</span>
+                <h3>Privacy by Design &amp; Consumer Sovereignty</h3>
+                <p>Rigorous borrower data governance built into every layer of the architecture.</p>
+              </div>
+            </div>
+            <ul class="bullet-list">
+              <li><strong>Granular Consent:</strong> Separate opt-in permissions for transaction ingestion, utility verification, and underwriting sharing.</li>
+              <li><strong>Purpose Limitation:</strong> Consented financial data is processed exclusively for affordability evaluation and never sold or shared.</li>
+              <li><strong>Instant Revocation:</strong> Borrowers can revoke any data consent toggle instantly with immediate audit logging.</li>
+              <li><strong>Cryptographic Audit Trail:</strong> Every data ingestion, consent state update, and underwriter review is logged in an immutable event stream.</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Section 4: Enterprise Institutional Architecture & Security Guardrails -->
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <span class="eyebrow-tag">ENTERPRISE SYSTEM ARCHITECTURE</span>
+              <h3>Institutional Integration Architecture &amp; Security Guardrails</h3>
+              <p>How Financial Institutions, Microfinance Organizations, and Digital Lenders integrate NexusFin decision support.</p>
+            </div>
+            <div>
+              <span class="badge-pill" style="background:#ecfdf5;color:#065f46;border:1px solid #a7f3d0;">Bank-Grade Governance Aligned</span>
+            </div>
+          </div>
+
+          <!-- Enterprise Integration Flow Pipeline -->
+          <div style="margin-bottom:1.5rem;">
+            <h4 style="font-size:14px;color:var(--ink-900);margin:0 0 10px;">Core Banking &amp; Loan Origination System (LOS) Integration Workflow:</h4>
+            <div class="form-grid" style="grid-template-columns: repeat(4, 1fr); gap:1rem;">
+              <div style="background:var(--white);border:1px solid var(--ink-200);border-radius:var(--radius-md);padding:14px;">
+                <div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:4px;text-transform:uppercase;">01 • Ingestion Gateway</div>
+                <div style="font-weight:700;font-size:13px;color:var(--ink-900);margin-bottom:6px;">Encrypted Data Ingestion</div>
+                <p style="font-size:12px;color:var(--ink-600);margin:0;line-height:1.45;">
+                  Consented transaction feeds and financing requests are transmitted via tokenized mTLS protocols with strict identity verification.
+                </p>
+              </div>
+
+              <div style="background:var(--white);border:1px solid var(--ink-200);border-radius:var(--radius-md);padding:14px;">
+                <div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:4px;text-transform:uppercase;">02 • Actuarial Engine</div>
+                <div style="font-weight:700;font-size:13px;color:var(--ink-900);margin-bottom:6px;">Deterministic Cash-Flow Math</div>
+                <p style="font-size:12px;color:var(--ink-600);margin:0;line-height:1.45;">
+                  High-speed deterministic formulas compute true APR, reducing-balance instalments, and 6 macroeconomic stress scenarios in sub-5ms latency.
+                </p>
+              </div>
+
+              <div style="background:var(--white);border:1px solid var(--ink-200);border-radius:var(--radius-md);padding:14px;">
+                <div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:4px;text-transform:uppercase;">03 • Risk Validation</div>
+                <div style="font-weight:700;font-size:13px;color:var(--ink-900);margin-bottom:6px;">Institutional Policy Engine</div>
+                <p style="font-size:12px;color:var(--ink-600);margin:0;line-height:1.45;">
+                  Automatically benchmarks debt burdens, post-loan disposable cushions, and reserve runways against lender-configured risk policies.
+                </p>
+              </div>
+
+              <div style="background:var(--white);border:1px solid var(--ink-200);border-radius:var(--radius-md);padding:14px;">
+                <div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:4px;text-transform:uppercase;">04 • Decision Support</div>
+                <div style="font-weight:700;font-size:13px;color:var(--ink-900);margin-bottom:6px;">Explainable Decision Feeds</div>
+                <p style="font-size:12px;color:var(--ink-600);margin:0;line-height:1.45;">
+                  Dispatches plain-language trade-offs, survivability ratings, and underwriter recommendations directly into credit committee queues.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Institutional Security Pillars -->
+          <div class="form-grid" style="grid-template-columns: repeat(3, 1fr); gap:1.25rem;">
+            <div style="background:var(--surface-alt);border:1px solid var(--ink-200);border-radius:var(--radius-md);padding:14px;">
+              <h5 style="margin:0 0 6px;font-size:13px;color:var(--ink-900);">Ephemeral Data Processing</h5>
+              <p style="font-size:12px;color:var(--ink-600);margin:0;line-height:1.45;">
+                NexusFin operates on data minimization principles: financial calculations are evaluated in session memory with zero persistent retention of unneeded personally identifiable data.
+              </p>
+            </div>
+
+            <div style="background:var(--surface-alt);border:1px solid var(--ink-200);border-radius:var(--radius-md);padding:14px;">
+              <h5 style="margin:0 0 6px;font-size:13px;color:var(--ink-900);">Tamper-Evident Audit Logging</h5>
+              <p style="font-size:12px;color:var(--ink-600);margin:0;line-height:1.45;">
+                Every borrower calculation, consent modification, and credit committee decision is time-stamped in an append-only audit trail for internal compliance and regulatory examination.
+              </p>
+            </div>
+
+            <div style="background:var(--surface-alt);border:1px solid var(--ink-200);border-radius:var(--radius-md);padding:14px;">
+              <h5 style="margin:0 0 6px;font-size:13px;color:var(--ink-900);">Sovereign &amp; Cloud Deployment</h5>
+              <p style="font-size:12px;color:var(--ink-600);margin:0;line-height:1.45;">
+                Fully containerized standard architecture that deploys seamlessly to dedicated banking VPCs, private clouds, or sovereign on-premises financial infrastructure.
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div>
+        <strong>NexusFin</strong> — Decision Support for Responsible Credit &amp; Informed Choice<br>
+        <span>© 2026 NexusFin Technologies. Independent financial health and affordability intelligence.</span>
+      </div>
+      <div class="footer-badges">
+        <a href="/governance" class="footer-badge-pill">Privacy by Design</a>
+        <a href="/methodology" class="footer-badge-pill">Architecture &amp; Methodology</a>
+        <a href="/methodology" class="footer-badge-pill">Institutional Standards</a>
+        <span class="footer-badge-pill">Transparent Decision Support</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/js/api.js"></script>
+  <script src="/js/state.js"></script>
+  <script src="/js/ui.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>

@@ -14,23 +14,23 @@
   <!-- Site Header -->
   <header class="site-header">
     <div class="header-container">
-      <div class="brand-wrapper">
+      <a href="/" class="brand-wrapper" style="text-decoration:none;color:inherit;">
         <div class="brand-logo">N</div>
         <div class="brand-info">
           <h1>Nexus<span>Fin</span></h1>
           <p>Responsible Credit Decision Support &amp; Affordability Intelligence</p>
         </div>
-      </div>
+      </a>
 
       <div class="header-controls">
         <div class="mode-toggle-group">
-          <button class="mode-btn active" data-mode="consumer">Borrower Workspace</button>
-          <button class="mode-btn" data-mode="partner">Institutional Underwriter Portal</button>
+          <a href="/assessment" class="mode-btn" style="text-decoration:none;">Borrower Workspace</a>
+          <a href="/underwriter" class="mode-btn" style="text-decoration:none;">Institutional Underwriter Portal</a>
         </div>
 
-        <button type="button" class="btn-hero btn-ghost" style="padding:6px 12px;font-size:12px;border:1px solid var(--ink-200);text-decoration:none;" onclick="App.switchTab('methodology');">
+        <a href="/methodology" class="btn-hero btn-ghost" style="padding:6px 12px;font-size:12px;border:1px solid var(--ink-200);text-decoration:none;">
           Methodology &amp; Standards
-        </button>
+        </a>
       </div>
     </div>
   </header>
@@ -39,24 +39,24 @@
   <section class="hero-section">
     <div class="hero-container">
       <div class="hero-text">
-        <span class="badge-pill">Decision Support Platform</span>
+        <span class="badge-pill">Financial Decision Support Platform</span>
         <h2>Understand credit before it becomes a burden.</h2>
         <p>
-          NexusFin bridges the gap between credit access and genuine affordability. By pairing deterministic cash-flow calculations, consented alternative data signals, multi-scenario stress testing, and plain-language explainability, NexusFin empowers borrowers and lenders to prevent over-indebtedness before signing commitments.
+          NexusFin bridges the gap between credit access and genuine affordability. By pairing deterministic cash-flow calculations, consented alternative financial data, multi-scenario stress testing, and plain-language trade-offs, NexusFin empowers borrowers and lenders to prevent over-indebtedness before signing commitments.
         </p>
-        <div class="hero-actions-bar">
-          <button type="button" class="btn-hero btn-primary" onclick="App.switchTab('assessment'); document.getElementById('monthlyIncome').focus();">
+        <div class="hero-actions-bar" style="margin-top:1.25rem;display:flex;gap:10px;flex-wrap:wrap;">
+          <a href="/assessment" class="btn-hero btn-primary" style="text-decoration:none;">
             Evaluate Loan Affordability
-          </button>
-          <button type="button" class="btn-hero btn-secondary" onclick="App.switchTab('compare');">
+          </a>
+          <a href="/compare" class="btn-hero btn-secondary" style="text-decoration:none;">
             Compare Loan Offers
-          </button>
-          <button type="button" class="btn-hero btn-outline" id="heroPrintReportBtn">
-            Print / Export Assessment
-          </button>
-          <button type="button" class="btn-hero btn-ghost" id="heroViewMethodologyBtn" onclick="App.switchTab('methodology');">
-            Methodology &amp; Financial Standards
-          </button>
+          </a>
+          <a href="/transactions" class="btn-hero btn-outline" style="text-decoration:none;">
+            Ingest Transaction Data
+          </a>
+          <a href="/underwriter" class="btn-hero btn-ghost" style="text-decoration:none;border:1px solid var(--ink-200);">
+            Underwriter Portal
+          </a>
         </div>
       </div>
       <div class="hero-callout">
@@ -68,1083 +68,189 @@
     </div>
   </section>
 
-  <!-- Workspace Tabs Navigation -->
+  <!-- Workspace Navigation Tabs -->
   <nav class="workspace-tabs">
     <div class="tabs-container">
-      <button class="tab-nav-btn active" data-tab="assessment">
+      <a href="/" class="tab-nav-btn active">
+        <span class="tab-num">00</span> Platform Overview
+      </a>
+      <a href="/assessment" class="tab-nav-btn">
         <span class="tab-num">01</span> Affordability &amp; Stress Testing
-      </button>
-      <button class="tab-nav-btn" data-tab="compare">
+      </a>
+      <a href="/compare" class="tab-nav-btn">
         <span class="tab-num">02</span> Compare Credit Offers (Key Facts)
-      </button>
-      <button class="tab-nav-btn" data-tab="data">
+      </a>
+      <a href="/transactions" class="tab-nav-btn">
         <span class="tab-num">03</span> Alternative Data &amp; Cash Flow
-      </button>
-      <button class="tab-nav-btn" data-tab="privacy">
-        <span class="tab-num">04</span> Responsible Data Governance &amp; Audit Trail
-      </button>
-      <button class="tab-nav-btn" data-tab="partner">
+      </a>
+      <a href="/governance" class="tab-nav-btn">
+        <span class="tab-num">04</span> Data Governance &amp; Audit Trail
+      </a>
+      <a href="/underwriter" class="tab-nav-btn">
         <span class="tab-num">05</span> Institutional Underwriter Portal
-      </button>
-      <button class="tab-nav-btn" data-tab="methodology">
+      </a>
+      <a href="/methodology" class="tab-nav-btn">
         <span class="tab-num">06</span> Methodology &amp; Financial Standards
-      </button>
+      </a>
     </div>
   </nav>
 
-
-  <!-- Main Workspace Content -->
+  <!-- Main Content Overview Workspace -->
   <main class="workspace-content">
 
-    <!-- TAB 1: Affordability & Stress Testing -->
-    <div id="assessment" class="tab-pane active">
-      <div class="grid-two-col">
-
-        <!-- Column 1: Financial Health Profile -->
-        <div class="panel">
-          <div class="panel-header" style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;">
-            <div>
-              <span class="eyebrow-tag">STEP 1 • HOUSEHOLD CASH FLOW</span>
-              <h3>Your Financial Position</h3>
-              <p>Declare your real monthly cash flow, living expenses, and debt commitments.</p>
-            </div>
-            <div class="panel-actions" style="display:flex;align-items:center;gap:8px;">
-              <button type="button" id="clearProfileBtn" class="btn-sm btn-outline" title="Reset all fields to enter your own personal data">
-                Clear Form
-              </button>
-              <select id="presetSelect" class="select-sm" title="Quickly load representative profiles to explore calculations">
-                <option value="" disabled selected>Load Example Profile...</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Live Real-Time Cash Flow Snapshot -->
-          <div class="live-cashflow-banner" id="liveCashflowSummary">
-            <div class="cashflow-metric">
-              <span class="label">Gross Monthly Inflow</span>
-              <span class="value" id="liveGrossIncome">₱ 38,000.00</span>
-            </div>
-            <div class="cashflow-metric">
-              <span class="label">Living + Debt Outflow</span>
-              <span class="value" id="liveTotalOutflow">₱ 25,500.00</span>
-            </div>
-            <div class="cashflow-metric highlight">
-              <span class="label">Baseline Available Cushion</span>
-              <span class="value" id="liveNetCashflow">₱ 12,500.00</span>
-            </div>
-            <div class="cashflow-metric">
-              <span class="label">Reserve Runway</span>
-              <span class="value" id="liveReserveRunway">0.9 Months</span>
-            </div>
-          </div>
-
-          <div class="form-grid">
-            <div class="form-group col-span-2">
-              <label for="applicantName">Borrower / Profile Name</label>
-              <input type="text" id="applicantName" value="My Household Profile" placeholder="e.g. Maria Santos or Personal Evaluation">
-              <span class="form-hint">Used for institutional assessment review and exported reports</span>
-            </div>
-
-            <div class="form-group">
-              <label for="currencySelect">Operating Currency <span class="req">*</span></label>
-              <select id="currencySelect">
-                <option value="PHP" selected>PHP (₱) — Philippine Peso</option>
-                <option value="KES">KES (KSh) — Kenyan Shilling</option>
-                <option value="USD">USD ($) — US Dollar</option>
-                <option value="EUR">EUR (€) — Euro</option>
-                <option value="GBP">GBP (£) — British Pound</option>
-                <option value="SGD">SGD (S$) — Singapore Dollar</option>
-                <option value="IDR">IDR (Rp) — Indonesian Rupiah</option>
-                <option value="MYR">MYR (RM) — Malaysian Ringgit</option>
-                <option value="THB">THB (฿) — Thai Baht</option>
-                <option value="VND">VND (₫) — Vietnamese Dong</option>
-              </select>
-              <span class="form-hint">Denomination for calculations &amp; stress tests</span>
-            </div>
-
-            <div class="form-group">
-              <label for="monthlyIncome">Gross Monthly Income <span class="req">*</span></label>
-              <div class="input-with-symbol">
-                <span class="symbol-addon currency-symbol-label">₱</span>
-                <input type="number" id="monthlyIncome" value="38000" min="0" step="100" placeholder="e.g. 38000">
-              </div>
-              <span class="form-hint">Average monthly earnings</span>
-            </div>
-
-            <div class="form-group">
-              <label for="employmentType">Employment Type</label>
-              <select id="employmentType">
-                <option value="gig_worker">Platform / Gig Worker (Transport, Delivery, Logistics)</option>
-                <option value="freelance_msme">Freelancer / Digital MSME / Self-Employed</option>
-                <option value="informal_trader">Informal Trader / Small Merchant</option>
-                <option value="salaried">Salaried Employee</option>
-                <option value="seasonal">Seasonal Worker</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label for="householdDependents">Financial Dependents</label>
-              <input type="number" id="householdDependents" value="2" min="0" max="15">
-              <span class="form-hint">Family members reliant on your income</span>
-            </div>
-
-            <div class="form-group col-span-2">
-              <label for="incomeVariability">
-                Monthly Income Volatility: <span id="variabilityValLabel" style="color:var(--accent);font-weight:700;">20%</span>
-              </label>
-              <input type="range" id="incomeVariability" min="0" max="60" value="20" style="width:100%;">
-              <span class="form-hint">How much your monthly earnings fluctuate between peak and low seasons</span>
-            </div>
-
-            <div class="form-group">
-              <label for="essentialExpenses">Essential Living Expenses <span class="req">*</span></label>
-              <div class="input-with-symbol">
-                <span class="symbol-addon currency-symbol-label">₱</span>
-                <input type="number" id="essentialExpenses" value="21000" min="0" step="100" placeholder="e.g. 21000">
-              </div>
-              <span class="form-hint">Rent, food, utilities, health, school fees</span>
-            </div>
-
-            <div class="form-group">
-              <label for="existingDebt">Existing Debt Payments <span class="req">*</span></label>
-              <div class="input-with-symbol">
-                <span class="symbol-addon currency-symbol-label">₱</span>
-                <input type="number" id="existingDebt" value="4500" min="0" step="50" placeholder="e.g. 4500">
-              </div>
-              <span class="form-hint">Current bank, BNPL, or installment debits</span>
-            </div>
-
-            <div class="form-group">
-              <label for="liquidSavings">Liquid Savings Reserve</label>
-              <div class="input-with-symbol">
-                <span class="symbol-addon currency-symbol-label">₱</span>
-                <input type="number" id="liquidSavings" value="18000" min="0" step="100" placeholder="e.g. 18000">
-              </div>
-              <span class="form-hint">Immediately accessible cash or e-wallet buffer</span>
-            </div>
-
-            <div class="form-group">
-              <label for="goalSavings">Monthly Savings Goal</label>
-              <div class="input-with-symbol">
-                <span class="symbol-addon currency-symbol-label">₱</span>
-                <input type="number" id="goalSavings" value="3000" min="0" step="50" placeholder="e.g. 3000">
-              </div>
-              <span class="form-hint">Voluntary target (not deducted as mandatory debt)</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Column 2: Proposed Credit Offer -->
-        <div class="panel">
-          <div class="panel-header">
-            <div>
-              <span class="eyebrow-tag">STEP 2 • CREDIT PRODUCT TERMS</span>
-              <h3>Proposed Credit Commitment</h3>
-              <p>Enter the financing offer or loan option you are evaluating.</p>
-            </div>
-          </div>
-
-          <div class="form-grid">
-            <div class="form-group">
-              <label for="offerName">Loan Display Name</label>
-              <input type="text" id="offerName" value="Digital Fast Microloan">
-            </div>
-
-            <div class="form-group">
-              <label for="providerName">Lender / Financial Institution</label>
-              <input type="text" id="providerName" value="Digital Nano-Fintech">
-            </div>
-
-            <div class="form-group">
-              <label for="loanPrincipal">Requested Principal <span class="req">*</span></label>
-              <div class="input-with-symbol">
-                <span class="symbol-addon currency-symbol-label">₱</span>
-                <input type="number" id="loanPrincipal" value="35000" min="500" step="500">
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="interestRate">Annual Interest Rate (%) <span class="req">*</span></label>
-              <input type="number" id="interestRate" value="24.0" min="0" max="150" step="0.5">
-            </div>
-
-            <div class="form-group">
-              <label for="loanTerm">Loan Term (Months) <span class="req">*</span></label>
-              <input type="number" id="loanTerm" value="10" min="1" max="120">
-            </div>
-
-            <div class="form-group">
-              <label for="repaymentType">Repayment Model</label>
-              <select id="repaymentType">
-                <option value="amortizing" selected>Amortizing (Reducing Balance)</option>
-                <option value="flat">Flat Rate (Fixed Total Interest)</option>
-              </select>
-            </div>
-
-            <div class="form-group">
-              <label for="upfrontFee">Upfront Processing Fee</label>
-              <div class="input-with-symbol">
-                <span class="symbol-addon currency-symbol-label">₱</span>
-                <input type="number" id="upfrontFee" value="800" min="0" step="50">
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label for="monthlyFee">Monthly Admin / Service Fee</label>
-              <div class="input-with-symbol">
-                <span class="symbol-addon currency-symbol-label">₱</span>
-                <input type="number" id="monthlyFee" value="150" min="0" step="10">
-              </div>
-            </div>
-
-            <div class="form-group col-span-2">
-              <label for="loanPurpose">Financing Purpose</label>
-              <select id="loanPurpose">
-                <option value="Asset Acquisition" selected>Asset Acquisition / Equipment</option>
-                <option value="Working Capital / MSME">Working Capital / MSME Inventory</option>
-                <option value="Emergency / Medical">Emergency / Medical Shock</option>
-                <option value="Education / Tuition">Education / Tuition</option>
-                <option value="Debt Consolidation">Debt Consolidation</option>
-                <option value="General Consumer Need">General Consumer Need</option>
-              </select>
-            </div>
-          </div>
-
-          <button id="assessBtn" class="btn-primary">Assess Affordability &amp; Resilience</button>
-        </div>
-
+    <!-- Platform Stats Bar -->
+    <div class="overview-stats-bar">
+      <div class="overview-stat-item">
+        <div class="overview-stat-number" style="color:var(--accent);">100%</div>
+        <div class="overview-stat-label">Deterministic Math</div>
       </div>
-
-      <!-- Assessment Empty State -->
-      <div id="assessmentEmptyState" class="empty-state-card" style="margin-top: 1.5rem;">
-        <div style="width:48px;height:48px;border-radius:50%;background:var(--accent-light);color:var(--accent);display:inline-flex;align-items:center;justify-content:center;margin-bottom:12px;">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-        </div>
-        <h4>Ready for Dynamic Credit &amp; Resilience Evaluation</h4>
-        <p>Review or adjust your household cash flow and financing terms above, or select an example profile from the dropdown, then click <strong>Assess Affordability &amp; Resilience</strong> to execute deterministic debt-service calculations and 6 stress scenario models.</p>
-        <button type="button" class="btn btn-outline" id="emptyStateAssessBtn">Assess Current Profile</button>
+      <div class="overview-stat-item">
+        <div class="overview-stat-number" style="color:#0284c7;">6</div>
+        <div class="overview-stat-label">Stress Scenarios</div>
       </div>
-
-      <!-- Assessment Results Area (Dynamic) -->
-      <div id="assessmentResultsArea" class="assessment-results-area" style="display:none;">
-
-        <!-- Status Banner -->
-        <div id="statusBanner" class="status-banner review">
-          <div id="statusBadgeIcon" class="status-icon-badge">!</div>
-          <div class="status-text">
-            <h4 id="statusTitle">Manageable today — vulnerable under income shock</h4>
-            <p id="statusReason">Your proposed repayment fits your declared monthly cash flow. However, a 25% income reduction would create a monthly deficit of ₱1,046, while the combined stress scenario produces a ₱5,246 deficit.</p>
-          </div>
-        </div>
-
-        <!-- Metric Cards -->
-        <div class="metrics-row">
-          <div class="metric-card">
-            <span class="metric-label">New Monthly Repayment</span>
-            <span id="valMonthlyPayment" class="metric-value">₱ 0.00</span>
-            <span class="metric-subtext">Principal + interest + fees</span>
-          </div>
-          <div class="metric-card">
-            <span class="metric-label">Total Repayment</span>
-            <span id="valTotalRepayment" class="metric-value">₱ 0.00</span>
-            <span class="metric-subtext">Total cost over full term</span>
-          </div>
-          <div class="metric-card">
-            <span class="metric-label">Total Financing Cost</span>
-            <span id="valTotalCost" class="metric-value">₱ 0.00</span>
-            <span class="metric-subtext">Finance charges &amp; fees</span>
-          </div>
-          <div class="metric-card">
-            <span class="metric-label">Post-Loan Buffer</span>
-            <span id="valPostBuffer" class="metric-value">₱ 0.00</span>
-            <span id="valPostBufferSubtext" class="metric-subtext">Before voluntary savings</span>
-          </div>
-          <div class="metric-card">
-            <span class="metric-label">After Planned Savings</span>
-            <span id="valAfterSavingsBuffer" class="metric-value">₱ 0.00</span>
-            <span id="valSavingsGoalSubtext" class="metric-subtext">Discretionary remainder</span>
-          </div>
-          <div class="metric-card">
-            <span class="metric-label">Debt-Service Burden</span>
-            <span id="valDebtBurden" class="metric-value">0.0%</span>
-            <span id="valSavingsRunway" class="metric-subtext">0 months reserve</span>
-          </div>
-        </div>
-
-        <!-- Evidence-Based Multidimensional Financial Resilience Overview -->
-        <div class="resilience-overview-card">
-          <div class="resilience-overview-header">
-            <div>
-              <span class="eyebrow-tag">EVIDENCE-BASED FINANCIAL RESILIENCE</span>
-              <h3 style="margin:2px 0 4px;font-size:18px;">Financial Resilience Overview</h3>
-              <p id="resilienceSummaryText" style="margin:0;font-size:13px;color:rgba(255,255,255,0.85);line-height:1.5;">
-                Multidimensional assessment across monthly buffer, debt-service burden, liquid reserves, and shock survivability.
-              </p>
-            </div>
-            <div class="resilience-badges-group">
-              <span class="badge-status healthy" id="resilienceBaselineBadge">Baseline: Manageable</span>
-              <span class="badge-status tight" id="resilienceShockBadge">Shock Resilience: Needs Review</span>
-            </div>
-          </div>
-
-          <!-- Two-Pillar Evidence Grid: Current Position vs Stress Resilience -->
-          <div class="resilience-pillars-grid" style="display:grid;grid-template-columns:1fr 1.3fr;gap:16px;margin-bottom:12px;">
-            <!-- Pillar 1: Current Position -->
-            <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius-md);padding:14px;">
-              <div style="font-size:11px;font-weight:700;letter-spacing:0.05em;color:rgba(255,255,255,0.6);text-transform:uppercase;margin-bottom:10px;">
-                Current Position
-              </div>
-              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
-                <div class="resil-metric-item" style="padding:10px;">
-                  <span class="resil-label">Monthly Buffer</span>
-                  <span class="resil-value healthy" id="resilValBuffer">+₱ 8,454</span>
-                  <span class="resil-note" id="resilNoteBuffer">Manageable cushion</span>
-                </div>
-                <div class="resil-metric-item" style="padding:10px;">
-                  <span class="resil-label">Debt-Service</span>
-                  <span class="resil-value" id="resilValBurden">22.5%</span>
-                  <span class="resil-note" id="resilNoteBurden">Within 35% safe ceiling</span>
-                </div>
-                <div class="resil-metric-item" style="padding:10px;">
-                  <span class="resil-label">Savings Runway</span>
-                  <span class="resil-value" id="resilValRunway">0.9 mos</span>
-                  <span class="resil-note" id="resilNoteRunway">Living costs reserve</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Pillar 2: Stress Shock Resilience -->
-            <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:var(--radius-md);padding:14px;">
-              <div style="font-size:11px;font-weight:700;letter-spacing:0.05em;color:rgba(255,255,255,0.6);text-transform:uppercase;margin-bottom:10px;">
-                Stress Shock Resilience
-              </div>
-              <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;">
-                <div class="resil-metric-item" style="padding:10px;">
-                  <span class="resil-label">−10% Income</span>
-                  <span class="resil-value healthy" id="resilValShock10">+₱ 4,654</span>
-                  <span class="resil-note" id="resilNoteShock10">Buffer retained</span>
-                </div>
-                <div class="resil-metric-item" style="padding:10px;">
-                  <span class="resil-label">−25% Income</span>
-                  <span class="resil-value deficit" id="resilValShock">−₱ 1,046</span>
-                  <span class="resil-note" id="resilNoteShock">Deficit incurred</span>
-                </div>
-                <div class="resil-metric-item" style="padding:10px;">
-                  <span class="resil-label">+20% Expenses</span>
-                  <span class="resil-value healthy" id="resilValShockExp">+₱ 4,254</span>
-                  <span class="resil-note" id="resilNoteShockExp">Buffer retained</span>
-                </div>
-                <div class="resil-metric-item" style="padding:10px;">
-                  <span class="resil-label">Combined</span>
-                  <span class="resil-value deficit" id="resilValShockComb">−₱ 5,246</span>
-                  <span class="resil-note" id="resilNoteShockComb">Deficit incurred</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Conclusion Bar -->
-          <div style="background:rgba(245,158,11,0.12);border:1px solid rgba(245,158,11,0.3);border-radius:var(--radius-md);padding:10px 14px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
-            <div>
-              <span style="font-size:11px;font-weight:700;text-transform:uppercase;color:#fbbf24;letter-spacing:0.05em;">Resilience Conclusion:</span>
-              <strong id="resilienceConclusionText" style="margin-left:6px;font-size:13.5px;color:#fff;">Manageable today — vulnerable under income shock</strong>
-            </div>
-            <span style="font-size:11.5px;color:rgba(255,255,255,0.7);">Evidence-based decision support • Zero black-box scoring</span>
-          </div>
-        </div>
-
-        <!-- Multi-Scenario Stress Test Matrix -->
-        <div class="panel" style="margin-bottom:1.5rem;">
-          <div class="panel-header">
-            <div>
-              <span class="eyebrow-tag">STEP 3 • RESILIENCE UNDER FINANCIAL SHOCKS</span>
-              <h3>What Happens If Circumstances Change?</h3>
-              <p>Simulating 6 macroeconomic and household shock scenarios to verify if the loan remains manageable.</p>
-            </div>
-          </div>
-          <div class="stress-table-wrapper">
-            <table class="nexus-table">
-              <thead>
-                <tr>
-                  <th>Scenario</th>
-                  <th style="text-align:right;">Income</th>
-                  <th style="text-align:right;">Essential Expenses</th>
-                  <th style="text-align:right;">Existing Debt</th>
-                  <th style="text-align:right;">New Repayment</th>
-                  <th style="text-align:right;">Remaining Buffer</th>
-                  <th style="text-align:center;">Status</th>
-                </tr>
-              </thead>
-              <tbody id="stressTableBody">
-                <!-- Injected via JavaScript -->
-              </tbody>
-            </table>
-          </div>
-
-          <!-- Custom Shock Simulation Slider -->
-          <div class="custom-shock-panel" style="margin-top:1.25rem;">
-            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:12px;">
-              <div>
-                <span class="eyebrow-tag" style="margin-bottom:2px;">INTERACTIVE SHOCK SIMULATOR</span>
-                <h4 style="margin:0;font-size:14px;color:var(--ink-900);">Simulate Custom Macroeconomic or Income Shift</h4>
-                <p style="margin:2px 0 0;font-size:12px;color:var(--ink-500);">Drag slider to dynamically evaluate cash-flow sustainability at any specific income contraction or expansion percentage.</p>
-              </div>
-              <div class="shock-slider-badge" id="customShockBadge">-25% Contraction</div>
-            </div>
-
-            <div style="margin-bottom:1rem;">
-              <input type="range" id="customShockSlider" min="-50" max="25" step="5" value="-25" style="width:100%;">
-              <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--ink-500);margin-top:4px;">
-                <span>-50% (Severe Crisis)</span>
-                <span>-25% (Flagship Stress)</span>
-                <span>0% (Current Base)</span>
-                <span>+25% (Revenue Growth)</span>
-              </div>
-            </div>
-
-            <div class="metrics-row" style="grid-template-columns: repeat(4, 1fr); gap:10px; margin-bottom:10px;">
-              <div class="metric-card">
-                <span class="metric-label">Stressed Inflow</span>
-                <span class="metric-value" id="customStressedIncome">₱ 28,500.00</span>
-              </div>
-              <div class="metric-card">
-                <span class="metric-label">Fixed Commitments</span>
-                <span class="metric-value" id="customStressedCommitments">₱ 29,546.43</span>
-              </div>
-              <div class="metric-card">
-                <span class="metric-label">Simulated Cushion</span>
-                <span class="metric-value" id="customStressedBuffer" style="color:var(--deficit-text);">-₱ 1,046.43</span>
-              </div>
-              <div class="metric-card">
-                <span class="metric-label">Stress Debt Burden</span>
-                <span class="metric-value" id="customStressedBurden">29.8%</span>
-              </div>
-            </div>
-            <div id="customStressVerdict" style="padding:8px 12px;border-radius:var(--radius-sm);background:var(--ink-100);font-size:12.5px;color:var(--ink-800);">
-              Simulated 25% income reduction yields a monthly deficit of ₱1,046.43. Household requires emergency reserves or reduced principal.
-            </div>
-          </div>
-        </div>
-
-
-        <!-- Explainable Insights Grid -->
-        <div class="grid-two-col">
-          <div class="panel">
-            <div class="panel-header">
-              <div>
-                <span class="eyebrow-tag">EXPLAINED REASONING</span>
-                <h3>Why Did NexusFin Reach This Result?</h3>
-              </div>
-            </div>
-            <ul id="explanationList" class="bullet-list"></ul>
-            <h4 style="margin:1.25rem 0 0.5rem;font-size:15px;color:var(--ink-900);">Financial Trade-Offs</h4>
-            <ul id="tradeOffsList" class="bullet-list"></ul>
-          </div>
-
-          <div class="panel">
-            <div class="panel-header">
-              <div>
-                <span class="eyebrow-tag">INFORMED CHOICE</span>
-                <h3>Actionable Recommendations</h3>
-              </div>
-            </div>
-            <ul id="recommendationsList" class="bullet-list"></ul>
-            <div class="disclosure-box">
-              <strong>Methodology &amp; Regulatory Disclosures:</strong>
-              <ul id="methodologyList" style="margin:6px 0 0;padding-left:16px;"></ul>
-            </div>
-          </div>
-        </div>
-
+      <div class="overview-stat-item">
+        <div class="overview-stat-number" style="color:#10b981;">0</div>
+        <div class="overview-stat-label">Black-Box Scoring</div>
+      </div>
+      <div class="overview-stat-item">
+        <div class="overview-stat-number" style="color:#6366f1;">Consented</div>
+        <div class="overview-stat-label">Open Finance Data</div>
       </div>
     </div>
 
-    <!-- TAB 2: Compare Credit Offers -->
-    <div id="compare" class="tab-pane">
-      <div class="panel">
-        <div class="panel-header">
+    <!-- Platform Workspaces Grid (6 Independent Workspaces) -->
+    <div style="margin-bottom:2.5rem;">
+      <div class="panel-header" style="margin-bottom:1.25rem;">
+        <div>
+          <span class="eyebrow-tag">DEDICATED INDEPENDENT WORKSPACES</span>
+          <h3 style="font-size:22px;margin:2px 0 4px;">Explore NexusFin Workspaces</h3>
+          <p style="margin:0;font-size:13.5px;color:var(--ink-600);">Each module operates independently to deliver focused, transparent decision support.</p>
+        </div>
+      </div>
+
+      <div class="grid-three-col" style="gap:20px;">
+        
+        <!-- Workspace 1 -->
+        <div class="overview-card">
           <div>
-            <span class="eyebrow-tag">STANDARDIZED KEY FACTS STATEMENT</span>
-            <h3>Compare Multiple Credit Offers</h3>
-            <p>Evaluate up to 5 competing loan products against your identical household cash-flow baseline.</p>
+            <div class="overview-card-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+            </div>
+            <h3>01. Affordability &amp; Stress Testing</h3>
+            <p>Declare household cash flow and stress-test proposed credit against 6 real-world income contraction and inflation shocks before taking on debt.</p>
           </div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;">
-            <button type="button" id="resetCompareBtn" class="btn-outline btn-sm">Reset Benchmark Offers</button>
-            <button type="button" id="addOfferBtn" class="btn-secondary btn-sm">+ Add Another Offer</button>
-          </div>
+          <a href="/assessment" class="btn btn-outline" style="text-decoration:none;text-align:center;font-size:13px;padding:8px 14px;">
+            Open Affordability Workspace &rarr;
+          </a>
         </div>
 
-        <div id="compareOffersConfigArea">
-          <!-- Dynamically injected offer rows -->
-        </div>
-
-        <button id="runCompareBtn" class="btn-primary" style="margin-top:1rem;">Generate Key Facts Comparison</button>
-
-        <!-- Comparison Empty State Guidance -->
-        <div id="comparisonEmptyState" class="empty-state-card" style="margin-top:1.5rem;">
-          <h4>Side-by-Side Key Facts Disclosure</h4>
-          <p>Configure terms for up to 5 financing offers above, then click <strong>Generate Key Facts Comparison</strong> to view standardized APR disclosures, total borrowing cost differences, and net disposable buffer impacts side-by-side.</p>
-        </div>
-
-        <!-- Comparison Results Area -->
-        <div id="comparisonResultsArea" style="display:none;margin-top:2rem;">
-          <div class="stress-table-wrapper">
-            <table class="nexus-table">
-              <thead>
-                <tr>
-                  <th>Credit Offer &amp; Structure</th>
-                  <th style="text-align:right;">Principal</th>
-                  <th style="text-align:center;">Term</th>
-                  <th style="text-align:right;">Monthly Repayment</th>
-                  <th style="text-align:right;">Total Repayment</th>
-                  <th style="text-align:right;">Total Financing Cost</th>
-                  <th style="text-align:right;">Post-Loan Buffer</th>
-                  <th style="text-align:right;">Debt Burden</th>
-                  <th style="text-align:center;">Shock Resilience</th>
-                </tr>
-              </thead>
-              <tbody id="comparisonTableBody">
-                <!-- Dynamically injected -->
-              </tbody>
-            </table>
-          </div>
-
-          <div id="comparisonNotes" class="disclosure-box" style="margin-top:1.25rem;background:var(--accent-soft);border-color:var(--accent-light);">
-            <!-- Dynamically injected comparison insights -->
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- TAB 3: Alternative Data & Cash Flow -->
-    <div id="data" class="tab-pane">
-      <div class="grid-two-col">
-        <div class="panel">
-          <div class="panel-header">
-            <div>
-              <span class="eyebrow-tag">CONSENTED OPEN FINANCE</span>
-              <h3>Ingest Alternative Transaction Signals</h3>
-              <p>Upload a transaction statement CSV or load curated sample statements to evaluate cash-flow dynamics.</p>
-            </div>
-          </div>
-
-          <div class="upload-dropzone" onclick="document.getElementById('txFileInput').click();">
-            <div style="display:flex;justify-content:center;margin-bottom:8px;">
-              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--ink-400)" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-            </div>
-            <p><strong>Click or drag to upload transaction export (.csv)</strong><br><span style="font-size:11.5px;color:var(--ink-500);">Supported structure: date &bull; description &bull; amount</span></p>
-            <input type="file" id="txFileInput" accept=".csv" style="display:none;">
-          </div>
-
-          <div style="margin-top:1.25rem;">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px;">
-              <label style="font-size:12px;font-weight:700;color:var(--ink-700);">Or Test with Standard Real-World Statements (1-Click):</label>
-              <button type="button" class="btn-sm btn-ghost" id="downloadCsvTemplateBtn" style="font-size:11px;padding:3px 8px;cursor:pointer;" title="Download sample CSV template format">
-                Download CSV Template
-              </button>
-            </div>
-            <div class="sample-dataset-pills">
-              <button class="sample-pill-btn" onclick="App.loadSampleDataset('manila');">Bank Account Statement (CSV)</button>
-              <button class="sample-pill-btn" onclick="App.loadSampleDataset('kenya');">Mobile Money / M-Pesa Statement (CSV)</button>
-              <button class="sample-pill-btn" onclick="App.loadSampleDataset('jakarta');">Merchant Point-of-Sale Export (CSV)</button>
-            </div>
-          </div>
-
-          <!-- Transaction Analysis Result -->
-          <div id="txAnalysisResultArea" style="display:none;margin-top:1.5rem;">
-            <div class="panel-header" style="margin-bottom:1rem;">
-              <h4>Transaction Ingestion Summary</h4>
-              <span id="txCountBadge" class="badge-pill">0 Transactions</span>
-            </div>
-
-            <div class="metrics-row" style="gap:12px;margin-bottom:1rem;">
-              <div class="metric-card">
-                <span class="metric-label">Verified Inflows</span>
-                <span id="txInflows" class="metric-value" style="color:var(--good-text);">₱ 0.00</span>
-              </div>
-              <div class="metric-card">
-                <span class="metric-label">Verified Outflows</span>
-                <span id="txOutflows" class="metric-value">₱ 0.00</span>
-              </div>
-              <div class="metric-card">
-                <span class="metric-label">Net Cash Flow</span>
-                <span id="txNetCashflow" class="metric-value">₱ 0.00</span>
-              </div>
-              <div class="metric-card">
-                <span class="metric-label">Income Volatility</span>
-                <span id="txVariabilityEst" class="metric-value">0.0%</span>
-              </div>
-              <div class="metric-card">
-                <span class="metric-label">Detected Recurring Debt</span>
-                <span id="txDetectedDebt" class="metric-value">₱ 0.00</span>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <label>Detected Category Breakdown:</label>
-              <div id="txCategoryTags" class="category-tags"></div>
-            </div>
-
-            <ul id="txInsightsList" class="bullet-list" style="margin-top:1rem;"></ul>
-
-            <button id="applyDetectedBtn" class="btn-primary" style="margin-top:1rem;background:var(--accent);">
-              Import Detected Cash Flows Into Assessment Profile
-            </button>
-
-            <div style="margin-top:1.5rem;">
-              <label style="font-size:12px;font-weight:700;color:var(--ink-700);">Transaction Sample Preview (First 10):</label>
-              <div class="stress-table-wrapper" style="max-height:220px;overflow-y:auto;margin-top:6px;">
-                <table class="nexus-table">
-                  <thead>
-                    <tr>
-                      <th>Date</th>
-                      <th>Description</th>
-                      <th>Classification</th>
-                      <th>Amount</th>
-                    </tr>
-                  </thead>
-                  <tbody id="txPreviewTableBody"></tbody>
-                </table>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="panel">
-          <div class="panel-header">
-            <div>
-              <span class="eyebrow-tag">RESPONSIBLE INNOVATION</span>
-              <h3>Why Alternative Data &amp; Why Now?</h3>
-            </div>
-          </div>
-          <p style="font-size:14px;color:var(--ink-700);line-height:1.6;">
-            Some informal workers, gig workers, and small businesses have limited formal financial histories, making conventional credit assessment difficult. Consented transaction data helps verify real cash-flow capacity without invasive data collection.
-          </p>
-
-          <!-- 5-Step Open Finance Pipeline -->
-          <h4 style="font-size:14px;margin:1.25rem 0 0.5rem;color:var(--ink-900);">5-Step Decision Support Pipeline:</h4>
-          <div style="background:var(--ink-50);border:1px solid var(--ink-200);border-radius:var(--radius-md);padding:12px;margin-bottom:1rem;font-size:12.5px;line-height:1.6;">
-            <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:6px;">
-              <span style="font-weight:700;color:var(--accent);">1.</span>
-              <span><strong>Consented Ingestion:</strong> Ingest bank or mobile money transaction export with explicit borrower authorization.</span>
-            </div>
-            <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:6px;">
-              <span style="font-weight:700;color:var(--accent);">2.</span>
-              <span><strong>Cash Flow Verification:</strong> Reconstruct verified inflows, essential outflows, and net operating cash flow.</span>
-            </div>
-            <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:6px;">
-              <span style="font-weight:700;color:var(--accent);">3.</span>
-              <span><strong>Volatility &amp; Debt Detection:</strong> Estimate income variability and detect undeclared recurring debt payments.</span>
-            </div>
-            <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:6px;">
-              <span style="font-weight:700;color:var(--accent);">4.</span>
-              <span><strong>Deterministic Affordability:</strong> Calculate loan repayments, buffers, and stress scenarios using actuarial formulas.</span>
-            </div>
-            <div style="display:flex;align-items:flex-start;gap:8px;">
-              <span style="font-weight:700;color:var(--accent);">5.</span>
-              <span><strong>Human Decision Support:</strong> Present plain-language trade-offs to the borrower and underwriter for informed human decision.</span>
-            </div>
-          </div>
-
-          <h4 style="font-size:14px;margin:1rem 0 0.5rem;color:var(--ink-900);">Ethical Guardrails Built Into NexusFin:</h4>
-          <ul class="bullet-list" style="font-size:13px;line-height:1.5;">
-            <li><strong>Zero Invasive Scraping:</strong> No access to personal contacts, photos, social media, or location tracking.</li>
-            <li><strong>Data Minimization:</strong> Only financial transactions, recurring debits, and verified cash flows with explicit consent are analyzed.</li>
-            <li><strong>Cross-Validation:</strong> Cross-references declared debt payments against recurring debit transactions.</li>
-            <li><strong>No Black-Box Scoring:</strong> Alternative data informs income variability and buffers; it is never converted into an unexplained score.</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <!-- TAB 4: Privacy, Consent & Audit Trail -->
-    <div id="privacy" class="tab-pane">
-      <div class="grid-two-col">
-        <div class="panel">
-          <div class="panel-header">
-            <div>
-              <span class="eyebrow-tag">DATA GOVERNANCE</span>
-              <h3>Consent Management &amp; Privacy Controls</h3>
-              <p>Borrowers retain granular control over which financial data sources are shared and for what purpose.</p>
-            </div>
-          </div>
-
-          <div id="consentsContainer">
-            <!-- Dynamically injected consent cards -->
-          </div>
-        </div>
-
-        <div class="panel">
-          <div class="panel-header">
-            <div>
-              <span class="eyebrow-tag">RESPONSIBLE DATA GOVERNANCE</span>
-              <h3>Governance Audit Trail</h3>
-              <p>Real-time audit log recording data ingestion, consent changes, assessments, and underwriter reviews.</p>
-            </div>
-          </div>
-
-          <div id="auditTrailStream" class="audit-log-stream">
-            <!-- Injected log entries -->
-          </div>
-
-          <div class="disclosure-box" style="margin-top:1rem;">
-            <strong>Responsible Data Governance:</strong>
-            Designed around key data governance principles: explicit borrower consent, data minimization, purpose limitation, access control, auditability, data retention boundaries, and borrower-initiated consent revocation.
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- TAB 5: Lender / Partner Portal -->
-    <div id="partner" class="tab-pane">
-      <div class="panel" style="margin-bottom:1.5rem;">
-        <div class="panel-header">
+        <!-- Workspace 2 -->
+        <div class="overview-card">
           <div>
-            <span class="eyebrow-tag">INSTITUTIONAL UNDERWRITING PORTAL</span>
-            <h3>Lender &amp; Underwriter Decision Support Portal</h3>
-            <p>For Financial Institutions, Microfinance Organizations, and Community Credit Lenders reviewing consented applicant portfolios.</p>
+            <div class="overview-card-icon" style="background:#e0f2fe;color:#0369a1;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+            </div>
+            <h3>02. Compare Credit Offers</h3>
+            <p>Generate standardized Key Facts Statements for up to 5 competing offers. Expose flat-rate vs reducing-balance APR distortions and total cost differences.</p>
           </div>
+          <a href="/compare" class="btn btn-outline" style="text-decoration:none;text-align:center;font-size:13px;padding:8px 14px;">
+            Compare Loan Offers &rarr;
+          </a>
+        </div>
+
+        <!-- Workspace 3 -->
+        <div class="overview-card">
           <div>
-            <span class="badge-pill" style="background:#e0f2fe;color:#0369a1;">Institutional Underwriting Mode</span>
+            <div class="overview-card-icon" style="background:#ecfdf5;color:#065f46;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+            </div>
+            <h3>03. Alternative Data &amp; Cash Flow</h3>
+            <p>Ingest bank and mobile money transaction exports with explicit consent to verify turnover, volatility, and recurring debts without invasive device scraping.</p>
           </div>
+          <a href="/transactions" class="btn btn-outline" style="text-decoration:none;text-align:center;font-size:13px;padding:8px 14px;">
+            Ingest Transaction Data &rarr;
+          </a>
         </div>
 
-        <div class="disclosure-box" style="margin-bottom:1.25rem;background:#fffbeb;border-color:#fcd34d;color:#92400e;">
-          <strong>Institutional Governance Notice:</strong>
-          Review applicant affordability against institution-defined credit policies, debt-to-income benchmarks, and shock thresholds.
-          <em>NexusFin provides independent decision support. Final underwriting decisions remain with the financial institution.</em>
+        <!-- Workspace 4 -->
+        <div class="overview-card">
+          <div>
+            <div class="overview-card-icon" style="background:#fef3c7;color:#92400e;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+            </div>
+            <h3>04. Data Governance &amp; Audit Trail</h3>
+            <p>Borrowers retain granular sovereign control over data sharing permissions. Inspect the tamper-evident, append-only compliance audit trail in real time.</p>
+          </div>
+          <a href="/governance" class="btn btn-outline" style="text-decoration:none;text-align:center;font-size:13px;padding:8px 14px;">
+            Manage Data &amp; Consent &rarr;
+          </a>
         </div>
 
-        <p style="font-size:14px;color:var(--ink-700);">
-          This view allows authorized credit officers and underwriter teams to review consented applicant profiles, verify income volatility, inspect deterministic stress tests, and evaluate affordability against institution-defined policies and configured risk controls.
+        <!-- Workspace 5 -->
+        <div class="overview-card">
+          <div>
+            <div class="overview-card-icon" style="background:#ede9fe;color:#5b21b6;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+            </div>
+            <h3>05. Institutional Underwriting</h3>
+            <p>Dedicated portfolio review workspace for financial institutions, cooperatives, and lenders with configurable risk policies and decision logging.</p>
+          </div>
+          <a href="/underwriter" class="btn btn-outline" style="text-decoration:none;text-align:center;font-size:13px;padding:8px 14px;">
+            Open Underwriter Portal &rarr;
+          </a>
+        </div>
+
+        <!-- Workspace 6 -->
+        <div class="overview-card">
+          <div>
+            <div class="overview-card-icon" style="background:#f1f5f9;color:var(--ink-700);">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+            </div>
+            <h3>06. Methodology &amp; Standards</h3>
+            <p>Rigorous actuarial specifications, reducing-balance formulas, stress simulation formulas, and enterprise banking integration workflows.</p>
+          </div>
+          <a href="/methodology" class="btn btn-outline" style="text-decoration:none;text-align:center;font-size:13px;padding:8px 14px;">
+            Inspect Methodology &rarr;
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Dual Pathways: Borrowers vs Institutional Lenders -->
+    <div class="grid-two-col" style="margin-bottom:2rem;">
+      <div class="panel" style="border-left:4px solid var(--accent);padding:1.75rem;">
+        <span class="eyebrow-tag">FOR BORROWERS &amp; SMALL ENTERPRISES</span>
+        <h3 style="margin:4px 0 8px;font-size:18px;">Empowering Informed Financial Choices</h3>
+        <p style="font-size:13.5px;color:var(--ink-700);line-height:1.6;margin-bottom:14px;">
+          Avoid loan traps, high-interest cycles, and unmanageable debt burdens. NexusFin gives you transparent tools to test whether you can truly afford a loan before signing any contract.
         </p>
-
-        <!-- Underwriting Policy & Risk Thresholds Controls -->
-        <div class="panel" style="margin-top:1.25rem;margin-bottom:1.5rem;background:var(--surface-alt);border:1px solid var(--ink-200);">
-          <div class="panel-header">
-            <div>
-              <span class="eyebrow-tag">CONFIGURABLE RISK CONTROLS</span>
-              <h4 style="margin:0;font-size:15px;color:var(--ink-900);">Institution Risk Policies &amp; Portfolio Filters</h4>
-              <p style="margin:4px 0 0;font-size:12.5px;color:var(--ink-500);">Configure debt-to-income ceilings, minimum cash-flow cushion, and reserve requirements to dynamically test all incoming applications.</p>
-            </div>
-            <button type="button" class="btn-sm btn-outline" id="resetPolicyBtn">Reset Default Controls</button>
-          </div>
-
-          <div class="form-grid" style="grid-template-columns: repeat(3, 1fr); gap:1.25rem;">
-            <div class="form-group">
-              <label>Max Debt-Service Ceiling: <strong id="policyBurdenLabel" style="color:var(--accent);">35%</strong></label>
-              <input type="range" id="policyBurdenSlider" min="20" max="50" step="1" value="35" style="width:100%;">
-              <span class="form-hint">Maximum allowable debt commitments as % of income</span>
-            </div>
-
-            <div class="form-group">
-              <label>Min Post-Loan Cushion: <strong id="policyBufferLabel" style="color:var(--accent);">₱ 5,000</strong></label>
-              <input type="number" id="policyBufferInput" value="5000" step="500" min="0" style="width:100%;">
-              <span class="form-hint">Required monthly buffer after loan instalment</span>
-            </div>
-
-            <div class="form-group">
-              <label>Min Savings Runway: <strong id="policyRunwayLabel" style="color:var(--accent);">1.0 Mo</strong></label>
-              <input type="range" id="policyRunwaySlider" min="0" max="3" step="0.2" value="1.0" style="width:100%;">
-              <span class="form-hint">Minimum liquid emergency reserve months</span>
-            </div>
-          </div>
-        </div>
-
-        <div id="partnerAssessmentsList" style="margin-top:1.5rem;">
-          <!-- Dynamically injected from API -->
-        </div>
+        <ul class="bullet-list" style="font-size:13px;line-height:1.5;margin-bottom:16px;">
+          <li>Know your real disposable monthly cushion after debt service.</li>
+          <li>See how your repayments behave if your income drops by 10%, 25%, or 40%.</li>
+          <li>Uncover true APRs hidden behind flat-rate marketing claims.</li>
+          <li>Your savings buffer is protected and never treated as mandatory debt.</li>
+        </ul>
+        <a href="/assessment" class="btn-primary" style="display:inline-block;text-decoration:none;font-size:13px;padding:8px 16px;">
+          Start Household Affordability Test &rarr;
+        </a>
       </div>
-    </div>
 
-    <!-- TAB 6: Methodology & Financial Standards -->
-    <div id="methodology" class="tab-pane">
-      <div class="methodology-container">
-
-        <!-- Header & Action Bar -->
-        <div class="methodology-header-card">
-          <div class="methodology-header-content">
-            <span class="eyebrow-tag">FINANCIAL STANDARDS &amp; MATHEMATICAL SPECIFICATION</span>
-            <h2>Platform Methodology, Actuarial Formulations &amp; Governance Architecture</h2>
-            <p>
-              NexusFin enforces deterministic cash-flow math, transparent reducing-balance amortization schedules, standardized shock stress testing, and explainable decision support. Below is the rigorous mathematical specification and institutional governance reference.
-            </p>
-          </div>
-          <div class="methodology-actions">
-            <a href="/api/pitch-deck/download" class="btn-hero btn-primary" download="NexusFin_Technical_Specification.pdf">
-              Download Technical Whitepaper (PDF)
-            </a>
-            <button type="button" class="btn-hero btn-outline" onclick="window.print();">
-              Print Methodology Guide
-            </button>
-          </div>
-        </div>
-
-        <!-- Core Tenets Grid -->
-        <div class="grid-three-col" style="margin-bottom:1.5rem;">
-          <div class="panel" style="border-top:3px solid var(--accent);">
-            <h4>1. Deterministic Core Math</h4>
-            <p style="font-size:13px;color:var(--ink-700);line-height:1.5;">
-              Safety-critical affordability and stress computations are 100% deterministic code. No black-box machine learning or stochastic models decide loan affordability.
-            </p>
-          </div>
-          <div class="panel" style="border-top:3px solid #10b981;">
-            <h4>2. Savings Buffer Protection</h4>
-            <p style="font-size:13px;color:var(--ink-700);line-height:1.5;">
-              Voluntary savings is treated as an emergency buffer asset, never subtracted as mandatory debt. Prudent savers are never penalized with artificial unaffordability.
-            </p>
-          </div>
-          <div class="panel" style="border-top:3px solid #6366f1;">
-            <h4>3. Multi-Scenario Shock Testing</h4>
-            <p style="font-size:13px;color:var(--ink-700);line-height:1.5;">
-              Loans are evaluated against 6 macroeconomic and household shocks (10%, 25%, 40% income drops, inflation, and emergency reserve depletion) before signing.
-            </p>
-          </div>
-        </div>
-
-        <!-- Section 1: Mathematical Foundations -->
-        <div class="panel" style="margin-bottom:1.5rem;">
-          <div class="panel-header">
-            <div>
-              <span class="eyebrow-tag">ACTUARIAL FORMULATIONS</span>
-              <h3>Core Financial Calculations &amp; Amortization Mechanics</h3>
-              <p>Transparent formulas governing loan instalments, true APRs, disposable buffers, and debt burden ratios.</p>
-            </div>
-          </div>
-
-          <div class="form-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:1.25rem;">
-            
-            <!-- Formula 1: Reducing-Balance Monthly Payment -->
-            <div class="methodology-card">
-              <div class="methodology-card-title">1. Reducing-Balance Instalment (PMT)</div>
-              <div class="formula-box">
-                <span class="math-expr">PMT = P &times; [ r(1 + r)<sup>n</sup> ] &divide; [ (1 + r)<sup>n</sup> &minus; 1 ]</span>
-              </div>
-              <p class="methodology-card-desc">
-                <strong>P:</strong> Principal borrowed &bull; <strong>r:</strong> Monthly interest rate (annual rate &divide; 12) &bull; <strong>n:</strong> Tenure in months.<br>
-                <em>Standard amortization: each payment reduces the remaining principal balance, lowering the interest incurred in subsequent periods.</em>
-              </p>
-            </div>
-
-            <!-- Formula 2: Flat Rate vs True APR -->
-            <div class="methodology-card">
-              <div class="methodology-card-title">2. Flat-Rate vs True APR Distortion</div>
-              <div class="formula-box">
-                <span class="math-expr">Total Interest = P &times; r<sub>flat</sub> &times; n<br>True Effective APR &asymp; 1.85 &times; Flat Rate</span>
-              </div>
-              <p class="methodology-card-desc">
-                Flat rates charge interest on the entire original principal for the full tenure, even when half the loan has been repaid. NexusFin exposes true effective APR to prevent marketing deception.
-              </p>
-            </div>
-
-            <!-- Formula 3: Post-Loan Disposable Buffer -->
-            <div class="methodology-card">
-              <div class="methodology-card-title">3. Net Post-Loan Cash Buffer</div>
-              <div class="formula-box">
-                <span class="math-expr">Net Buffer = Gross Income &minus; Living Essentials &minus; Existing Debt &minus; PMT</span>
-              </div>
-              <p class="methodology-card-desc">
-                Measures actual uncommitted cash remaining after living essentials and all debt service. A positive buffer ensures basic survival without borrowing to service obligations.
-              </p>
-            </div>
-
-            <!-- Formula 4: Debt-Service Burden (DSB / DTI) -->
-            <div class="methodology-card">
-              <div class="methodology-card-title">4. Debt-Service Burden (DSB / DTI)</div>
-              <div class="formula-box">
-                <span class="math-expr">Debt-Service Burden (%) = [ (Existing Debt + PMT) &divide; Gross Income ] &times; 100%</span>
-              </div>
-              <p class="methodology-card-desc">
-                <strong>&lt; 30%:</strong> Sustainable &bull; <strong>30% &ndash; 45%:</strong> Caution / Tight &bull; <strong>&gt; 45%:</strong> High Risk of Over-Indebtedness.<br>
-                Aligned with international responsible lending guidelines and debt ceilings.
-              </p>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- Section 2: Actuarial Stress Testing Framework -->
-        <div class="panel" style="margin-bottom:1.5rem;">
-          <div class="panel-header">
-            <div>
-              <span class="eyebrow-tag">RESILIENCE ARCHITECTURE</span>
-              <h3>Actuarial Stress Testing: 6 Real-World Shocks</h3>
-              <p>Simulating economic volatility, seasonal downturns, living cost inflation, and emergency savings depletion.</p>
-            </div>
-          </div>
-
-          <div class="stress-table-wrapper">
-            <table class="nexus-table">
-              <thead>
-                <tr>
-                  <th>Scenario</th>
-                  <th>Shock Parameter</th>
-                  <th>Mathematical Simulation</th>
-                  <th>Vulnerability Evaluated</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><strong>Mild Income Shock</strong></td>
-                  <td>-10% Income</td>
-                  <td><span class="math-expr">Income &times; 90% &minus; Expenses &minus; Debt &minus; PMT</span></td>
-                  <td>Tests minor gig order slowdown or temporary client reduction.</td>
-                </tr>
-                <tr>
-                  <td><strong>Moderate Income Shock</strong></td>
-                  <td>-25% Income</td>
-                  <td><span class="math-expr">Income &times; 75% &minus; Expenses &minus; Debt &minus; PMT</span></td>
-                  <td>Tests seasonal off-peak earnings typical of platform &amp; informal workers.</td>
-                </tr>
-                <tr>
-                  <td><strong>Severe Income Shock</strong></td>
-                  <td>-40% Income</td>
-                  <td><span class="math-expr">Income &times; 60% &minus; Expenses &minus; Debt &minus; PMT</span></td>
-                  <td>Tests major work disruption, illness, or platform account suspension.</td>
-                </tr>
-                <tr>
-                  <td><strong>Cost-of-Living Shock</strong></td>
-                  <td>+15% Expenses</td>
-                  <td><span class="math-expr">Income &minus; (Expenses &times; 115%) &minus; Debt &minus; PMT</span></td>
-                  <td>Tests fuel spikes, food price inflation, or unexpected utility increases.</td>
-                </tr>
-                <tr>
-                  <td><strong>Compound Shock</strong></td>
-                  <td>-25% Income &amp; +15% Expenses</td>
-                  <td><span class="math-expr">(Income &times; 75%) &minus; (Expenses &times; 115%) &minus; Debt &minus; PMT</span></td>
-                  <td>Tests simultaneous income reduction and inflation pressure.</td>
-                </tr>
-                <tr>
-                  <td><strong>Emergency Reserve Runway</strong></td>
-                  <td>Liquid Savings / PMT</td>
-                  <td><span class="math-expr">Liquid Savings &divide; Monthly Instalment</span></td>
-                  <td>Calculates exact number of months existing liquid savings can cover instalments.</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-
-          <div class="disclosure-box" style="margin-top:1.25rem;">
-            <strong>Affordability Status Classification Bands:</strong>
-            <ul style="margin:6px 0 0 16px;padding:0;">
-              <li><span class="badge-status healthy">Fits Budget</span> Buffer &ge; 20% of monthly income with positive reserves across baseline and mild stress.</li>
-              <li><span class="badge-status tight">Review Terms</span> Buffer between 0% and 20%, or borrower enters negative buffer during moderate shock. Recommends extending tenure or reducing borrowing amount.</li>
-              <li><span class="badge-status deficit">Deficit Risk</span> Buffer &lt; 0 in baseline or severe deficit under shock. Indicates immediate risk of default or forced asset liquidation.</li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- Section 3: Alternative Data & Privacy by Design -->
-        <div class="grid-two-col" style="margin-bottom:1.5rem;">
-          <div class="panel">
-            <div class="panel-header">
-              <div>
-                <span class="eyebrow-tag">ALTERNATIVE DATA ENGINE</span>
-                <h3>Ethical Cash-Flow Analytics</h3>
-                <p>Supporting underserved and thin-file borrowers with consented transaction turnover.</p>
-              </div>
-            </div>
-            <ul class="bullet-list">
-              <li><strong>Zero Contact Scraping:</strong> NexusFin strictly rejects accessing contacts, call logs, device storage, photos, or social media data.</li>
-              <li><strong>Financial Turnover Only:</strong> Ingests consented transaction history from bank accounts, mobile money (M-Pesa), and merchant platforms (Grab, Foodpanda).</li>
-              <li><strong>Volatility Modeling:</strong> Computes the standard coefficient of variation (<span class="math-expr">CV = &sigma; &divide; &mu; &times; 100%</span>) to capture irregular earning cycles.</li>
-              <li><strong>Recurring Debt Detection:</strong> Algorithmic pattern mining identifies recurring debits, cross-checking borrower self-declarations.</li>
-            </ul>
-          </div>
-
-          <div class="panel">
-            <div class="panel-header">
-              <div>
-                <span class="eyebrow-tag">RESPONSIBLE DATA GOVERNANCE</span>
-                <h3>Privacy by Design &amp; Consumer Sovereignty</h3>
-                <p>Rigorous borrower data governance built into every layer of the architecture.</p>
-              </div>
-            </div>
-            <ul class="bullet-list">
-              <li><strong>Granular Consent:</strong> Separate opt-in permissions for transaction ingestion, utility verification, and underwriting sharing.</li>
-              <li><strong>Purpose Limitation:</strong> Consented financial data is processed exclusively for affordability evaluation and never sold or shared.</li>
-              <li><strong>Instant Revocation:</strong> Borrowers can revoke any data consent toggle instantly with immediate audit logging.</li>
-              <li><strong>Cryptographic Audit Trail:</strong> Every data ingestion, consent state update, and underwriter review is logged in an immutable event stream.</li>
-            </ul>
-          </div>
-        </div>
-
-        <!-- Section 4: Enterprise Institutional Architecture & Security Guardrails -->
-        <div class="panel">
-          <div class="panel-header">
-            <div>
-              <span class="eyebrow-tag">ENTERPRISE SYSTEM ARCHITECTURE</span>
-              <h3>Institutional Integration Architecture &amp; Security Guardrails</h3>
-              <p>How Financial Institutions, Microfinance Organizations, and Digital Lenders integrate NexusFin decision support.</p>
-            </div>
-            <div>
-              <span class="badge-pill" style="background:#ecfdf5;color:#065f46;border:1px solid #a7f3d0;">Bank-Grade Governance Aligned</span>
-            </div>
-          </div>
-
-          <!-- Enterprise Integration Flow Pipeline -->
-          <div style="margin-bottom:1.5rem;">
-            <h4 style="font-size:14px;color:var(--ink-900);margin:0 0 10px;">Core Banking &amp; Loan Origination System (LOS) Integration Workflow:</h4>
-            <div class="form-grid" style="grid-template-columns: repeat(4, 1fr); gap:1rem;">
-              <div style="background:var(--white);border:1px solid var(--ink-200);border-radius:var(--radius-md);padding:14px;">
-                <div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:4px;text-transform:uppercase;">01 • Ingestion Gateway</div>
-                <div style="font-weight:700;font-size:13px;color:var(--ink-900);margin-bottom:6px;">Encrypted Data Ingestion</div>
-                <p style="font-size:12px;color:var(--ink-600);margin:0;line-height:1.45;">
-                  Consented transaction feeds and financing requests are transmitted via tokenized mTLS protocols with strict identity verification.
-                </p>
-              </div>
-
-              <div style="background:var(--white);border:1px solid var(--ink-200);border-radius:var(--radius-md);padding:14px;">
-                <div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:4px;text-transform:uppercase;">02 • Actuarial Engine</div>
-                <div style="font-weight:700;font-size:13px;color:var(--ink-900);margin-bottom:6px;">Deterministic Cash-Flow Math</div>
-                <p style="font-size:12px;color:var(--ink-600);margin:0;line-height:1.45;">
-                  High-speed deterministic formulas compute true APR, reducing-balance instalments, and 6 macroeconomic stress scenarios in sub-5ms latency.
-                </p>
-              </div>
-
-              <div style="background:var(--white);border:1px solid var(--ink-200);border-radius:var(--radius-md);padding:14px;">
-                <div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:4px;text-transform:uppercase;">03 • Risk Validation</div>
-                <div style="font-weight:700;font-size:13px;color:var(--ink-900);margin-bottom:6px;">Institutional Policy Engine</div>
-                <p style="font-size:12px;color:var(--ink-600);margin:0;line-height:1.45;">
-                  Automatically benchmarks debt burdens, post-loan disposable cushions, and reserve runways against lender-configured risk policies.
-                </p>
-              </div>
-
-              <div style="background:var(--white);border:1px solid var(--ink-200);border-radius:var(--radius-md);padding:14px;">
-                <div style="font-size:11px;font-weight:700;color:var(--accent);margin-bottom:4px;text-transform:uppercase;">04 • Decision Support</div>
-                <div style="font-weight:700;font-size:13px;color:var(--ink-900);margin-bottom:6px;">Explainable Decision Feeds</div>
-                <p style="font-size:12px;color:var(--ink-600);margin:0;line-height:1.45;">
-                  Dispatches plain-language trade-offs, survivability ratings, and underwriter recommendations directly into credit committee queues.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Institutional Security Pillars -->
-          <div class="form-grid" style="grid-template-columns: repeat(3, 1fr); gap:1.25rem;">
-            <div style="background:var(--surface-alt);border:1px solid var(--ink-200);border-radius:var(--radius-md);padding:14px;">
-              <h5 style="margin:0 0 6px;font-size:13px;color:var(--ink-900);">Ephemeral Data Processing</h5>
-              <p style="font-size:12px;color:var(--ink-600);margin:0;line-height:1.45;">
-                NexusFin operates on data minimization principles: financial calculations are evaluated in session memory with zero persistent retention of unneeded personally identifiable data.
-              </p>
-            </div>
-
-            <div style="background:var(--surface-alt);border:1px solid var(--ink-200);border-radius:var(--radius-md);padding:14px;">
-              <h5 style="margin:0 0 6px;font-size:13px;color:var(--ink-900);">Tamper-Evident Audit Logging</h5>
-              <p style="font-size:12px;color:var(--ink-600);margin:0;line-height:1.45;">
-                Every borrower calculation, consent modification, and credit committee decision is time-stamped in an append-only audit trail for internal compliance and regulatory examination.
-              </p>
-            </div>
-
-            <div style="background:var(--surface-alt);border:1px solid var(--ink-200);border-radius:var(--radius-md);padding:14px;">
-              <h5 style="margin:0 0 6px;font-size:13px;color:var(--ink-900);">Sovereign &amp; Cloud Deployment</h5>
-              <p style="font-size:12px;color:var(--ink-600);margin:0;line-height:1.45;">
-                Fully containerized standard architecture that deploys seamlessly to dedicated banking VPCs, private clouds (AWS, GCP, Azure), or sovereign on-premises financial infrastructure.
-              </p>
-            </div>
-          </div>
-        </div>
-
+      <div class="panel" style="border-left:4px solid #0284c7;padding:1.75rem;">
+        <span class="eyebrow-tag" style="color:#0284c7;">FOR FINANCIAL INSTITUTIONS &amp; LENDERS</span>
+        <h3 style="margin:4px 0 8px;font-size:18px;">Responsible Lending &amp; Portfolio Resilience</h3>
+        <p style="font-size:13.5px;color:var(--ink-700);line-height:1.6;margin-bottom:14px;">
+          Expand credit access safely to thin-file and gig economy segments without increasing non-performing loans (NPLs). NexusFin delivers deterministic, policy-compliant decision support.
+        </p>
+        <ul class="bullet-list" style="font-size:13px;line-height:1.5;margin-bottom:16px;">
+          <li>Automate debt-service burden (DSB) and buffer ceiling benchmarks.</li>
+          <li>Simulate portfolio vulnerability against macroeconomic shocks.</li>
+          <li>Review consented alternative turnover data with zero data harvesting.</li>
+          <li>Generate transparent, audit-ready compliance records for credit committees.</li>
+        </ul>
+        <a href="/underwriter" class="btn-secondary" style="display:inline-block;text-decoration:none;font-size:13px;padding:8px 16px;">
+          Access Underwriting Review Queue &rarr;
+        </a>
       </div>
     </div>
 
@@ -1158,10 +264,10 @@
         <span>© 2026 NexusFin Technologies. Independent financial health and affordability intelligence.</span>
       </div>
       <div class="footer-badges">
-        <a href="#privacy" onclick="App.switchTab('privacy');" class="footer-badge-pill">Privacy by Design</a>
-        <a href="#methodology" onclick="App.switchTab('methodology');" class="footer-badge-pill">Architecture &amp; Methodology</a>
-        <a href="#methodology" onclick="App.switchTab('methodology');" class="footer-badge-pill">Institutional Standards</a>
-        <span class="footer-badge-pill">Explainable AI</span>
+        <a href="/governance" class="footer-badge-pill">Privacy by Design</a>
+        <a href="/methodology" class="footer-badge-pill">Architecture &amp; Methodology</a>
+        <a href="/methodology" class="footer-badge-pill">Methodology &amp; Financial Standards</a>
+        <span class="footer-badge-pill">Transparent Decision Support</span>
       </div>
     </div>
   </footer>
