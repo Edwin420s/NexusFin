@@ -1,5 +1,6 @@
 /**
  * UI Rendering and DOM Components
+ * NexusFin — Financial Decision Support Platform
  */
 
 const UI = {
@@ -14,86 +15,156 @@ const UI = {
   // Fill form inputs from a profile object
   populateProfileForm(profile) {
     if (!profile) return;
-    if (profile.currency) {
-      document.getElementById('currencySelect').value = profile.currency;
+    const curEl = document.getElementById('currencySelect');
+    if (curEl && profile.currency) {
+      curEl.value = profile.currency;
       AppState.currency = profile.currency;
       this.updateCurrencySymbols();
     }
     if (profile.income) {
-      document.getElementById('monthlyIncome').value = profile.income.monthly;
-      document.getElementById('incomeVariability').value = profile.income.variability_pct;
-      document.getElementById('variabilityValLabel').textContent = `${profile.income.variability_pct}%`;
-      if (profile.income.employment_type) {
-        document.getElementById('employmentType').value = profile.income.employment_type;
+      const incEl = document.getElementById('monthlyIncome');
+      if (incEl) incEl.value = profile.income.monthly;
+      const varEl = document.getElementById('incomeVariability');
+      if (varEl) varEl.value = profile.income.variability_pct;
+      const varLbl = document.getElementById('variabilityValLabel');
+      if (varLbl) varLbl.textContent = `${profile.income.variability_pct}%`;
+      const empEl = document.getElementById('employmentType');
+      if (empEl && profile.income.employment_type) {
+        empEl.value = profile.income.employment_type;
       }
     }
-    document.getElementById('essentialExpenses').value = profile.essential_expenses || 0;
-    document.getElementById('existingDebt').value = profile.existing_debt_payments || 0;
-    document.getElementById('liquidSavings').value = profile.liquid_savings || 0;
-    document.getElementById('goalSavings').value = profile.goal_savings || 0;
-    if (profile.household_dependents !== undefined) {
-      document.getElementById('householdDependents').value = profile.household_dependents;
+    const expEl = document.getElementById('essentialExpenses');
+    if (expEl) expEl.value = profile.essential_expenses || 0;
+    const debtEl = document.getElementById('existingDebt');
+    if (debtEl) debtEl.value = profile.existing_debt_payments || 0;
+    const savEl = document.getElementById('liquidSavings');
+    if (savEl) savEl.value = profile.liquid_savings || 0;
+    const goalEl = document.getElementById('goalSavings');
+    if (goalEl) goalEl.value = profile.goal_savings || 0;
+    const depEl = document.getElementById('householdDependents');
+    if (depEl && profile.household_dependents !== undefined) {
+      depEl.value = profile.household_dependents;
     }
+    this.updateLiveCashflowSummary();
   },
 
   // Fill form inputs from an offer object
   populateOfferForm(offer) {
     if (!offer) return;
-    document.getElementById('offerName').value = offer.name || 'Proposed Loan';
-    document.getElementById('providerName').value = offer.provider || 'Inclusive Digital Lender';
-    document.getElementById('loanPrincipal').value = offer.principal || 30000;
-    document.getElementById('interestRate').value = offer.annual_interest_rate || 18;
-    document.getElementById('loanTerm').value = offer.term_months || 12;
-    document.getElementById('upfrontFee').value = offer.upfront_fee || 0;
-    document.getElementById('monthlyFee').value = offer.monthly_fee || 0;
-    document.getElementById('repaymentType').value = offer.repayment_type || 'amortizing';
-    document.getElementById('loanPurpose').value = offer.purpose || 'Working Capital / MSME';
+    const nameEl = document.getElementById('offerName');
+    if (nameEl) nameEl.value = offer.name || 'Proposed Loan';
+    const provEl = document.getElementById('providerName');
+    if (provEl) provEl.value = offer.provider || 'Inclusive Digital Lender';
+    const princEl = document.getElementById('loanPrincipal');
+    if (princEl) princEl.value = offer.principal || 35000;
+    const rateEl = document.getElementById('interestRate');
+    if (rateEl) rateEl.value = offer.annual_interest_rate || 24;
+    const termEl = document.getElementById('loanTerm');
+    if (termEl) termEl.value = offer.term_months || 10;
+    const upfrontEl = document.getElementById('upfrontFee');
+    if (upfrontEl) upfrontEl.value = offer.upfront_fee || 0;
+    const feeEl = document.getElementById('monthlyFee');
+    if (feeEl) feeEl.value = offer.monthly_fee || 0;
+    const repEl = document.getElementById('repaymentType');
+    if (repEl) repEl.value = offer.repayment_type || 'amortizing';
+    const purpEl = document.getElementById('loanPurpose');
+    if (purpEl) purpEl.value = offer.purpose || 'Asset Acquisition';
   },
 
-  // Read current profile from form
+  // Read current profile from form (or fallback to persisted AppState.formProfile)
   readProfileFromForm() {
-    return {
-      currency: document.getElementById('currencySelect').value,
+    const incEl = document.getElementById('monthlyIncome');
+    if (!incEl) {
+      return AppState.formProfile;
+    }
+
+    const curEl = document.getElementById('currencySelect');
+    const varEl = document.getElementById('incomeVariability');
+    const empEl = document.getElementById('employmentType');
+    const expEl = document.getElementById('essentialExpenses');
+    const debtEl = document.getElementById('existingDebt');
+    const savEl = document.getElementById('liquidSavings');
+    const goalEl = document.getElementById('goalSavings');
+    const depEl = document.getElementById('householdDependents');
+
+    const profile = {
+      currency: curEl ? curEl.value : AppState.currency,
       income: {
-        monthly: parseFloat(document.getElementById('monthlyIncome').value) || 0,
-        variability_pct: parseFloat(document.getElementById('incomeVariability').value) || 0,
-        employment_type: document.getElementById('employmentType').value,
+        monthly: parseFloat(incEl.value) || 0,
+        variability_pct: parseFloat(varEl?.value) || 0,
+        employment_type: empEl?.value || 'gig_worker',
       },
-      essential_expenses: parseFloat(document.getElementById('essentialExpenses').value) || 0,
-      existing_debt_payments: parseFloat(document.getElementById('existingDebt').value) || 0,
-      liquid_savings: parseFloat(document.getElementById('liquidSavings').value) || 0,
-      goal_savings: parseFloat(document.getElementById('goalSavings').value) || 0,
-      household_dependents: parseInt(document.getElementById('householdDependents').value) || 1,
+      essential_expenses: parseFloat(expEl?.value) || 0,
+      existing_debt_payments: parseFloat(debtEl?.value) || 0,
+      liquid_savings: parseFloat(savEl?.value) || 0,
+      goal_savings: parseFloat(goalEl?.value) || 0,
+      household_dependents: parseInt(depEl?.value) || 1,
     };
+
+    AppState.formProfile = profile;
+    AppState.currency = profile.currency;
+    AppState.save();
+    return profile;
   },
 
-  // Read current offer from form
+  // Read current offer from form (or fallback to persisted AppState.formOffer)
   readOfferFromForm() {
-    return {
-      name: document.getElementById('offerName').value || 'Proposed Credit',
-      provider: document.getElementById('providerName').value || 'Inclusive Lender',
-      principal: parseFloat(document.getElementById('loanPrincipal').value) || 1000,
-      annual_interest_rate: parseFloat(document.getElementById('interestRate').value) || 0,
-      term_months: parseInt(document.getElementById('loanTerm').value) || 1,
-      upfront_fee: parseFloat(document.getElementById('upfrontFee').value) || 0,
-      monthly_fee: parseFloat(document.getElementById('monthlyFee').value) || 0,
-      repayment_type: document.getElementById('repaymentType').value,
-      purpose: document.getElementById('loanPurpose').value,
+    const princEl = document.getElementById('loanPrincipal');
+    if (!princEl) {
+      return AppState.formOffer;
+    }
+
+    const nameEl = document.getElementById('offerName');
+    const provEl = document.getElementById('providerName');
+    const rateEl = document.getElementById('interestRate');
+    const termEl = document.getElementById('loanTerm');
+    const upfrontEl = document.getElementById('upfrontFee');
+    const feeEl = document.getElementById('monthlyFee');
+    const repEl = document.getElementById('repaymentType');
+    const purpEl = document.getElementById('loanPurpose');
+
+    const offer = {
+      name: nameEl?.value?.trim() || 'Proposed Credit',
+      provider: provEl?.value?.trim() || 'Inclusive Lender',
+      principal: parseFloat(princEl.value) || 1000,
+      annual_interest_rate: parseFloat(rateEl?.value) || 0,
+      term_months: parseInt(termEl?.value) || 1,
+      upfront_fee: parseFloat(upfrontEl?.value) || 0,
+      monthly_fee: parseFloat(feeEl?.value) || 0,
+      repayment_type: repEl?.value || 'amortizing',
+      purpose: purpEl?.value || 'Asset Acquisition',
     };
+
+    AppState.formOffer = offer;
+    AppState.save();
+    return offer;
   },
 
   // Read current applicant / borrower name from form
   readApplicantNameFromForm() {
     const el = document.getElementById('applicantName');
-    return el && el.value.trim() ? el.value.trim() : 'Household Profile';
+    if (el && el.value.trim()) {
+      AppState.applicantName = el.value.trim();
+      AppState.save();
+      return AppState.applicantName;
+    }
+    return AppState.applicantName || 'My Household Profile';
   },
 
   // Live Household Cash Flow Summary Bar
   updateLiveCashflowSummary() {
-    const income = parseFloat(document.getElementById('monthlyIncome')?.value) || 0;
-    const expenses = parseFloat(document.getElementById('essentialExpenses')?.value) || 0;
-    const debt = parseFloat(document.getElementById('existingDebt')?.value) || 0;
-    const savings = parseFloat(document.getElementById('liquidSavings')?.value) || 0;
+    const liveContainer = document.getElementById('liveCashflowSummary');
+    if (!liveContainer) return;
+
+    const incEl = document.getElementById('monthlyIncome');
+    const expEl = document.getElementById('essentialExpenses');
+    const debtEl = document.getElementById('existingDebt');
+    const savEl = document.getElementById('liquidSavings');
+
+    const income = incEl ? (parseFloat(incEl.value) || 0) : (AppState.formProfile?.income?.monthly || 0);
+    const expenses = expEl ? (parseFloat(expEl.value) || 0) : (AppState.formProfile?.essential_expenses || 0);
+    const debt = debtEl ? (parseFloat(debtEl.value) || 0) : (AppState.formProfile?.existing_debt_payments || 0);
+    const savings = savEl ? (parseFloat(savEl.value) || 0) : (AppState.formProfile?.liquid_savings || 0);
 
     const totalOutflow = expenses + debt;
     const netCashflow = income - totalOutflow;
@@ -183,19 +254,28 @@ const UI = {
   // Render Full Assessment Results
   renderAssessmentResult(data) {
     const resArea = document.getElementById('assessmentResultsArea');
+    if (!resArea) return;
     resArea.style.display = 'block';
+
+    const emptyEl = document.getElementById('assessmentEmptyState');
+    if (emptyEl) emptyEl.style.display = 'none';
 
     // Status Banner
     const banner = document.getElementById('statusBanner');
-    banner.className = `status-banner ${data.status}`;
-    const iconHtml = data.status === 'fits'
-      ? '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>'
-      : data.status === 'review'
-      ? '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>'
-      : '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
-    document.getElementById('statusBadgeIcon').innerHTML = iconHtml;
-    document.getElementById('statusTitle').textContent = data.status_label;
-    document.getElementById('statusReason').textContent = data.status_reason;
+    if (banner) {
+      banner.className = `status-banner ${data.status}`;
+      const iconHtml = data.status === 'fits'
+        ? '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>'
+        : data.status === 'review'
+        ? '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>'
+        : '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
+      const iconBadge = document.getElementById('statusBadgeIcon');
+      if (iconBadge) iconBadge.innerHTML = iconHtml;
+      const titleEl = document.getElementById('statusTitle');
+      if (titleEl) titleEl.textContent = data.status_label;
+      const reasonEl = document.getElementById('statusReason');
+      if (reasonEl) reasonEl.textContent = data.status_reason;
+    }
 
     // Helper
     const setVal = (id, val) => {
@@ -292,48 +372,53 @@ const UI = {
 
     setVal('resilienceConclusionText', data.resilience.conclusion || 'Manageable today — vulnerable under income shock');
 
-    // Stress Scenarios Table (7 columns: Scenario, Income, Essential Expenses, Existing Debt, New Repayment, Remaining Buffer, Status)
+    // Stress Scenarios Table
     const tbody = document.getElementById('stressTableBody');
-    tbody.innerHTML = data.scenarios.map(s => {
-      const isDeficit = s.buffer < 0;
-      const isReview = s.status === 'review' || s.status_label === 'Review';
-      const bufferClass = isDeficit ? 'badge-status deficit' : isReview ? 'badge-status tight' : 'badge-status healthy';
-      const bufferLabel = isDeficit ? AppState.formatMoney(s.buffer) : `+${AppState.formatMoney(s.buffer)}`;
-      const statusBadgeClass = isDeficit ? 'deficit' : isReview ? 'tight' : 'healthy';
-      const statusLabel = s.status_label || (isDeficit ? 'Deficit' : isReview ? 'Review' : 'Manageable');
+    if (tbody) {
+      tbody.innerHTML = data.scenarios.map(s => {
+        const isDeficit = s.buffer < 0;
+        const isReview = s.status === 'review' || s.status_label === 'Review';
+        const bufferClass = isDeficit ? 'badge-status deficit' : isReview ? 'badge-status tight' : 'badge-status healthy';
+        const bufferLabel = isDeficit ? AppState.formatMoney(s.buffer) : `+${AppState.formatMoney(s.buffer)}`;
+        const statusBadgeClass = isDeficit ? 'deficit' : isReview ? 'tight' : 'healthy';
+        const statusLabel = s.status_label || (isDeficit ? 'Deficit' : isReview ? 'Review' : 'Manageable');
 
-      return `
-        <tr>
-          <td>
-            <strong>${s.name}</strong>
-            <div style="font-size: 11px; color: var(--ink-500);">${s.description}</div>
-          </td>
-          <td style="text-align:right;">${AppState.formatMoney(s.income)}</td>
-          <td style="text-align:right;">${AppState.formatMoney(s.expenses)}</td>
-          <td style="text-align:right;">${AppState.formatMoney(s.debt_payments)}</td>
-          <td style="text-align:right;"><strong>${AppState.formatMoney(s.monthly_repayment)}</strong></td>
-          <td style="text-align:right;"><span class="${bufferClass}">${bufferLabel}</span></td>
-          <td style="text-align:center;"><span class="badge-status ${statusBadgeClass}">${statusLabel}</span></td>
-        </tr>
-      `;
-    }).join('');
+        return `
+          <tr>
+            <td>
+              <strong>${s.name}</strong>
+              <div style="font-size: 11px; color: var(--ink-500);">${s.description}</div>
+            </td>
+            <td style="text-align:right;">${AppState.formatMoney(s.income)}</td>
+            <td style="text-align:right;">${AppState.formatMoney(s.expenses)}</td>
+            <td style="text-align:right;">${AppState.formatMoney(s.debt_payments)}</td>
+            <td style="text-align:right;"><strong>${AppState.formatMoney(s.monthly_repayment)}</strong></td>
+            <td style="text-align:right;"><span class="${bufferClass}">${bufferLabel}</span></td>
+            <td style="text-align:center;"><span class="badge-status ${statusBadgeClass}">${statusLabel}</span></td>
+          </tr>
+        `;
+      }).join('');
+    }
 
     // Explainability Lists
-    document.getElementById('explanationList').innerHTML = data.explanation.map(item => `<li>${item}</li>`).join('');
-    document.getElementById('tradeOffsList').innerHTML = data.trade_offs.map(item => `<li>${item}</li>`).join('');
-    document.getElementById('recommendationsList').innerHTML = data.recommendations.map(item => `<li>${item}</li>`).join('');
-    document.getElementById('methodologyList').innerHTML = data.methodology.map(item => `<li>${item}</li>`).join('');
+    const expList = document.getElementById('explanationList');
+    if (expList && data.explanation) expList.innerHTML = data.explanation.map(item => `<li>${item}</li>`).join('');
+    const tradeList = document.getElementById('tradeOffsList');
+    if (tradeList && data.trade_offs) tradeList.innerHTML = data.trade_offs.map(item => `<li>${item}</li>`).join('');
+    const recList = document.getElementById('recommendationsList');
+    if (recList && data.recommendations) recList.innerHTML = data.recommendations.map(item => `<li>${item}</li>`).join('');
+    const methList = document.getElementById('methodologyList');
+    if (methList && data.methodology) methList.innerHTML = data.methodology.map(item => `<li>${item}</li>`).join('');
 
     // Synchronize interactive custom shock simulator
     this.updateCustomShock(AppState.customShockPct || -25);
-
-    // Smooth scroll down to results
-    resArea.scrollIntoView({ behavior: 'smooth', block: 'start' });
   },
 
   // Render Multi-Offer Comparison Rows
   renderComparisonConfig(offers) {
     const container = document.getElementById('compareOffersConfigArea');
+    if (!container) return;
+
     container.innerHTML = offers.map((offer, idx) => `
       <div class="offer-config-row" data-index="${idx}">
         <div>
@@ -373,6 +458,7 @@ const UI = {
         const field = e.target.dataset.field;
         const val = e.target.type === 'number' ? parseFloat(e.target.value) || 0 : e.target.value;
         AppState.comparedOffers[idx][field] = val;
+        AppState.save();
       });
     });
   },
@@ -380,9 +466,15 @@ const UI = {
   // Render Comparison Results Table (Key Facts Statement)
   renderComparisonTable(compResult) {
     const area = document.getElementById('comparisonResultsArea');
+    if (!area) return;
     area.style.display = 'block';
 
+    const emptyComp = document.getElementById('comparisonEmptyState');
+    if (emptyComp) emptyComp.style.display = 'none';
+
     const tbody = document.getElementById('comparisonTableBody');
+    if (!tbody) return;
+
     tbody.innerHTML = compResult.results.map(row => {
       const bestMonthlyTag = row.is_best_monthly ? '<span class="key-facts-highlight">Lowest Monthly</span>' : '';
       const lowestCostTag = row.is_lowest_total_cost ? '<span class="key-facts-highlight" style="background:#bbf7d0;color:#14532d;">Lowest Total Cost</span>' : '';
@@ -416,7 +508,9 @@ const UI = {
 
     // Comparative Notes
     const notesDiv = document.getElementById('comparisonNotes');
-    notesDiv.innerHTML = compResult.comparative_notes.map(n => `<p>${n}</p>`).join('');
+    if (notesDiv && compResult.comparative_notes) {
+      notesDiv.innerHTML = compResult.comparative_notes.map(n => `<p>${n}</p>`).join('');
+    }
 
     area.scrollIntoView({ behavior: 'smooth', block: 'start' });
   },
@@ -424,6 +518,7 @@ const UI = {
   // Render Transaction CSV Analysis
   renderTransactionAnalysis(data) {
     const resDiv = document.getElementById('txAnalysisResultArea');
+    if (!resDiv) return;
     resDiv.style.display = 'block';
 
     const setVal = (id, val) => {
@@ -439,38 +534,46 @@ const UI = {
     setVal('txDetectedDebt', AppState.formatMoney(data.detected_debt_payments));
 
     // Insights bullets
-    document.getElementById('txInsightsList').innerHTML = data.insights.map(i => `<li>${i}</li>`).join('');
+    const insList = document.getElementById('txInsightsList');
+    if (insList) insList.innerHTML = data.insights.map(i => `<li>${i}</li>`).join('');
 
     // Category Tags
     const catContainer = document.getElementById('txCategoryTags');
-    catContainer.innerHTML = Object.entries(data.summary.categories).map(([cat, amt]) => `
-      <div class="category-tag">
-        <span>${cat}:</span> <b>${AppState.formatMoney(amt)}</b>
-      </div>
-    `).join('');
+    if (catContainer && data.summary.categories) {
+      catContainer.innerHTML = Object.entries(data.summary.categories).map(([cat, amt]) => `
+        <div class="category-tag">
+          <span>${cat}:</span> <b>${AppState.formatMoney(amt)}</b>
+        </div>
+      `).join('');
+    }
 
     // Transaction rows preview (first 10)
     const txBody = document.getElementById('txPreviewTableBody');
-    txBody.innerHTML = data.transactions.slice(0, 10).map(t => {
-      const isPositive = t.amount > 0;
-      const amtStyle = isPositive ? 'color: var(--good-text); font-weight:700;' : 'color: var(--ink-800);';
-      const prefix = isPositive ? '+' : '';
-      return `
-        <tr>
-          <td>${t.date}</td>
-          <td>${t.description}</td>
-          <td><span class="badge-pill" style="font-size:10px;">${t.category}</span></td>
-          <td style="${amtStyle}">${prefix}${AppState.formatMoney(t.amount)}</td>
-        </tr>
-      `;
-    }).join('');
+    if (txBody && data.transactions) {
+      txBody.innerHTML = data.transactions.slice(0, 10).map(t => {
+        const isPositive = t.amount > 0;
+        const amtStyle = isPositive ? 'color: var(--good-text); font-weight:700;' : 'color: var(--ink-800);';
+        const prefix = isPositive ? '+' : '';
+        return `
+          <tr>
+            <td>${t.date}</td>
+            <td>${t.description}</td>
+            <td><span class="badge-pill" style="font-size:10px;">${t.category}</span></td>
+            <td style="${amtStyle}">${prefix}${AppState.formatMoney(t.amount)}</td>
+          </tr>
+        `;
+      }).join('');
+    }
 
     AppState.lastTransactionAnalysis = data;
+    AppState.save();
   },
 
   // Render Consent Switch Cards
   renderConsentList(consents) {
     const container = document.getElementById('consentsContainer');
+    if (!container) return;
+
     container.innerHTML = consents.map(c => `
       <div class="consent-card">
         <div style="flex:1;">
@@ -518,6 +621,8 @@ const UI = {
   // Render Audit Trail Logs (Clean Enterprise Compliance Stream)
   renderAuditTrail(logs) {
     const container = document.getElementById('auditTrailStream');
+    if (!container) return;
+
     if (!logs || logs.length === 0) {
       container.innerHTML = '<div style="color:var(--ink-500);padding:1.5rem;text-align:center;">No compliance events recorded in this session yet.</div>';
       return;
@@ -567,7 +672,6 @@ const UI = {
         return `Authorized credit underwriter accessed active portfolio queue (${count} consented records inspected).`;
       }
       if (type === 'TRANSACTIONS_ANALYZED') {
-        const count = d.transactions_count || 0;
         return `Ingested and verified transaction statement records for cash-flow volatility modeling.`;
       }
       return Object.entries(d)
@@ -601,8 +705,10 @@ const UI = {
   // Render Partner / Institutional Portal
   renderPartnerPortal(data) {
     const container = document.getElementById('partnerAssessmentsList');
+    if (!container) return;
+
     if (!data.assessments || data.assessments.length === 0) {
-      container.innerHTML = '<p class="muted">No assessments currently awaiting underwriter review. Run an assessment in Consumer Mode to generate records.</p>';
+      container.innerHTML = '<p class="muted">No assessments currently awaiting underwriter review. Run an assessment in Borrower Mode to generate records.</p>';
       return;
     }
 

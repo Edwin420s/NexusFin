@@ -1,45 +1,77 @@
 /**
  * NexusFin Main Application Controller
+ * Handles Multi-Page Workspaces, Persistence, and Interactive Flows
  */
 
 const App = {
   async init() {
+    AppState.load();
     this.bindEvents();
     UI.updateCurrencySymbols();
-    UI.updateLiveCashflowSummary();
+
+    // Populate profile & offer forms if present on current page
+    if (document.getElementById('monthlyIncome')) {
+      UI.populateProfileForm(AppState.formProfile);
+      UI.populateOfferForm(AppState.formOffer);
+      if (AppState.applicantName) {
+        const nameEl = document.getElementById('applicantName');
+        if (nameEl) nameEl.value = AppState.applicantName;
+      }
+      UI.updateLiveCashflowSummary();
+    }
+
     UI.updatePolicyThresholdLabels();
 
+    // Rehydrate existing assessment if on assessment page
+    if (AppState.currentAssessment && document.getElementById('assessmentResultsArea')) {
+      UI.renderAssessmentResult(AppState.currentAssessment);
+    }
+
     try {
-      // 1. Fetch Presets for example loader
-      const presetsRes = await API.fetchPresets();
-      AppState.presets = presetsRes.presets || [];
-      this.populatePresetDropdown(AppState.presets);
+      // 1. Fetch Presets if preset dropdown exists
+      if (document.getElementById('presetSelect')) {
+        const presetsRes = await API.fetchPresets();
+        AppState.presets = presetsRes.presets || [];
+        this.populatePresetDropdown(AppState.presets);
+      }
 
-      // 2. Fetch Consents & Audit Trail
-      this.refreshConsents();
-      this.refreshAuditLog();
+      // 2. Fetch Consents & Audit Trail if on governance page
+      if (document.getElementById('consentsContainer')) {
+        await this.refreshConsents();
+      }
+      if (document.getElementById('auditTrailStream')) {
+        await this.refreshAuditLog();
+      }
 
-      // 3. Setup default comparison offers
-      this.initComparisonOffers();
+      // 3. Setup comparison offers if on compare page
+      if (document.getElementById('compareOffersConfigArea')) {
+        if (!AppState.comparedOffers || AppState.comparedOffers.length === 0) {
+          this.initComparisonOffers();
+        } else {
+          UI.renderComparisonConfig(AppState.comparedOffers);
+        }
+      }
+
+      // 4. If on underwriter page, fetch partner assessments
+      if (document.getElementById('partnerAssessmentsList')) {
+        await this.refreshPartnerPortal();
+      }
+
+      // 5. If previous transaction analysis exists and on transactions page, render it
+      if (AppState.lastTransactionAnalysis && document.getElementById('txAnalysisResultArea')) {
+        UI.renderTransactionAnalysis(AppState.lastTransactionAnalysis);
+      }
     } catch (err) {
       console.warn('Initialization note:', err);
     }
   },
 
   bindEvents() {
-    // Tab Navigation
-    document.querySelectorAll('.tab-nav-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const tabId = e.currentTarget.dataset.tab;
-        this.switchTab(tabId);
-      });
-    });
-
-    // View Mode Toggle (Consumer vs Partner)
+    // Mode switcher buttons
     document.querySelectorAll('.mode-btn').forEach(btn => {
       btn.addEventListener('click', (e) => {
         const mode = e.currentTarget.dataset.mode;
-        this.switchViewMode(mode);
+        if (mode) this.switchViewMode(mode);
       });
     });
 
@@ -47,6 +79,15 @@ const App = {
     ['monthlyIncome', 'essentialExpenses', 'existingDebt', 'liquidSavings', 'applicantName'].forEach(id => {
       document.getElementById(id)?.addEventListener('input', () => {
         UI.updateLiveCashflowSummary();
+        UI.readProfileFromForm();
+        UI.readApplicantNameFromForm();
+      });
+    });
+
+    // Offer form inputs update
+    ['offerName', 'providerName', 'loanPrincipal', 'interestRate', 'loanTerm', 'upfrontFee', 'monthlyFee', 'repaymentType', 'loanPurpose'].forEach(id => {
+      document.getElementById(id)?.addEventListener('input', () => {
+        UI.readOfferFromForm();
       });
     });
 
@@ -63,11 +104,12 @@ const App = {
     if (currencyEl) {
       currencyEl.addEventListener('change', (e) => {
         AppState.currency = e.target.value;
+        AppState.save();
         UI.updateCurrencySymbols();
         UI.updateLiveCashflowSummary();
         UI.updatePolicyThresholdLabels();
         this.initComparisonOffers();
-        if (AppState.currentAssessment) {
+        if (AppState.currentAssessment && document.getElementById('assessmentResultsArea')) {
           this.runAssessment();
         }
       });
@@ -105,7 +147,9 @@ const App = {
     const varSlider = document.getElementById('incomeVariability');
     if (varSlider) {
       varSlider.addEventListener('input', (e) => {
-        document.getElementById('variabilityValLabel').textContent = `${e.target.value}%`;
+        const lbl = document.getElementById('variabilityValLabel');
+        if (lbl) lbl.textContent = `${e.target.value}%`;
+        UI.readProfileFromForm();
       });
     }
 
@@ -123,6 +167,7 @@ const App = {
     if (burdenSlider) {
       burdenSlider.addEventListener('input', (e) => {
         AppState.institutionalPolicy.maxDebtBurdenPct = parseFloat(e.target.value);
+        AppState.save();
         UI.updatePolicyThresholdLabels();
         this.refreshPartnerPortal();
       });
@@ -132,6 +177,7 @@ const App = {
     if (bufferInput) {
       bufferInput.addEventListener('input', (e) => {
         AppState.institutionalPolicy.minPostBuffer = parseFloat(e.target.value) || 0;
+        AppState.save();
         UI.updatePolicyThresholdLabels();
         this.refreshPartnerPortal();
       });
@@ -141,6 +187,7 @@ const App = {
     if (runwaySlider) {
       runwaySlider.addEventListener('input', (e) => {
         AppState.institutionalPolicy.minSavingsRunwayMonths = parseFloat(e.target.value);
+        AppState.save();
         UI.updatePolicyThresholdLabels();
         this.refreshPartnerPortal();
       });
@@ -154,11 +201,13 @@ const App = {
           minPostBuffer: 5000.0,
           minSavingsRunwayMonths: 1.0,
         };
+        AppState.save();
         if (burdenSlider) burdenSlider.value = 35;
         if (bufferInput) bufferInput.value = 5000;
         if (runwaySlider) runwaySlider.value = 1.0;
         UI.updatePolicyThresholdLabels();
         this.refreshPartnerPortal();
+        UI.showToast('Institutional policy controls reset to benchmark standards.', 'info');
       });
     }
 
@@ -216,52 +265,19 @@ const App = {
       this.applyDetectedDataToProfile();
     });
 
-    // Hero Action Buttons
-    document.getElementById('heroViewMethodologyBtn')?.addEventListener('click', () => {
-      this.switchTab('methodology');
-    });
-
+    // Print Report Buttons
     document.getElementById('heroPrintReportBtn')?.addEventListener('click', () => {
       window.print();
     });
   },
 
-  switchTab(tabId) {
-    // Alias pitchdeck to methodology
-    const resolvedId = (tabId === 'pitchdeck') ? 'methodology' : tabId;
-    AppState.activeTab = resolvedId;
-
-    document.querySelectorAll('.tab-nav-btn').forEach(b => {
-      const bTab = b.dataset.tab;
-      const bResolved = (bTab === 'pitchdeck') ? 'methodology' : bTab;
-      b.classList.toggle('active', bResolved === resolvedId);
-    });
-
-    document.querySelectorAll('.tab-pane').forEach(p => {
-      const pId = p.id;
-      const pResolved = (pId === 'pitchdeck') ? 'methodology' : pId;
-      p.classList.toggle('active', pResolved === resolvedId);
-    });
-
-    // Trigger on-demand tab refreshes
-    if (resolvedId === 'privacy') {
-      this.refreshConsents();
-      this.refreshAuditLog();
-    } else if (resolvedId === 'partner') {
-      this.refreshPartnerPortal();
-    }
-  },
-
   switchViewMode(mode) {
     AppState.viewMode = mode;
-    document.querySelectorAll('.mode-btn').forEach(b => {
-      b.classList.toggle('active', b.dataset.mode === mode);
-    });
-
+    AppState.save();
     if (mode === 'partner') {
-      this.switchTab('partner');
+      window.location.href = '/underwriter';
     } else {
-      this.switchTab('assessment');
+      window.location.href = '/assessment';
     }
   },
 
@@ -277,30 +293,50 @@ const App = {
   clearProfile() {
     const nameEl = document.getElementById('applicantName');
     if (nameEl) nameEl.value = 'Household Profile';
-    document.getElementById('monthlyIncome').value = '';
-    document.getElementById('incomeVariability').value = '15';
-    document.getElementById('variabilityValLabel').textContent = '15%';
-    document.getElementById('essentialExpenses').value = '';
-    document.getElementById('existingDebt').value = '';
-    document.getElementById('liquidSavings').value = '';
-    document.getElementById('goalSavings').value = '';
-    document.getElementById('householdDependents').value = '1';
-    document.getElementById('offerName').value = '';
-    document.getElementById('providerName').value = '';
-    document.getElementById('loanPrincipal').value = '';
-    document.getElementById('interestRate').value = '';
-    document.getElementById('loanTerm').value = '';
-    document.getElementById('upfrontFee').value = '0';
-    document.getElementById('monthlyFee').value = '0';
+    const incEl = document.getElementById('monthlyIncome');
+    if (incEl) incEl.value = '';
+    const varEl = document.getElementById('incomeVariability');
+    if (varEl) varEl.value = '15';
+    const varLbl = document.getElementById('variabilityValLabel');
+    if (varLbl) varLbl.textContent = '15%';
+    const expEl = document.getElementById('essentialExpenses');
+    if (expEl) expEl.value = '';
+    const debtEl = document.getElementById('existingDebt');
+    if (debtEl) debtEl.value = '';
+    const savEl = document.getElementById('liquidSavings');
+    if (savEl) savEl.value = '';
+    const goalEl = document.getElementById('goalSavings');
+    if (goalEl) goalEl.value = '';
+    const depEl = document.getElementById('householdDependents');
+    if (depEl) depEl.value = '1';
+
+    const offEl = document.getElementById('offerName');
+    if (offEl) offEl.value = '';
+    const provEl = document.getElementById('providerName');
+    if (provEl) provEl.value = '';
+    const princEl = document.getElementById('loanPrincipal');
+    if (princEl) princEl.value = '';
+    const rateEl = document.getElementById('interestRate');
+    if (rateEl) rateEl.value = '';
+    const termEl = document.getElementById('loanTerm');
+    if (termEl) termEl.value = '';
+    const upEl = document.getElementById('upfrontFee');
+    if (upEl) upEl.value = '0';
+    const feeEl = document.getElementById('monthlyFee');
+    if (feeEl) feeEl.value = '0';
+
     const presetSelect = document.getElementById('presetSelect');
     if (presetSelect) presetSelect.value = '';
     const resArea = document.getElementById('assessmentResultsArea');
     if (resArea) resArea.style.display = 'none';
     const emptyEl = document.getElementById('assessmentEmptyState');
     if (emptyEl) emptyEl.style.display = 'block';
+
     AppState.currentAssessment = null;
+    AppState.save();
     UI.updateLiveCashflowSummary();
-    document.getElementById('monthlyIncome').focus();
+    if (incEl) incEl.focus();
+    UI.showToast('Profile form cleared for custom input.', 'info');
   },
 
   downloadCsvTemplate() {
@@ -321,6 +357,7 @@ const App = {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    UI.showToast('Downloaded CSV transaction statement template.', 'success');
   },
 
   selectPreset(presetId) {
@@ -328,10 +365,13 @@ const App = {
     if (!p) return;
     const nameEl = document.getElementById('applicantName');
     if (nameEl) nameEl.value = p.label;
+    AppState.applicantName = p.label;
     UI.populateProfileForm(p.profile);
     UI.populateOfferForm(p.offer);
     UI.updateLiveCashflowSummary();
     this.initComparisonOffers();
+    AppState.save();
+    UI.showToast(`Loaded example profile: ${p.label}`, 'info');
   },
 
   async runAssessment() {
@@ -347,12 +387,14 @@ const App = {
       const offer = UI.readOfferFromForm();
       const res = await API.assess(profile, offer, applicantName);
       AppState.currentAssessment = res;
+      AppState.save();
 
       const emptyEl = document.getElementById('assessmentEmptyState');
       if (emptyEl) emptyEl.style.display = 'none';
 
       UI.renderAssessmentResult(res);
       this.refreshAuditLog();
+      UI.showToast('Affordability assessment and stress models evaluated successfully.', 'success');
     } catch (err) {
       UI.showToast(`Assessment failed: ${err.message}`, 'error');
     } finally {
@@ -371,7 +413,7 @@ const App = {
         name: `${currentOffer.name} (Option A)`,
       },
       {
-        name: 'Community SACCO / Co-op Loan (Option B)',
+        name: 'Community Cooperative Facility (Option B)',
         provider: 'Community Cooperative',
         principal: currentOffer.principal,
         annual_interest_rate: Math.max(8, currentOffer.annual_interest_rate - 6),
@@ -393,6 +435,7 @@ const App = {
         purpose: currentOffer.purpose,
       }
     ];
+    AppState.save();
     UI.renderComparisonConfig(AppState.comparedOffers);
   },
 
@@ -401,7 +444,7 @@ const App = {
       UI.showToast('Maximum of 5 offers can be compared simultaneously.', 'info');
       return;
     }
-    const basePrincipal = parseFloat(document.getElementById('loanPrincipal').value) || 30000;
+    const basePrincipal = AppState.formOffer?.principal || 30000;
     AppState.comparedOffers.push({
       name: `Custom Option ${AppState.comparedOffers.length + 1}`,
       provider: 'Alternative Lender',
@@ -413,7 +456,9 @@ const App = {
       repayment_type: 'amortizing',
       purpose: 'Working Capital / MSME',
     });
+    AppState.save();
     UI.renderComparisonConfig(AppState.comparedOffers);
+    UI.showToast('Added comparison offer slot.', 'info');
   },
 
   removeCompareOffer(index) {
@@ -422,26 +467,31 @@ const App = {
       return;
     }
     AppState.comparedOffers.splice(index, 1);
+    AppState.save();
     UI.renderComparisonConfig(AppState.comparedOffers);
+    UI.showToast('Removed comparison offer.', 'info');
   },
 
   async runComparison() {
     const compBtn = document.getElementById('runCompareBtn');
-    compBtn.disabled = true;
-    compBtn.textContent = 'Comparing Offers...';
+    if (compBtn) {
+      compBtn.disabled = true;
+      compBtn.textContent = 'Comparing Offers...';
+    }
 
     try {
       const profile = UI.readProfileFromForm();
       const res = await API.compare(profile, AppState.comparedOffers);
-      const emptyComp = document.getElementById('comparisonEmptyState');
-      if (emptyComp) emptyComp.style.display = 'none';
       UI.renderComparisonTable(res);
       this.refreshAuditLog();
+      UI.showToast('Standardized Key Facts comparison generated.', 'success');
     } catch (err) {
       UI.showToast(`Comparison failed: ${err.message}`, 'error');
     } finally {
-      compBtn.disabled = false;
-      compBtn.textContent = 'Generate Key Facts Comparison';
+      if (compBtn) {
+        compBtn.disabled = false;
+        compBtn.textContent = 'Generate Key Facts Comparison';
+      }
     }
   },
 
@@ -449,6 +499,7 @@ const App = {
     try {
       const data = await API.getSampleTransactions(personaKey);
       AppState.lastTransactionAnalysis = data;
+      AppState.save();
       UI.renderTransactionAnalysis(data);
       UI.showToast(`Ingested sample transaction statement for ${personaKey}.`, 'success');
       this.refreshAuditLog();
@@ -461,8 +512,9 @@ const App = {
     try {
       const data = await API.uploadTransactions(file);
       AppState.lastTransactionAnalysis = data;
+      AppState.save();
       UI.renderTransactionAnalysis(data);
-      UI.showToast(`Successfully analyzed ${data.summary.transaction_count} transactions from ${file.name}.`, 'success');
+      UI.showToast(`Analyzed ${data.summary.transaction_count} transactions from ${file.name}.`, 'success');
       this.refreshAuditLog();
     } catch (err) {
       UI.showToast(`CSV Upload Failed: ${err.message}`, 'error');
@@ -475,15 +527,34 @@ const App = {
       return;
     }
     const d = AppState.lastTransactionAnalysis;
-    document.getElementById('monthlyIncome').value = d.detected_income;
-    document.getElementById('incomeVariability').value = d.income_variability_est_pct;
-    document.getElementById('variabilityValLabel').textContent = `${d.income_variability_est_pct}%`;
-    document.getElementById('essentialExpenses').value = d.detected_expenses;
-    document.getElementById('existingDebt').value = d.detected_debt_payments;
+    AppState.formProfile = AppState.formProfile || {};
+    AppState.formProfile.income = {
+      monthly: d.detected_income,
+      variability_pct: d.income_variability_est_pct,
+      employment_type: 'gig_worker'
+    };
+    AppState.formProfile.essential_expenses = d.detected_expenses;
+    AppState.formProfile.existing_debt_payments = d.detected_debt_payments;
+    AppState.save();
 
-    UI.updateLiveCashflowSummary();
-    UI.showToast('Profile updated with detected cash flows. Ready for assessment.', 'success');
-    this.switchTab('assessment');
+    if (document.getElementById('monthlyIncome')) {
+      document.getElementById('monthlyIncome').value = d.detected_income;
+      const varEl = document.getElementById('incomeVariability');
+      if (varEl) varEl.value = d.income_variability_est_pct;
+      const varLbl = document.getElementById('variabilityValLabel');
+      if (varLbl) varLbl.textContent = `${d.income_variability_est_pct}%`;
+      const expEl = document.getElementById('essentialExpenses');
+      if (expEl) expEl.value = d.detected_expenses;
+      const debtEl = document.getElementById('existingDebt');
+      if (debtEl) debtEl.value = d.detected_debt_payments;
+      UI.updateLiveCashflowSummary();
+      UI.showToast('Profile updated with detected cash flows. Ready for assessment.', 'success');
+    } else {
+      UI.showToast('Detected cash flows saved! Redirecting to Affordability Workspace...', 'success');
+      setTimeout(() => {
+        window.location.href = '/assessment';
+      }, 700);
+    }
   },
 
   async refreshConsents() {
