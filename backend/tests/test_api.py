@@ -164,3 +164,20 @@ def test_frontend_index_and_spa_routing():
     assert "text/html" in res.headers["content-type"]
     assert "NexusFin" in res.text
     assert "Methodology &amp; Financial Standards" in res.text or "Methodology & Financial Standards" in res.text
+
+
+def test_independent_page_routes():
+    """Verify each independent page is served under its dedicated clean URL."""
+    routes_to_test = [
+        ("/assessment", "Loan Affordability"),
+        ("/compare", "Compare Credit Offers"),
+        ("/transactions", "Alternative Data &amp; Cash Flow"),
+        ("/governance", "Data Governance &amp; Compliance Audit Trail"),
+        ("/underwriter", "Institutional Underwriter Portal"),
+        ("/methodology", "Platform Methodology, Actuarial Formulations"),
+    ]
+    for path, expected_text in routes_to_test:
+        res = client.get(path)
+        assert res.status_code == 200, f"Route {path} failed with status {res.status_code}"
+        assert "text/html" in res.headers["content-type"]
+        assert expected_text in res.text, f"Route {path} missing expected content '{expected_text}'"
