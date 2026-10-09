@@ -58,6 +58,10 @@ def init_default_users() -> None:
             "created_at": datetime.now(timezone.utc).isoformat(),
         }
 
+    # Pre-seed active demo session tokens
+    ACTIVE_SESSIONS["demo_borrower_token_v1"] = "usr_borrower_demo"
+    ACTIVE_SESSIONS["demo_underwriter_token_v1"] = "usr_officer_demo"
+
 
 # Initialize default seed accounts on module import
 init_default_users()
