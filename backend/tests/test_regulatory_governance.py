@@ -57,7 +57,8 @@ def test_consent_grant_and_revocation_cycle():
 
 def test_underwriter_portal_audit_logging():
     """Verify access to partner underwriter queue records an audit log entry."""
-    partner_res = client.get("/api/partner/assessments")
+    headers = {"Authorization": "Bearer demo_underwriter_token_v1"}
+    partner_res = client.get("/api/partner/assessments", headers=headers)
     assert partner_res.status_code == 200
 
     audit_res = client.get("/api/audit-log")

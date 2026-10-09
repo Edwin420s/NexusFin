@@ -299,18 +299,64 @@ def test_xss_in_applicant_name_and_rationale_safely_handled():
 
     # Now submit an underwriter decision with an XSS rationale
     xss_rationale = "<iframe src='evil.com'></iframe> Approved with caution."
-    dec_res = client.post("/api/partner/decision", json={
-        "assessment_id": assessment_id,
-        "decision": "approved",
-        "rationale": xss_rationale,
-        "officer_name": "<b>Lead Auditor</b>",
-    })
+    dec_res = client.post(
+        "/api/partner/decision",
+        headers={"Authorization": "Bearer demo_underwriter_token_v1"},
+        json={
+            "assessment_id": assessment_id,
+            "decision": "approved",
+            "rationale": xss_rationale,
+            "officer_name": "<b>Lead Auditor</b>",
+        },
+    )
     assert dec_res.status_code == 200
     assert dec_res.json()["assessment"]["decision"]["rationale"] == xss_rationale
 
 
 # ==============================================================================
-# 6. ERROR HANDLING & 404 GUARDS
+# 6. NON-REGISTERED & ROLE-BASED ACCESS CONTROL GUARDS
+# ==============================================================================
+
+def test_unauthenticated_partner_endpoints_rejected():
+    """Verify non-registered or unauthenticated users cannot view portfolio or approve facilities."""
+    # 1. Unauthenticated GET review queue rejected
+    get_res = client.get("/api/partner/assessments")
+    assert get_res.status_code == 401
+    assert "authentication required" in get_res.json()["detail"].lower()
+
+    # 2. Unauthenticated POST decision rejected (non-registered cannot approve)
+    post_res = client.post("/api/partner/decision", json={
+        "assessment_id": "asmt_carlos_001",
+        "decision": "approved",
+        "rationale": "Anonymous approval attempt",
+        "officer_name": "Anonymous",
+    })
+    assert post_res.status_code == 401
+    assert "authentication required" in post_res.json()["detail"].lower()
+
+
+def test_borrower_role_forbidden_from_underwriting_decisions():
+    """Verify registered borrowers cannot access underwriter queue or approve credit facilities."""
+    borrower_headers = {"Authorization": "Bearer demo_borrower_token_v1"}
+
+    # Borrower cannot view underwriter queue
+    get_res = client.get("/api/partner/assessments", headers=borrower_headers)
+    assert get_res.status_code == 403
+    assert "forbidden" in get_res.json()["detail"].lower()
+
+    # Borrower cannot approve loans
+    post_res = client.post("/api/partner/decision", headers=borrower_headers, json={
+        "assessment_id": "asmt_carlos_001",
+        "decision": "approved",
+        "rationale": "Self-approval attempt by borrower",
+        "officer_name": "Borrower Self-Approver",
+    })
+    assert post_res.status_code == 403
+    assert "forbidden" in post_res.json()["detail"].lower()
+
+
+# ==============================================================================
+# 7. ERROR HANDLING & 404 GUARDS
 # ==============================================================================
 
 def test_unknown_consent_source_returns_404():
@@ -326,11 +372,15 @@ def test_unknown_consent_source_returns_404():
 
 def test_unknown_assessment_decision_returns_404():
     """Verify recording decision for non-existent assessment returns 404."""
-    res = client.post("/api/partner/decision", json={
-        "assessment_id": "non_existent_assessment_id_999",
-        "decision": "declined",
-        "rationale": "Record does not exist",
-        "officer_name": "Audit Officer",
-    })
+    res = client.post(
+        "/api/partner/decision",
+        headers={"Authorization": "Bearer demo_underwriter_token_v1"},
+        json={
+            "assessment_id": "non_existent_assessment_id_999",
+            "decision": "declined",
+            "rationale": "Record does not exist",
+            "officer_name": "Audit Officer",
+        },
+    )
     assert res.status_code == 404
     assert "not found" in res.json()["detail"].lower()

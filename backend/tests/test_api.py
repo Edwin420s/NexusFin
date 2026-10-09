@@ -132,7 +132,8 @@ def test_sample_transactions_endpoints():
 
 def test_partner_assessments_endpoint():
     """Verify underwriter review endpoint returns stored records and logs audit access."""
-    res = client.get("/api/partner/assessments")
+    headers = {"Authorization": "Bearer demo_underwriter_token_v1"}
+    res = client.get("/api/partner/assessments", headers=headers)
     assert res.status_code == 200
     data = res.json()
     assert data["status"] == "authorized"
@@ -141,11 +142,12 @@ def test_partner_assessments_endpoint():
 
 def test_partner_decision_endpoint():
     """Verify institutional underwriter can record a decision on an assessment with rationale."""
-    res = client.get("/api/partner/assessments")
+    headers = {"Authorization": "Bearer demo_underwriter_token_v1"}
+    res = client.get("/api/partner/assessments", headers=headers)
     assert res.status_code == 200
     asmt_id = res.json()["assessments"][0]["id"]
 
-    decision_res = client.post("/api/partner/decision", json={
+    decision_res = client.post("/api/partner/decision", headers=headers, json={
         "assessment_id": asmt_id,
         "decision": "approved",
         "rationale": "Applicant demonstrates strong baseline cash flow and manageable debt burden.",

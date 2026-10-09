@@ -89,7 +89,8 @@ def test_full_consumer_to_partner_journey():
     assert "COMPARISON_PERFORMED" in event_types
 
     # 7. Institutional Underwriter review
-    partner_res = client.get("/api/partner/assessments")
+    headers = {"Authorization": "Bearer demo_underwriter_token_v1"}
+    partner_res = client.get("/api/partner/assessments", headers=headers)
     assert partner_res.status_code == 200
     partner_data = partner_res.json()
     assert partner_data["status"] == "authorized"
