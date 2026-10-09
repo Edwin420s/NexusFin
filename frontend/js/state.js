@@ -22,6 +22,13 @@ const AppState = {
   currentAssessment: null,
   comparedOffers: [],
   lastTransactionAnalysis: null,
+  applicantName: 'My Household Profile',
+  customShockPct: -25,
+  institutionalPolicy: {
+    maxDebtBurdenPct: 35.0,
+    minPostBuffer: 5000.0,
+    minSavingsRunwayMonths: 1.0,
+  },
 
   getSymbol() {
     return this.currencySymbols[this.currency] || this.currency;
