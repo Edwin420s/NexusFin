@@ -8,6 +8,19 @@ const App = {
     AppState.load();
     this.bindEvents();
     UI.updateCurrencySymbols();
+    UI.updateAuthDisplay();
+
+    // Verify token validity in background if session exists
+    if (AppState.authToken) {
+      API.getMe().then(user => {
+        AppState.currentUser = user;
+        AppState.save();
+        UI.updateAuthDisplay();
+      }).catch(() => {
+        AppState.clearAuth();
+        UI.updateAuthDisplay();
+      });
+    }
 
     // Populate profile & offer forms if present on current page
     if (document.getElementById('monthlyIncome')) {
@@ -610,6 +623,75 @@ const App = {
       await this.refreshAuditLog();
     } catch (err) {
       UI.showToast(`Failed to record underwriter decision: ${err.message}`, 'error');
+    }
+  },
+
+  async handleRegister() {
+    const fullName = document.getElementById('regFullName')?.value?.trim();
+    const email = document.getElementById('regEmail')?.value?.trim();
+    const password = document.getElementById('regPassword')?.value;
+    const role = document.getElementById('regRole')?.value || 'borrower';
+
+    if (!fullName || !email || !password) {
+      UI.showToast('Please fill in all registration fields.', 'warning');
+      return;
+    }
+    if (password.length < 8) {
+      UI.showToast('Password must be at least 8 characters long.', 'warning');
+      return;
+    }
+
+    try {
+      const res = await API.register({ email, password, full_name: fullName, role });
+      AppState.setAuth(res.user, res.access_token);
+      UI.closeAuthModal();
+      UI.updateAuthDisplay();
+      UI.showToast(`Account created successfully! Welcome, ${res.user.full_name}.`, 'success');
+    } catch (err) {
+      UI.showToast(`Registration failed: ${err.message}`, 'error');
+    }
+  },
+
+  async handleLogin() {
+    const email = document.getElementById('loginEmail')?.value?.trim();
+    const password = document.getElementById('loginPassword')?.value;
+
+    if (!email || !password) {
+      UI.showToast('Please provide your email and password.', 'warning');
+      return;
+    }
+
+    try {
+      const res = await API.login({ email, password });
+      AppState.setAuth(res.user, res.access_token);
+      UI.closeAuthModal();
+      UI.updateAuthDisplay();
+      UI.showToast(`Signed in successfully as ${res.user.full_name}.`, 'success');
+    } catch (err) {
+      UI.showToast(`Sign in failed: ${err.message}`, 'error');
+    }
+  },
+
+  async handleLogout() {
+    try {
+      await API.logout();
+    } catch (e) {
+      // Ignore network errors during logout
+    }
+    AppState.clearAuth();
+    UI.updateAuthDisplay();
+    UI.showToast('Signed out successfully.', 'info');
+  },
+
+  async handleQuickLogin(email, password) {
+    try {
+      const res = await API.login({ email, password });
+      AppState.setAuth(res.user, res.access_token);
+      UI.closeAuthModal();
+      UI.updateAuthDisplay();
+      UI.showToast(`Signed in as ${res.user.full_name} (${res.user.role}).`, 'success');
+    } catch (err) {
+      UI.showToast(`Demo sign in failed: ${err.message}`, 'error');
     }
   }
 };

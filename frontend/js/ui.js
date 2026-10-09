@@ -4,6 +4,17 @@
  */
 
 const UI = {
+  // HTML sanitization helper to prevent Cross-Site Scripting (XSS)
+  escapeHtml(str) {
+    if (str === null || str === undefined) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  },
+
   // Update currency labels across the form inputs
   updateCurrencySymbols() {
     const sym = AppState.getSymbol();
@@ -386,8 +397,8 @@ const UI = {
         return `
           <tr>
             <td>
-              <strong>${s.name}</strong>
-              <div style="font-size: 11px; color: var(--ink-500);">${s.description}</div>
+              <strong>${this.escapeHtml(s.name)}</strong>
+              <div style="font-size: 11px; color: var(--ink-500);">${this.escapeHtml(s.description)}</div>
             </td>
             <td style="text-align:right;">${AppState.formatMoney(s.income)}</td>
             <td style="text-align:right;">${AppState.formatMoney(s.expenses)}</td>
@@ -402,13 +413,13 @@ const UI = {
 
     // Explainability Lists
     const expList = document.getElementById('explanationList');
-    if (expList && data.explanation) expList.innerHTML = data.explanation.map(item => `<li>${item}</li>`).join('');
+    if (expList && data.explanation) expList.innerHTML = data.explanation.map(item => `<li>${this.escapeHtml(item)}</li>`).join('');
     const tradeList = document.getElementById('tradeOffsList');
-    if (tradeList && data.trade_offs) tradeList.innerHTML = data.trade_offs.map(item => `<li>${item}</li>`).join('');
+    if (tradeList && data.trade_offs) tradeList.innerHTML = data.trade_offs.map(item => `<li>${this.escapeHtml(item)}</li>`).join('');
     const recList = document.getElementById('recommendationsList');
-    if (recList && data.recommendations) recList.innerHTML = data.recommendations.map(item => `<li>${item}</li>`).join('');
+    if (recList && data.recommendations) recList.innerHTML = data.recommendations.map(item => `<li>${this.escapeHtml(item)}</li>`).join('');
     const methList = document.getElementById('methodologyList');
-    if (methList && data.methodology) methList.innerHTML = data.methodology.map(item => `<li>${item}</li>`).join('');
+    if (methList && data.methodology) methList.innerHTML = data.methodology.map(item => `<li>${this.escapeHtml(item)}</li>`).join('');
 
     // Synchronize interactive custom shock simulator
     this.updateCustomShock(AppState.customShockPct || -25);
@@ -423,7 +434,7 @@ const UI = {
       <div class="offer-config-row" data-index="${idx}">
         <div>
           <label>Offer Name & Provider</label>
-          <input type="text" class="comp-input" data-field="name" value="${offer.name}" placeholder="Loan Name">
+          <input type="text" class="comp-input" data-field="name" value="${this.escapeHtml(offer.name)}" placeholder="Loan Name">
         </div>
         <div>
           <label>Principal (${AppState.getSymbol()})</label>
@@ -487,8 +498,8 @@ const UI = {
       return `
         <tr>
           <td>
-            <strong>${row.offer_name}</strong>
-            <div style="font-size: 11px; color: var(--ink-500);">${row.repayment_type} @ ${row.annual_interest_rate}% APR</div>
+            <strong>${this.escapeHtml(row.offer_name)}</strong>
+            <div style="font-size: 11px; color: var(--ink-500);">${this.escapeHtml(row.repayment_type)} @ ${row.annual_interest_rate}% APR</div>
             ${bestMonthlyTag} ${lowestCostTag} ${highestResilTag}
           </td>
           <td style="text-align:right;">${AppState.formatMoney(row.principal)}</td>
@@ -499,7 +510,7 @@ const UI = {
           <td style="text-align:right;">${AppState.formatMoney(row.post_credit_buffer)}</td>
           <td style="text-align:right;">${row.debt_service_burden_pct.toFixed(1)}%</td>
           <td style="text-align:center;">
-            <span class="badge-status ${statusBadgeClass}">${row.status_label || (row.shock_survivability + ' safe')}</span>
+            <span class="badge-status ${statusBadgeClass}">${this.escapeHtml(row.status_label || (row.shock_survivability + ' safe'))}</span>
             <div style="font-size:11px;color:var(--ink-500);margin-top:2px;">${row.shock_survivability} safe</div>
           </td>
         </tr>
@@ -509,7 +520,7 @@ const UI = {
     // Comparative Notes
     const notesDiv = document.getElementById('comparisonNotes');
     if (notesDiv && compResult.comparative_notes) {
-      notesDiv.innerHTML = compResult.comparative_notes.map(n => `<p>${n}</p>`).join('');
+      notesDiv.innerHTML = compResult.comparative_notes.map(n => `<p>${this.escapeHtml(n)}</p>`).join('');
     }
 
     area.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -535,14 +546,14 @@ const UI = {
 
     // Insights bullets
     const insList = document.getElementById('txInsightsList');
-    if (insList) insList.innerHTML = data.insights.map(i => `<li>${i}</li>`).join('');
+    if (insList) insList.innerHTML = data.insights.map(i => `<li>${this.escapeHtml(i)}</li>`).join('');
 
     // Category Tags
     const catContainer = document.getElementById('txCategoryTags');
     if (catContainer && data.summary.categories) {
       catContainer.innerHTML = Object.entries(data.summary.categories).map(([cat, amt]) => `
         <div class="category-tag">
-          <span>${cat}:</span> <b>${AppState.formatMoney(amt)}</b>
+          <span>${this.escapeHtml(cat)}:</span> <b>${AppState.formatMoney(amt)}</b>
         </div>
       `).join('');
     }
@@ -556,9 +567,9 @@ const UI = {
         const prefix = isPositive ? '+' : '';
         return `
           <tr>
-            <td>${t.date}</td>
-            <td>${t.description}</td>
-            <td><span class="badge-pill" style="font-size:10px;">${t.category}</span></td>
+            <td>${this.escapeHtml(t.date)}</td>
+            <td>${this.escapeHtml(t.description)}</td>
+            <td><span class="badge-pill" style="font-size:10px;">${this.escapeHtml(t.category)}</span></td>
             <td style="${amtStyle}">${prefix}${AppState.formatMoney(t.amount)}</td>
           </tr>
         `;
@@ -577,18 +588,18 @@ const UI = {
     container.innerHTML = consents.map(c => `
       <div class="consent-card">
         <div style="flex:1;">
-          <h4>${c.title}</h4>
-          <p>${c.description}</p>
+          <h4>${this.escapeHtml(c.title)}</h4>
+          <p>${this.escapeHtml(c.description)}</p>
           <div style="font-size:12px;color:var(--ink-700);margin-bottom:6px;">
-            <strong>Purpose:</strong> ${c.purpose}
+            <strong>Purpose:</strong> ${this.escapeHtml(c.purpose)}
           </div>
           <div class="consent-meta">
-            <span><strong>Basis:</strong> ${c.legal_basis}</span>
-            <span><strong>Retention:</strong> ${c.retention_period}</span>
+            <span><strong>Basis:</strong> ${this.escapeHtml(c.legal_basis)}</span>
+            <span><strong>Retention:</strong> ${this.escapeHtml(c.retention_period)}</span>
           </div>
         </div>
         <label class="switch">
-          <input type="checkbox" data-source-id="${c.source_id}" ${c.granted ? 'checked' : ''} onchange="App.handleConsentToggle('${c.source_id}', this.checked)">
+          <input type="checkbox" data-source-id="${this.escapeHtml(c.source_id)}" ${c.granted ? 'checked' : ''} onchange="App.handleConsentToggle('${this.escapeHtml(c.source_id)}', this.checked)">
           <span class="slider"></span>
         </label>
       </div>
@@ -607,7 +618,7 @@ const UI = {
     const toast = document.createElement('div');
     toast.className = `toast ${type}`;
     toast.innerHTML = `
-      <span>${message}</span>
+      <span>${this.escapeHtml(message)}</span>
       <button style="background:none;border:none;color:inherit;cursor:pointer;font-size:16px;line-height:1;padding:0 0 0 8px;opacity:0.8;" onclick="this.parentElement.remove();">&times;</button>
     `;
     container.appendChild(toast);
@@ -618,7 +629,7 @@ const UI = {
     }, 4000);
   },
 
-  // Render Audit Trail Logs (Clean Enterprise Compliance Stream)
+  // Render Audit Trail Logs (Clean Enterprise Compliance Stream with XSS escaping)
   renderAuditTrail(logs) {
     const container = document.getElementById('auditTrailStream');
     if (!container) return;
@@ -635,7 +646,10 @@ const UI = {
         case 'CONSENT_GRANTED': return 'Data Access Consent Granted';
         case 'CONSENT_REVOKED': return 'Data Access Consent Revoked';
         case 'PARTNER_REVIEW_ACCESSED': return 'Portfolio Queue Inspected';
-        case 'TRANSACTIONS_ANALYZED': return 'Cash Flow Data Ingested';
+        case 'TRANSACTIONS_INGESTED': return 'Cash Flow Data Ingested';
+        case 'ACCOUNT_REGISTERED': return 'New Account Registered';
+        case 'USER_LOGIN': return 'User Authenticated';
+        case 'USER_LOGOUT': return 'Session Terminated';
         default: return type.replace(/_/g, ' ');
       }
     };
@@ -643,27 +657,36 @@ const UI = {
     const formatActor = (actor) => {
       if (actor === 'consumer') return 'Borrower Self-Service';
       if (actor === 'lending_officer') return 'Credit Committee Officer';
-      return actor;
+      return this.escapeHtml(actor);
     };
 
     const formatDetails = (type, d) => {
       if (!d) return 'Operation executed and validated.';
       if (type === 'ASSESSMENT_PERFORMED') {
-        const name = d.applicant_name || 'Borrower Profile';
-        const cur = d.currency || '';
+        const name = this.escapeHtml(d.applicant_name || 'Borrower Profile');
+        const cur = this.escapeHtml(d.currency || '');
         const princ = d.principal ? `${cur} ${Number(d.principal).toLocaleString()}` : '';
-        const status = d.status ? d.status.toUpperCase() : 'EVALUATED';
+        const status = this.escapeHtml(d.status ? d.status.toUpperCase() : 'EVALUATED');
         const score = d.resilience_score !== undefined ? ` • Resilience Index: ${d.resilience_score}/100` : '';
         return `Evaluated credit affordability and 6 stress scenarios for <strong>${name}</strong> (${princ}). Outcome: <strong>${status}</strong>${score}.`;
       }
       if (type === 'UNDERWRITER_DECISION_RECORDED') {
-        const dec = d.decision ? d.decision.toUpperCase() : 'DECIDED';
-        const app = d.applicant || 'Record';
-        const rat = d.rationale ? `Rationale: "${d.rationale}"` : '';
+        const dec = this.escapeHtml(d.decision ? d.decision.toUpperCase() : 'DECIDED');
+        const app = this.escapeHtml(d.applicant || 'Record');
+        const rat = d.rationale ? `Rationale: "${this.escapeHtml(d.rationale)}"` : '';
         return `Recorded institutional facility disposition <strong>${dec}</strong> for <strong>${app}</strong>. ${rat}`;
       }
+      if (type === 'ACCOUNT_REGISTERED') {
+        return `New user account created for <strong>${this.escapeHtml(d.email)}</strong> with role: <strong>${this.escapeHtml(d.role)}</strong>.`;
+      }
+      if (type === 'USER_LOGIN') {
+        return `Session established for <strong>${this.escapeHtml(d.email)}</strong> (${this.escapeHtml(d.role)}).`;
+      }
+      if (type === 'USER_LOGOUT') {
+        return `Active session terminated for user ${this.escapeHtml(d.user_id)}.`;
+      }
       if (type === 'CONSENT_GRANTED' || type === 'CONSENT_REVOKED') {
-        const title = d.title || d.source_id || 'Data Source';
+        const title = this.escapeHtml(d.title || d.source_id || 'Data Source');
         const status = d.status === 'granted' ? 'active authorization' : 'permission revoked';
         return `Data access rights for <strong>${title}</strong> updated to <strong>${status}</strong>.`;
       }
@@ -671,11 +694,11 @@ const UI = {
         const count = d.records_reviewed || 0;
         return `Authorized credit underwriter accessed active portfolio queue (${count} consented records inspected).`;
       }
-      if (type === 'TRANSACTIONS_ANALYZED') {
-        return `Ingested and verified transaction statement records for cash-flow volatility modeling.`;
+      if (type === 'TRANSACTIONS_INGESTED') {
+        return `Ingested transaction statement records (${this.escapeHtml(d.filename || 'export.csv')}) for cash-flow volatility modeling.`;
       }
       return Object.entries(d)
-        .map(([k, v]) => `<strong>${k.replace(/_/g, ' ')}:</strong> ${v}`)
+        .map(([k, v]) => `<strong>${this.escapeHtml(k.replace(/_/g, ' '))}:</strong> ${this.escapeHtml(v)}`)
         .join(' • ');
     };
 
@@ -715,9 +738,9 @@ const UI = {
     const policy = AppState.institutionalPolicy;
 
     container.innerHTML = data.assessments.map((item, idx) => {
-      const appType = item.applicant_type || 'Consented Credit Assessment';
-      const appName = item.applicant_name ? `${item.applicant_name} — ` : `Assessment #${idx + 1} — `;
-      const resilStatus = item.resilience?.resilience_status || 'Needs Review';
+      const appType = this.escapeHtml(item.applicant_type || 'Consented Credit Assessment');
+      const appName = item.applicant_name ? `${this.escapeHtml(item.applicant_name)} — ` : `Assessment #${idx + 1} — `;
+      const resilStatus = this.escapeHtml(item.resilience?.resilience_status || 'Needs Review');
       const resilClass = resilStatus === 'Needs Review' ? 'tight' : 'healthy';
       const statusClass = item.status === 'fits' ? 'healthy' : item.status === 'review' ? 'tight' : 'deficit';
 
@@ -756,14 +779,14 @@ const UI = {
         decisionHtml = `
           <div class="underwriter-decision-box" style="border-left: 3px solid ${decVal === 'approved' ? 'var(--good-text)' : decVal === 'conditional' ? 'var(--warn-text)' : 'var(--deficit-text)'};">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;flex-wrap:wrap;gap:8px;">
-              <span class="compliance-tag ${decClass}">RECORDED: ${decVal.toUpperCase()}</span>
+              <span class="compliance-tag ${decClass}">RECORDED: ${this.escapeHtml(decVal.toUpperCase())}</span>
               <span style="font-size:11px;color:var(--ink-500);font-family:var(--font-mono);">${new Date(item.decision.decided_at || Date.now()).toLocaleString()}</span>
             </div>
             <div style="font-size:12.5px;color:var(--ink-800);margin-bottom:4px;">
-              <strong>Underwriter Rationale:</strong> ${item.decision.rationale || 'Standard institutional policy determination.'}
+              <strong>Underwriter Rationale:</strong> ${this.escapeHtml(item.decision.rationale || 'Standard institutional policy determination.')}
             </div>
             <div style="font-size:11px;color:var(--ink-600);">
-              Recorded by: <strong>${item.decision.officer_name || 'Senior Underwriter'}</strong>
+              Recorded by: <strong>${this.escapeHtml(item.decision.officer_name || 'Senior Underwriter')}</strong>
             </div>
           </div>
         `;
@@ -779,8 +802,8 @@ const UI = {
                 <option value="conditional" ${item.status === 'review' ? 'selected' : ''}>Conditional Approval</option>
                 <option value="declined" ${item.status === 'deficit' ? 'selected' : ''}>Decline Facility</option>
               </select>
-              <input type="text" id="decRationale_${idx}" class="form-input" placeholder="Enter underwriter rationale / stipulations..." value="${item.status_reason ? item.status_reason.slice(0, 75) + '...' : ''}" style="padding:7px 10px;font-size:12.5px;border:1px solid var(--ink-300);border-radius:var(--radius-sm);">
-              <button type="button" class="btn-sm btn-primary" onclick="App.submitUnderwriterDecision('${item.id}', ${idx})">
+              <input type="text" id="decRationale_${idx}" class="form-input" placeholder="Enter underwriter rationale / stipulations..." value="${this.escapeHtml(item.status_reason ? item.status_reason.slice(0, 75) + '...' : '')}" style="padding:7px 10px;font-size:12.5px;border:1px solid var(--ink-300);border-radius:var(--radius-sm);">
+              <button type="button" class="btn-sm btn-primary" onclick="App.submitUnderwriterDecision('${this.escapeHtml(item.id)}', ${idx})">
                 Record Decision
               </button>
             </div>
@@ -792,13 +815,13 @@ const UI = {
       <div class="panel" style="margin-bottom:1.5rem;border-left:4px solid var(--accent);">
         <div class="panel-header">
           <div>
-            <span class="eyebrow-tag">${appType.toUpperCase()}</span>
-            <h3 style="margin-top:2px;">${appName}${item.offer.name} (${item.currency} ${item.offer.principal.toLocaleString()})</h3>
-            <p style="margin:2px 0 0;font-size:12px;color:var(--ink-500);">Generated: ${new Date(item.generated_at).toLocaleDateString()} • Purpose: ${item.offer.purpose}</p>
+            <span class="eyebrow-tag">${appType}</span>
+            <h3 style="margin-top:2px;">${appName}${this.escapeHtml(item.offer.name)} (${item.currency} ${item.offer.principal.toLocaleString()})</h3>
+            <p style="margin:2px 0 0;font-size:12px;color:var(--ink-500);">Generated: ${new Date(item.generated_at).toLocaleDateString()} • Purpose: ${this.escapeHtml(item.offer.purpose)}</p>
           </div>
           <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end;">
             ${policyOverallTag}
-            <span class="badge-status ${statusClass}">${item.status_label}</span>
+            <span class="badge-status ${statusClass}">${this.escapeHtml(item.status_label)}</span>
           </div>
         </div>
 
@@ -822,13 +845,13 @@ const UI = {
           <div class="metric-card">
             <span class="metric-label">Resilience Assessment</span>
             <span class="metric-value" style="font-size:18px;"><span class="badge-status ${resilClass}">${resilStatus}</span></span>
-            <span class="metric-subtext">${item.resilience?.summary ? item.resilience.summary.slice(0, 52) + '...' : 'Stress tested'}</span>
+            <span class="metric-subtext">${item.resilience?.summary ? this.escapeHtml(item.resilience.summary.slice(0, 52)) + '...' : 'Stress tested'}</span>
           </div>
         </div>
 
         <div class="disclosure-box" style="margin-bottom:0.75rem;">
           <strong>Underwriter Decision Support Note:</strong>
-          ${item.status_reason}
+          ${this.escapeHtml(item.status_reason)}
         </div>
 
         ${decisionHtml}
@@ -839,6 +862,174 @@ const UI = {
       </div>
     `;
     }).join('');
+  },
+
+  // Update Header Authentication Indicator
+  updateAuthDisplay() {
+    const controls = document.querySelector('.header-controls');
+    if (!controls) return;
+
+    let authEl = document.getElementById('headerAuthBar');
+    if (!authEl) {
+      authEl = document.createElement('div');
+      authEl.id = 'headerAuthBar';
+      authEl.style.display = 'flex';
+      authEl.style.alignItems = 'center';
+      authEl.style.gap = '8px';
+      controls.appendChild(authEl);
+    }
+
+    if (AppState.currentUser) {
+      const u = AppState.currentUser;
+      const roleLabel = u.role === 'underwriter' ? 'Underwriter' : 'Borrower';
+      authEl.innerHTML = `
+        <span class="badge-pill" style="font-size:11.5px;padding:4px 10px;background:var(--accent-soft);color:var(--accent);font-weight:600;">
+          ${this.escapeHtml(u.full_name)} (${roleLabel})
+        </span>
+        <button type="button" class="btn-sm btn-ghost" id="signOutBtn" style="padding:4px 8px;font-size:11.5px;cursor:pointer;">
+          Sign Out
+        </button>
+      `;
+      document.getElementById('signOutBtn')?.addEventListener('click', () => {
+        App.handleLogout();
+      });
+    } else {
+      authEl.innerHTML = `
+        <button type="button" class="btn-hero btn-outline" id="openAuthModalBtn" style="padding:5px 12px;font-size:12px;cursor:pointer;">
+          Sign In / Create Account
+        </button>
+      `;
+      document.getElementById('openAuthModalBtn')?.addEventListener('click', () => {
+        this.openAuthModal('register');
+      });
+    }
+  },
+
+  // Open Auth Modal (Register or Login)
+  openAuthModal(defaultTab = 'register') {
+    let modal = document.getElementById('authModal');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'authModal';
+      modal.className = 'modal-backdrop';
+      modal.innerHTML = `
+        <div class="modal-card" style="max-width:440px;width:90%;background:white;border-radius:var(--radius-lg);padding:24px;box-shadow:var(--shadow-xl);border:1px solid var(--ink-200);position:relative;">
+          <button type="button" id="closeAuthModalX" style="position:absolute;top:16px;right:16px;background:none;border:none;font-size:20px;cursor:pointer;color:var(--ink-500);">&times;</button>
+          
+          <div style="display:flex;gap:12px;border-bottom:1px solid var(--ink-200);margin-bottom:18px;">
+            <button type="button" id="tabAuthRegister" class="tab-nav-btn active" style="padding:8px 4px;font-size:13.5px;cursor:pointer;">Create Account</button>
+            <button type="button" id="tabAuthLogin" class="tab-nav-btn" style="padding:8px 4px;font-size:13.5px;cursor:pointer;">Sign In</button>
+          </div>
+
+          <!-- Register Form Pane -->
+          <div id="paneAuthRegister">
+            <h3 style="margin:0 0 4px;font-size:17px;color:var(--ink-900);">Create NexusFin Account</h3>
+            <p style="margin:0 0 14px;font-size:12.5px;color:var(--ink-500);">Secure account creation for borrowers and institutional underwriters.</p>
+            
+            <div class="form-group" style="margin-bottom:10px;">
+              <label for="regFullName" style="font-size:12px;font-weight:600;">Full Name</label>
+              <input type="text" id="regFullName" class="form-input" placeholder="e.g. Maria Santos" style="width:100%;padding:8px 10px;font-size:13px;border:1px solid var(--ink-300);border-radius:var(--radius-sm);">
+            </div>
+
+            <div class="form-group" style="margin-bottom:10px;">
+              <label for="regEmail" style="font-size:12px;font-weight:600;">Email Address</label>
+              <input type="email" id="regEmail" class="form-input" placeholder="name@example.com" style="width:100%;padding:8px 10px;font-size:13px;border:1px solid var(--ink-300);border-radius:var(--radius-sm);">
+            </div>
+
+            <div class="form-group" style="margin-bottom:10px;">
+              <label for="regPassword" style="font-size:12px;font-weight:600;">Password (min 8 chars, 1 digit or symbol)</label>
+              <input type="password" id="regPassword" class="form-input" placeholder="••••••••" style="width:100%;padding:8px 10px;font-size:13px;border:1px solid var(--ink-300);border-radius:var(--radius-sm);">
+            </div>
+
+            <div class="form-group" style="margin-bottom:14px;">
+              <label for="regRole" style="font-size:12px;font-weight:600;">Account Purpose</label>
+              <select id="regRole" style="width:100%;padding:8px 10px;font-size:13px;border:1px solid var(--ink-300);border-radius:var(--radius-sm);background:white;">
+                <option value="borrower" selected>Borrower / Small Business (Self-Service)</option>
+                <option value="underwriter">Institutional Underwriter / Credit Officer</option>
+              </select>
+            </div>
+
+            <button type="button" id="btnSubmitRegister" class="btn-primary" style="width:100%;padding:10px;font-size:13.5px;cursor:pointer;">
+              Create Free Account
+            </button>
+          </div>
+
+          <!-- Login Form Pane -->
+          <div id="paneAuthLogin" style="display:none;">
+            <h3 style="margin:0 0 4px;font-size:17px;color:var(--ink-900);">Sign In</h3>
+            <p style="margin:0 0 14px;font-size:12.5px;color:var(--ink-500);">Access your saved financial profile and assessment history.</p>
+
+            <div class="form-group" style="margin-bottom:10px;">
+              <label for="loginEmail" style="font-size:12px;font-weight:600;">Email Address</label>
+              <input type="email" id="loginEmail" class="form-input" placeholder="name@example.com" style="width:100%;padding:8px 10px;font-size:13px;border:1px solid var(--ink-300);border-radius:var(--radius-sm);">
+            </div>
+
+            <div class="form-group" style="margin-bottom:14px;">
+              <label for="loginPassword" style="font-size:12px;font-weight:600;">Password</label>
+              <input type="password" id="loginPassword" class="form-input" placeholder="••••••••" style="width:100%;padding:8px 10px;font-size:13px;border:1px solid var(--ink-300);border-radius:var(--radius-sm);">
+            </div>
+
+            <button type="button" id="btnSubmitLogin" class="btn-primary" style="width:100%;padding:10px;font-size:13.5px;cursor:pointer;">
+              Sign In
+            </button>
+          </div>
+
+          <!-- Quick Test Demo Logins -->
+          <div style="margin-top:16px;padding-top:14px;border-top:1px dashed var(--ink-200);">
+            <div style="font-size:11.5px;font-weight:700;color:var(--ink-500);text-transform:uppercase;margin-bottom:8px;letter-spacing:0.04em;">
+              Quick 1-Click Demo Profiles:
+            </div>
+            <div style="display:flex;gap:8px;">
+              <button type="button" id="quickDemoBorrower" class="btn-sm btn-outline" style="flex:1;font-size:11.5px;padding:6px;">Demo Borrower</button>
+              <button type="button" id="quickDemoUnderwriter" class="btn-sm btn-outline" style="flex:1;font-size:11.5px;padding:6px;">Demo Underwriter</button>
+            </div>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+
+      // Event bindings inside modal
+      document.getElementById('closeAuthModalX')?.addEventListener('click', () => this.closeAuthModal());
+      document.getElementById('tabAuthRegister')?.addEventListener('click', () => this.switchAuthTab('register'));
+      document.getElementById('tabAuthLogin')?.addEventListener('click', () => this.switchAuthTab('login'));
+
+      document.getElementById('btnSubmitRegister')?.addEventListener('click', () => App.handleRegister());
+      document.getElementById('btnSubmitLogin')?.addEventListener('click', () => App.handleLogin());
+
+      document.getElementById('quickDemoBorrower')?.addEventListener('click', () => {
+        App.handleQuickLogin('borrower@nexusfin.org', 'NexusBorrower123!');
+      });
+      document.getElementById('quickDemoUnderwriter')?.addEventListener('click', () => {
+        App.handleQuickLogin('underwriter@nexusfin.org', 'NexusOfficer123!');
+      });
+    }
+
+    this.switchAuthTab(defaultTab);
+    modal.style.display = 'flex';
+  },
+
+  switchAuthTab(tab) {
+    const tabReg = document.getElementById('tabAuthRegister');
+    const tabLog = document.getElementById('tabAuthLogin');
+    const paneReg = document.getElementById('paneAuthRegister');
+    const paneLog = document.getElementById('paneAuthLogin');
+
+    if (tab === 'register') {
+      tabReg?.classList.add('active');
+      tabLog?.classList.remove('active');
+      if (paneReg) paneReg.style.display = 'block';
+      if (paneLog) paneLog.style.display = 'none';
+    } else {
+      tabLog?.classList.add('active');
+      tabReg?.classList.remove('active');
+      if (paneLog) paneLog.style.display = 'block';
+      if (paneReg) paneReg.style.display = 'none';
+    }
+  },
+
+  closeAuthModal() {
+    const modal = document.getElementById('authModal');
+    if (modal) modal.style.display = 'none';
   },
 
   openModal(modalId) {

@@ -19,6 +19,8 @@ const AppState = {
   },
   activeTab: 'assessment',
   viewMode: 'consumer', // 'consumer' | 'partner'
+  currentUser: null,
+  authToken: null,
   presets: [],
   currentAssessment: null,
   comparedOffers: [],
@@ -70,11 +72,31 @@ const AppState = {
     return isNegative ? `-${sym} ${absFormatted}` : `${sym} ${absFormatted}`;
   },
 
+  setAuth(user, token) {
+    this.currentUser = user;
+    this.authToken = token;
+    if (user && user.role === 'underwriter') {
+      this.viewMode = 'partner';
+    }
+    if (user && user.full_name) {
+      this.applicantName = user.full_name;
+    }
+    this.save();
+  },
+
+  clearAuth() {
+    this.currentUser = null;
+    this.authToken = null;
+    this.save();
+  },
+
   save() {
     try {
       const payload = {
         currency: this.currency,
         viewMode: this.viewMode,
+        currentUser: this.currentUser,
+        authToken: this.authToken,
         applicantName: this.applicantName,
         customShockPct: this.customShockPct,
         institutionalPolicy: this.institutionalPolicy,
@@ -97,6 +119,8 @@ const AppState = {
       const data = JSON.parse(raw);
       if (data.currency) this.currency = data.currency;
       if (data.viewMode) this.viewMode = data.viewMode;
+      if (data.currentUser) this.currentUser = data.currentUser;
+      if (data.authToken) this.authToken = data.authToken;
       if (data.applicantName) this.applicantName = data.applicantName;
       if (data.customShockPct !== undefined) this.customShockPct = data.customShockPct;
       if (data.institutionalPolicy) this.institutionalPolicy = { ...this.institutionalPolicy, ...data.institutionalPolicy };

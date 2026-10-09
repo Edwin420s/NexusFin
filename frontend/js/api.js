@@ -1,16 +1,31 @@
 /**
  * NexusFin API Client
- * Wraps REST endpoints with error handling and fallback support.
+ * Wraps REST endpoints with error handling, authentication headers, and fallback support.
  */
 
 const API = {
   baseUrl: '',
 
+  getAuthHeaders() {
+    const headers = { 'Content-Type': 'application/json' };
+    if (typeof AppState !== 'undefined' && AppState.authToken) {
+      headers['Authorization'] = `Bearer ${AppState.authToken}`;
+    }
+    return headers;
+  },
+
   async get(path) {
-    const res = await fetch(`${this.baseUrl}${path}`);
+    const res = await fetch(`${this.baseUrl}${path}`, {
+      headers: this.getAuthHeaders(),
+    });
     if (!res.ok) {
       const err = await res.text();
-      throw new Error(`API Error (${res.status}): ${err}`);
+      let msg = err;
+      try {
+        const j = JSON.parse(err);
+        msg = j.detail || err;
+      } catch (e) {}
+      throw new Error(msg);
     }
     return res.json();
   },
@@ -18,12 +33,17 @@ const API = {
   async post(path, body) {
     const res = await fetch(`${this.baseUrl}${path}`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: this.getAuthHeaders(),
       body: JSON.stringify(body),
     });
     if (!res.ok) {
       const err = await res.text();
-      throw new Error(`API Error (${res.status}): ${err}`);
+      let msg = err;
+      try {
+        const j = JSON.parse(err);
+        msg = j.detail || err;
+      } catch (e) {}
+      throw new Error(msg);
     }
     return res.json();
   },
@@ -31,18 +51,45 @@ const API = {
   async uploadFile(path, file) {
     const formData = new FormData();
     formData.append('file', file);
+    const headers = {};
+    if (typeof AppState !== 'undefined' && AppState.authToken) {
+      headers['Authorization'] = `Bearer ${AppState.authToken}`;
+    }
     const res = await fetch(`${this.baseUrl}${path}`, {
       method: 'POST',
+      headers,
       body: formData,
     });
     if (!res.ok) {
       const err = await res.text();
-      throw new Error(`Upload Error (${res.status}): ${err}`);
+      let msg = err;
+      try {
+        const j = JSON.parse(err);
+        msg = j.detail || err;
+      } catch (e) {}
+      throw new Error(msg);
     }
     return res.json();
   },
 
-  // High-level endpoints
+  // Authentication endpoints
+  register(userData) {
+    return this.post('/api/auth/register', userData);
+  },
+
+  login(credentials) {
+    return this.post('/api/auth/login', credentials);
+  },
+
+  getMe() {
+    return this.get('/api/auth/me');
+  },
+
+  logout() {
+    return this.post('/api/auth/logout', {});
+  },
+
+  // High-level decision support endpoints
   fetchPresets() {
     return this.get('/api/presets');
   },
@@ -98,9 +145,5 @@ const API = {
 
   getPitchDeckInfo() {
     return this.get('/api/pitch-deck/info');
-  },
-
-  getPitchDeckSlides() {
-    return this.get('/api/pitch-deck/slides');
   }
 };
