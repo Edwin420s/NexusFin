@@ -492,20 +492,107 @@ const UI = {
     `).join('');
   },
 
-  // Render Audit Trail Logs
+  // Show non-blocking SaaS toast notification
+  showToast(message, type = 'info') {
+    let container = document.getElementById('toastContainer');
+    if (!container) {
+      container = document.createElement('div');
+      container.id = 'toastContainer';
+      container.className = 'toast-container';
+      document.body.appendChild(container);
+    }
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    toast.innerHTML = `
+      <span>${message}</span>
+      <button style="background:none;border:none;color:inherit;cursor:pointer;font-size:16px;line-height:1;padding:0 0 0 8px;opacity:0.8;" onclick="this.parentElement.remove();">&times;</button>
+    `;
+    container.appendChild(toast);
+    setTimeout(() => {
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateY(10px) scale(0.95)';
+      setTimeout(() => toast.remove(), 250);
+    }, 4000);
+  },
+
+  // Render Audit Trail Logs (Clean Enterprise Compliance Stream)
   renderAuditTrail(logs) {
     const container = document.getElementById('auditTrailStream');
     if (!logs || logs.length === 0) {
-      container.innerHTML = '<div style="color:var(--ink-500);padding:10px;">No audit logs recorded yet.</div>';
+      container.innerHTML = '<div style="color:var(--ink-500);padding:1.5rem;text-align:center;">No compliance events recorded in this session yet.</div>';
       return;
     }
+
+    const formatEventTitle = (type) => {
+      switch (type) {
+        case 'ASSESSMENT_PERFORMED': return 'Affordability Stress Assessment';
+        case 'UNDERWRITER_DECISION_RECORDED': return 'Underwriter Decision Logged';
+        case 'CONSENT_GRANTED': return 'Data Access Consent Granted';
+        case 'CONSENT_REVOKED': return 'Data Access Consent Revoked';
+        case 'PARTNER_REVIEW_ACCESSED': return 'Portfolio Queue Inspected';
+        case 'TRANSACTIONS_ANALYZED': return 'Cash Flow Data Ingested';
+        default: return type.replace(/_/g, ' ');
+      }
+    };
+
+    const formatActor = (actor) => {
+      if (actor === 'consumer') return 'Borrower Self-Service';
+      if (actor === 'lending_officer') return 'Credit Committee Officer';
+      return actor;
+    };
+
+    const formatDetails = (type, d) => {
+      if (!d) return 'Operation executed and validated.';
+      if (type === 'ASSESSMENT_PERFORMED') {
+        const name = d.applicant_name || 'Borrower Profile';
+        const cur = d.currency || '';
+        const princ = d.principal ? `${cur} ${Number(d.principal).toLocaleString()}` : '';
+        const status = d.status ? d.status.toUpperCase() : 'EVALUATED';
+        const score = d.resilience_score !== undefined ? ` • Resilience Index: ${d.resilience_score}/100` : '';
+        return `Evaluated credit affordability and 6 stress scenarios for <strong>${name}</strong> (${princ}). Outcome: <strong>${status}</strong>${score}.`;
+      }
+      if (type === 'UNDERWRITER_DECISION_RECORDED') {
+        const dec = d.decision ? d.decision.toUpperCase() : 'DECIDED';
+        const app = d.applicant || 'Record';
+        const rat = d.rationale ? `Rationale: "${d.rationale}"` : '';
+        return `Recorded institutional facility disposition <strong>${dec}</strong> for <strong>${app}</strong>. ${rat}`;
+      }
+      if (type === 'CONSENT_GRANTED' || type === 'CONSENT_REVOKED') {
+        const title = d.title || d.source_id || 'Data Source';
+        const status = d.status === 'granted' ? 'active authorization' : 'permission revoked';
+        return `Data access rights for <strong>${title}</strong> updated to <strong>${status}</strong>.`;
+      }
+      if (type === 'PARTNER_REVIEW_ACCESSED') {
+        const count = d.records_reviewed || 0;
+        return `Authorized credit underwriter accessed active portfolio queue (${count} consented records inspected).`;
+      }
+      if (type === 'TRANSACTIONS_ANALYZED') {
+        const count = d.transactions_count || 0;
+        return `Ingested and verified transaction statement records for cash-flow volatility modeling.`;
+      }
+      return Object.entries(d)
+        .map(([k, v]) => `<strong>${k.replace(/_/g, ' ')}:</strong> ${v}`)
+        .join(' • ');
+    };
+
     container.innerHTML = logs.map(l => {
       const dateStr = new Date(l.timestamp).toLocaleTimeString();
+      const eventTitle = formatEventTitle(l.event_type);
+      const actorLabel = formatActor(l.actor);
+      const narrative = formatDetails(l.event_type, l.details);
+
       return `
-        <div class="audit-entry">
-          <span class="time">[${dateStr}]</span>
-          <span class="event">${l.event_type}</span>
-          <span>actor: ${l.actor} | ${JSON.stringify(l.details)}</span>
+        <div class="audit-entry-card">
+          <div class="audit-entry-header">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <span class="audit-badge-event">${eventTitle}</span>
+              <span class="audit-badge-actor">${actorLabel}</span>
+            </div>
+            <span class="audit-timestamp">${dateStr}</span>
+          </div>
+          <div class="audit-entry-narrative">
+            ${narrative}
+          </div>
         </div>
       `;
     }).join('');
