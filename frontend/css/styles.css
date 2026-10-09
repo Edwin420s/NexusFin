@@ -1510,6 +1510,130 @@ footer.site-footer {
 }
 
 /* ==========================================================================
+   Dynamic Interactive Widgets
+   ========================================================================== */
+
+.live-cashflow-banner {
+  background: var(--surface-alt);
+  border: 1px solid var(--ink-200);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.25rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+@media (max-width: 768px) {
+  .live-cashflow-banner {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.cashflow-metric {
+  display: flex;
+  flex-direction: column;
+}
+
+.cashflow-metric .label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ink-500);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: 3px;
+}
+
+.cashflow-metric .value {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--ink-900);
+  font-family: var(--font-mono);
+}
+
+.cashflow-metric.highlight .value {
+  color: var(--accent);
+}
+
+.custom-shock-panel {
+  background: var(--surface-alt);
+  border: 1px solid var(--ink-200);
+  border-radius: var(--radius-md);
+  padding: 1.25rem;
+  margin-top: 1.5rem;
+}
+
+.shock-slider-badge {
+  background: var(--accent);
+  color: var(--white);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+}
+
+.underwriter-decision-box {
+  background: var(--ink-50);
+  border: 1px solid var(--ink-200);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.25rem;
+  margin-top: 1rem;
+}
+
+.compliance-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.compliance-tag.pass {
+  background: #ecfdf5;
+  color: #065f46;
+  border: 1px solid #a7f3d0;
+}
+
+.compliance-tag.review {
+  background: #fffbeb;
+  color: #92400e;
+  border: 1px solid #fde68a;
+}
+
+.compliance-tag.fail {
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+.empty-state-card {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  border: 2px dashed var(--ink-200);
+  border-radius: var(--radius-lg);
+  background: var(--surface-alt);
+}
+
+.empty-state-card h4 {
+  font-size: 17px;
+  margin-bottom: 8px;
+  color: var(--ink-900);
+}
+
+.empty-state-card p {
+  color: var(--ink-500);
+  max-width: 520px;
+  margin: 0 auto 1.25rem;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* ==========================================================================
    Print Stylesheet
    ========================================================================== */
 
