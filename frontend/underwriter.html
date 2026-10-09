@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Institutional Underwriter Portal — NexusFin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="header-container">
+      <a href="/" class="brand-wrapper" style="text-decoration:none;color:inherit;">
+        <div class="brand-logo">N</div>
+        <div class="brand-info">
+          <h1>Nexus<span>Fin</span></h1>
+          <p>Responsible Credit Decision Support &amp; Affordability Intelligence</p>
+        </div>
+      </a>
+
+      <div class="header-controls">
+        <div class="mode-toggle-group">
+          <a href="/assessment" class="mode-btn" style="text-decoration:none;">Borrower Workspace</a>
+          <a href="/underwriter" class="mode-btn active" style="text-decoration:none;">Institutional Underwriter Portal</a>
+        </div>
+
+        <a href="/methodology" class="btn-hero btn-ghost" style="padding:6px 12px;font-size:12px;border:1px solid var(--ink-200);text-decoration:none;">
+          Methodology &amp; Standards
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Workspace Navigation Tabs -->
+  <nav class="workspace-tabs">
+    <div class="tabs-container">
+      <a href="/" class="tab-nav-btn">
+        <span class="tab-num">00</span> Platform Overview
+      </a>
+      <a href="/assessment" class="tab-nav-btn">
+        <span class="tab-num">01</span> Affordability &amp; Stress Testing
+      </a>
+      <a href="/compare" class="tab-nav-btn">
+        <span class="tab-num">02</span> Compare Credit Offers (Key Facts)
+      </a>
+      <a href="/transactions" class="tab-nav-btn">
+        <span class="tab-num">03</span> Alternative Data &amp; Cash Flow
+      </a>
+      <a href="/governance" class="tab-nav-btn">
+        <span class="tab-num">04</span> Data Governance &amp; Audit Trail
+      </a>
+      <a href="/underwriter" class="tab-nav-btn active">
+        <span class="tab-num">05</span> Institutional Underwriter Portal
+      </a>
+      <a href="/methodology" class="tab-nav-btn">
+        <span class="tab-num">06</span> Methodology &amp; Financial Standards
+      </a>
+    </div>
+  </nav>
+
+  <!-- Dedicated Page Banner -->
+  <section class="page-banner">
+    <div class="page-banner-container">
+      <div class="page-banner-title">
+        <span class="eyebrow-tag">INSTITUTIONAL UNDERWRITING PORTAL</span>
+        <h2>Lender &amp; Credit Committee Decision Support Portal</h2>
+        <p>
+          For Financial Institutions, Microfinance Organizations, and Community Credit Lenders reviewing consented applicant portfolios against institution-defined credit policies, debt-to-income ceilings, and macroeconomic shock resilience thresholds.
+        </p>
+      </div>
+      <div class="page-banner-actions">
+        <a href="/assessment" class="btn-hero btn-secondary" style="text-decoration:none;font-size:13px;padding:8px 16px;">
+          Borrower Evaluation Mode
+        </a>
+        <a href="/methodology" class="btn-hero btn-outline" style="text-decoration:none;font-size:13px;padding:8px 16px;">
+          Integration Architecture
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content Workspace -->
+  <main class="workspace-content">
+    <div id="partner" class="tab-pane">
+      <div class="panel" style="margin-bottom:1.5rem;">
+        <div class="panel-header">
+          <div>
+            <span class="eyebrow-tag">PORTFOLIO RISK GOVERNANCE</span>
+            <h3>Consented Applicant Review Queue</h3>
+            <p>Inspect incoming borrower applications, test debt burdens against institutional limits, and log facility decisions.</p>
+          </div>
+          <div>
+            <span class="badge-pill" style="background:#e0f2fe;color:#0369a1;">Institutional Underwriting Active</span>
+          </div>
+        </div>
+
+        <div class="disclosure-box" style="margin-bottom:1.25rem;background:#fffbeb;border-color:#fcd34d;color:#92400e;">
+          <strong>Institutional Governance Notice:</strong>
+          Review applicant affordability against institution-defined credit policies, debt-to-income benchmarks, and shock thresholds.
+          <em>NexusFin provides independent decision support. Final underwriting decisions remain with the financial institution.</em>
+        </div>
+
+        <!-- Underwriting Policy & Risk Thresholds Controls -->
+        <div class="panel" style="margin-top:1.25rem;margin-bottom:1.5rem;background:var(--surface-alt);border:1px solid var(--ink-200);">
+          <div class="panel-header">
+            <div>
+              <span class="eyebrow-tag">CONFIGURABLE RISK CONTROLS</span>
+              <h4 style="margin:0;font-size:15px;color:var(--ink-900);">Institution Risk Policies &amp; Portfolio Filters</h4>
+              <p style="margin:4px 0 0;font-size:12.5px;color:var(--ink-500);">Configure debt-to-income ceilings, minimum cash-flow cushion, and reserve requirements to dynamically benchmark all incoming applications.</p>
+            </div>
+            <button type="button" class="btn-sm btn-outline" id="resetPolicyBtn">Reset Default Controls</button>
+          </div>
+
+          <div class="form-grid" style="grid-template-columns: repeat(3, 1fr); gap:1.25rem;">
+            <div class="form-group">
+              <label>Max Debt-Service Ceiling: <strong id="policyBurdenLabel" style="color:var(--accent);">35%</strong></label>
+              <input type="range" id="policyBurdenSlider" min="20" max="50" step="1" value="35" style="width:100%;">
+              <span class="form-hint">Maximum allowable debt commitments as % of income</span>
+            </div>
+
+            <div class="form-group">
+              <label>Min Post-Loan Cushion: <strong id="policyBufferLabel" style="color:var(--accent);">₱ 5,000</strong></label>
+              <input type="number" id="policyBufferInput" value="5000" step="500" min="0" style="width:100%;">
+              <span class="form-hint">Required monthly buffer after loan instalment</span>
+            </div>
+
+            <div class="form-group">
+              <label>Min Savings Runway: <strong id="policyRunwayLabel" style="color:var(--accent);">1.0 Mo</strong></label>
+              <input type="range" id="policyRunwaySlider" min="0" max="3" step="0.2" value="1.0" style="width:100%;">
+              <span class="form-hint">Minimum liquid emergency reserve months</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dynamic Applications List -->
+        <div id="partnerAssessmentsList" style="margin-top:1.5rem;">
+          <!-- Dynamically injected from API -->
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div>
+        <strong>NexusFin</strong> — Decision Support for Responsible Credit &amp; Informed Choice<br>
+        <span>© 2026 NexusFin Technologies. Independent financial health and affordability intelligence.</span>
+      </div>
+      <div class="footer-badges">
+        <a href="/governance" class="footer-badge-pill">Privacy by Design</a>
+        <a href="/methodology" class="footer-badge-pill">Architecture &amp; Methodology</a>
+        <a href="/methodology" class="footer-badge-pill">Institutional Standards</a>
+        <span class="footer-badge-pill">Transparent Decision Support</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/js/api.js"></script>
+  <script src="/js/state.js"></script>
+  <script src="/js/ui.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>

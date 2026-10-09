@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Data Governance &amp; Audit Trail — NexusFin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="header-container">
+      <a href="/" class="brand-wrapper" style="text-decoration:none;color:inherit;">
+        <div class="brand-logo">N</div>
+        <div class="brand-info">
+          <h1>Nexus<span>Fin</span></h1>
+          <p>Responsible Credit Decision Support &amp; Affordability Intelligence</p>
+        </div>
+      </a>
+
+      <div class="header-controls">
+        <div class="mode-toggle-group">
+          <a href="/assessment" class="mode-btn active" style="text-decoration:none;">Borrower Workspace</a>
+          <a href="/underwriter" class="mode-btn" style="text-decoration:none;">Institutional Underwriter Portal</a>
+        </div>
+
+        <a href="/methodology" class="btn-hero btn-ghost" style="padding:6px 12px;font-size:12px;border:1px solid var(--ink-200);text-decoration:none;">
+          Methodology &amp; Standards
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Workspace Navigation Tabs -->
+  <nav class="workspace-tabs">
+    <div class="tabs-container">
+      <a href="/" class="tab-nav-btn">
+        <span class="tab-num">00</span> Platform Overview
+      </a>
+      <a href="/assessment" class="tab-nav-btn">
+        <span class="tab-num">01</span> Affordability &amp; Stress Testing
+      </a>
+      <a href="/compare" class="tab-nav-btn">
+        <span class="tab-num">02</span> Compare Credit Offers (Key Facts)
+      </a>
+      <a href="/transactions" class="tab-nav-btn">
+        <span class="tab-num">03</span> Alternative Data &amp; Cash Flow
+      </a>
+      <a href="/governance" class="tab-nav-btn active">
+        <span class="tab-num">04</span> Data Governance &amp; Audit Trail
+      </a>
+      <a href="/underwriter" class="tab-nav-btn">
+        <span class="tab-num">05</span> Institutional Underwriter Portal
+      </a>
+      <a href="/methodology" class="tab-nav-btn">
+        <span class="tab-num">06</span> Methodology &amp; Financial Standards
+      </a>
+    </div>
+  </nav>
+
+  <!-- Dedicated Page Banner -->
+  <section class="page-banner">
+    <div class="page-banner-container">
+      <div class="page-banner-title">
+        <span class="eyebrow-tag">DATA PRIVACY &amp; REGULATORY COMPLIANCE</span>
+        <h2>Responsible Data Governance &amp; Compliance Audit Trail</h2>
+        <p>
+          Borrowers retain sovereign control over which financial data sources are shared and for what purpose. Every calculation, consent modification, and credit committee review is recorded in an immutable, tamper-evident audit stream.
+        </p>
+      </div>
+      <div class="page-banner-actions">
+        <a href="/assessment" class="btn-hero btn-secondary" style="text-decoration:none;font-size:13px;padding:8px 16px;">
+          Affordability Workspace
+        </a>
+        <a href="/underwriter" class="btn-hero btn-outline" style="text-decoration:none;font-size:13px;padding:8px 16px;">
+          Underwriter Portal
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content Workspace -->
+  <main class="workspace-content">
+    <div id="privacy" class="tab-pane">
+      <div class="grid-two-col">
+
+        <!-- Column 1: Granular Borrower Consent Management -->
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <span class="eyebrow-tag">GRANULAR CONSENT</span>
+              <h3>Consent Management &amp; Privacy Controls</h3>
+              <p>Borrowers retain granular control over which financial data sources are shared and for what purpose.</p>
+            </div>
+          </div>
+
+          <div id="consentsContainer">
+            <!-- Dynamically injected consent cards -->
+          </div>
+        </div>
+
+        <!-- Column 2: Immutable Event Stream -->
+        <div class="panel">
+          <div class="panel-header">
+            <div>
+              <span class="eyebrow-tag">RESPONSIBLE DATA GOVERNANCE</span>
+              <h3>Governance Audit Trail</h3>
+              <p>Real-time audit log recording data ingestion, consent changes, assessments, and underwriter reviews.</p>
+            </div>
+          </div>
+
+          <div id="auditTrailStream" class="audit-log-stream">
+            <!-- Injected log entries -->
+          </div>
+
+          <div class="disclosure-box" style="margin-top:1rem;">
+            <strong>Responsible Data Governance:</strong>
+            Designed around key data governance principles: explicit borrower consent, data minimization, purpose limitation, access control, auditability, data retention boundaries, and borrower-initiated consent revocation.
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div>
+        <strong>NexusFin</strong> — Decision Support for Responsible Credit &amp; Informed Choice<br>
+        <span>© 2026 NexusFin Technologies. Independent financial health and affordability intelligence.</span>
+      </div>
+      <div class="footer-badges">
+        <a href="/governance" class="footer-badge-pill">Privacy by Design</a>
+        <a href="/methodology" class="footer-badge-pill">Architecture &amp; Methodology</a>
+        <a href="/methodology" class="footer-badge-pill">Institutional Standards</a>
+        <span class="footer-badge-pill">Transparent Decision Support</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="/js/api.js"></script>
+  <script src="/js/state.js"></script>
+  <script src="/js/ui.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>
