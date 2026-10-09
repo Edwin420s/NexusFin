@@ -45,6 +45,7 @@ class CreditOffer(BaseModel):
 
 
 class AssessmentRequest(BaseModel):
+    applicant_name: str | None = Field(default="Self-Service Applicant", description="Name or identifier for the borrower / applicant")
     profile: Profile
     offer: CreditOffer
 
@@ -102,6 +103,8 @@ class ResilienceScore(BaseModel):
 
 
 class AssessmentResponse(BaseModel):
+    id: str = Field(default="", description="Unique assessment identifier")
+    applicant_name: str = Field(default="Self-Service Applicant", description="Name or identifier for borrower")
     status: Literal["fits", "review", "high-pressure"]
     status_label: str
     status_reason: str
@@ -116,6 +119,7 @@ class AssessmentResponse(BaseModel):
     recommendations: list[str]
     methodology: list[str]
     limitations: list[str]
+    decision: dict | None = Field(default=None, description="Recorded underwriter decision if reviewed")
     generated_at: str
 
 
@@ -152,3 +156,11 @@ class ConsentUpdateRequest(BaseModel):
     source_id: str
     granted: bool
     actor: str = "consumer"
+
+
+class PartnerDecisionRequest(BaseModel):
+    assessment_id: str = Field(..., description="Unique assessment identifier")
+    decision: Literal["approved", "conditional", "declined"] = Field(..., description="Underwriting decision")
+    rationale: str = Field(..., description="Underwriter reasoning and risk considerations")
+    officer_name: str = Field(default="Senior Credit Underwriter", description="Name of underwriting officer")
+

@@ -49,6 +49,7 @@ AUDIT_LOGS: list[AuditLogEntry] = []
 # Cached assessments for partner/lender inspection (Pre-seeded with 3 illustrative demo applicants)
 RECENT_ASSESSMENTS: list[dict] = [
     {
+        "id": "asmt_carlos_001",
         "applicant_name": "Carlos M. — Gig Delivery Contractor",
         "applicant_type": "Sample verified profile",
         "status": "review",
@@ -56,6 +57,7 @@ RECENT_ASSESSMENTS: list[dict] = [
         "status_reason": "Your proposed repayment fits your declared monthly cash flow. However, a 25% income reduction would create a monthly deficit of ₱1,046, while the combined stress scenario produces a ₱5,246 deficit.",
         "currency": "PHP",
         "currency_symbol": "₱",
+        "decision": None,
         "offer": {
             "name": "Digital Fast Microloan",
             "provider": "Digital Nano-Fintech",
@@ -96,6 +98,7 @@ RECENT_ASSESSMENTS: list[dict] = [
         "generated_at": datetime.now(timezone.utc).isoformat(),
     },
     {
+        "id": "asmt_aisha_002",
         "applicant_name": "Aisha K. — Digital MSME & Freelancer",
         "applicant_type": "Sample verified profile",
         "status": "fits",
@@ -103,6 +106,7 @@ RECENT_ASSESSMENTS: list[dict] = [
         "status_reason": "Strong net operating margin and emergency savings buffer of 1.4 months comfortably absorbs equipment instalments.",
         "currency": "KES",
         "currency_symbol": "KSh",
+        "decision": None,
         "offer": {
             "name": "MSME Equipment Facility",
             "provider": "Community Micro-Lender",
@@ -143,6 +147,7 @@ RECENT_ASSESSMENTS: list[dict] = [
         "generated_at": datetime.now(timezone.utc).isoformat(),
     },
     {
+        "id": "asmt_dewi_003",
         "applicant_name": "Dewi S. — Small Retail Merchant",
         "applicant_type": "Sample verified profile",
         "status": "review",
@@ -150,6 +155,7 @@ RECENT_ASSESSMENTS: list[dict] = [
         "status_reason": "Flat-rate loan structure increases effective borrowing cost. Thin cash-flow cushion requires strict inventory monitoring.",
         "currency": "IDR",
         "currency_symbol": "Rp",
+        "decision": None,
         "offer": {
             "name": "Koperasi Inventory Loan",
             "provider": "Local Traders Cooperative",
@@ -228,7 +234,38 @@ def update_consent(source_id: str, granted: bool, actor: str = "consumer") -> di
     raise KeyError(f"Unknown consent source: {source_id}")
 
 
-def store_assessment(assessment_data: dict) -> None:
+def store_assessment(assessment_data: dict) -> dict:
+    if not assessment_data.get("id"):
+        assessment_data["id"] = f"asmt_{uuid.uuid4().hex[:8]}"
+    if not assessment_data.get("applicant_type"):
+        assessment_data["applicant_type"] = "Consented Direct Assessment"
+    if "decision" not in assessment_data:
+        assessment_data["decision"] = None
+
     RECENT_ASSESSMENTS.insert(0, assessment_data)
-    if len(RECENT_ASSESSMENTS) > 20:
+    if len(RECENT_ASSESSMENTS) > 25:
         RECENT_ASSESSMENTS.pop()
+    return assessment_data
+
+
+def record_underwriter_decision(assessment_id: str, decision: str, rationale: str, officer_name: str = "Senior Credit Underwriter") -> dict:
+    for asmt in RECENT_ASSESSMENTS:
+        if asmt.get("id") == assessment_id or asmt.get("offer", {}).get("name") == assessment_id:
+            asmt["decision"] = {
+                "decision": decision,
+                "rationale": rationale,
+                "officer_name": officer_name,
+                "decided_at": datetime.now(timezone.utc).isoformat(),
+            }
+            record_audit(
+                event_type="UNDERWRITER_DECISION_RECORDED",
+                actor=officer_name,
+                details={
+                    "assessment_id": assessment_id,
+                    "applicant": asmt.get("applicant_name", "Applicant"),
+                    "decision": decision,
+                    "rationale": rationale,
+                }
+            )
+            return asmt
+    raise KeyError(f"Assessment record '{assessment_id}' not found.")

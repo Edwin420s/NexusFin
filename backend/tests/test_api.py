@@ -139,6 +139,24 @@ def test_partner_assessments_endpoint():
     assert "assessments" in data
 
 
+def test_partner_decision_endpoint():
+    """Verify institutional underwriter can record a decision on an assessment with rationale."""
+    res = client.get("/api/partner/assessments")
+    assert res.status_code == 200
+    asmt_id = res.json()["assessments"][0]["id"]
+
+    decision_res = client.post("/api/partner/decision", json={
+        "assessment_id": asmt_id,
+        "decision": "approved",
+        "rationale": "Applicant demonstrates strong baseline cash flow and manageable debt burden.",
+        "officer_name": "Senior Credit Officer Gomez"
+    })
+    assert decision_res.status_code == 200
+    res_data = decision_res.json()
+    assert res_data["status"] == "success"
+    assert res_data["assessment"]["decision"]["decision"] == "approved"
+
+
 def test_frontend_index_and_spa_routing():
     """Verify frontend HTML is served at root and fallback paths."""
     res = client.get("/")

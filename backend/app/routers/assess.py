@@ -1,6 +1,7 @@
 """Assessment endpoints for NexusFin."""
 from __future__ import annotations
 
+import uuid
 from datetime import datetime, timezone
 from fastapi import APIRouter, HTTPException
 from backend.app.models.schemas import AssessmentRequest, AssessmentResponse, Profile, CreditOffer
@@ -141,7 +142,12 @@ def assess_credit(req: AssessmentRequest):
         **offer_totals,
     }
 
+    asmt_id = f"asmt_{uuid.uuid4().hex[:8]}"
+    applicant_name = req.applicant_name or "Self-Service Borrower"
+
     response_data = AssessmentResponse(
+        id=asmt_id,
+        applicant_name=applicant_name,
         status=status,
         status_label=status_label,
         status_reason=status_reason,
@@ -165,6 +171,8 @@ def assess_credit(req: AssessmentRequest):
         event_type="ASSESSMENT_PERFORMED",
         actor="consumer",
         details={
+            "assessment_id": asmt_id,
+            "applicant_name": applicant_name,
             "currency": profile.currency,
             "income": profile.income.monthly,
             "principal": offer.principal,
